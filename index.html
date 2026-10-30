@@ -116,15 +116,15 @@
 
                 <!-- TAB 1: GAME BOARD & STOPWATCH -->
                 <div id="g1-content-board" class="space-y-6">
-                    <!-- Player Details Input -->
+                    <!-- Player Details Input (Live Syncs to Projector) -->
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 bg-black/40 p-4 rounded-2xl border border-gray-800">
                         <div>
                             <label class="block text-xs font-semibold text-gray-400 mb-1">প্রতিযোগীর নাম:</label>
-                            <input type="text" id="g1-player-name" placeholder="নাম লিখুন..." class="w-full bg-gray-900 border border-gray-700 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-amber-400">
+                            <input type="text" id="g1-player-name" oninput="g1SyncPlayerInput()" placeholder="নাম লিখুন..." class="w-full bg-gray-900 border border-gray-700 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-amber-400">
                         </div>
                         <div>
                             <label class="block text-xs font-semibold text-gray-400 mb-1">বয়স:</label>
-                            <input type="number" id="g1-player-age" placeholder="বয়স লিখুন..." class="w-full bg-gray-900 border border-gray-700 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-amber-400">
+                            <input type="number" id="g1-player-age" oninput="g1SyncPlayerInput()" placeholder="বয়স লিখুন..." class="w-full bg-gray-900 border border-gray-700 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-amber-400">
                         </div>
                     </div>
 
@@ -357,7 +357,6 @@
                         }
                     });
 
-                    // THIS IS CRITICAL: Receiver listening for incoming connection from mobile sender
                     peer.on('connection', (connection) => {
                         conn = connection;
                         setupConnectionEvents();
@@ -373,7 +372,6 @@
             }
         }
 
-        // Copy Short Code Function
         function copyCode() {
             if(activeShortCode) {
                 navigator.clipboard.writeText(activeShortCode);
@@ -381,7 +379,6 @@
             }
         }
 
-        // Connect from Sender (Mobile) to Receiver (Laptop)
         function connectToReceiver() {
             const codeInput = document.getElementById('connect-peer-id').value.trim();
             const statusText = document.getElementById('p2p-action-status');
@@ -420,7 +417,7 @@
             conn.on('open', () => {
                 statusText.innerText = "ল্যাপটপের সাথে সফলভাবে যুক্ত হয়েছে!";
                 document.getElementById('p2p-status-bar').classList.add('hidden');
-                setupConnectionEvents(); // Listen for data on sender side too if needed
+                setupConnectionEvents();
                 setTimeout(() => toggleSettingsModal(false), 1500); 
             });
 
@@ -433,7 +430,7 @@
             if (!conn) return;
 
             conn.on('data', (data) => {
-                console.log("ল্যাপটপ রিসিভ করল ডাটা:", data);
+                console.log("রিসিভড ডাটা:", data);
                 if (data.gameId === 'game1') {
                     handleGame1P2PData(data);
                 }
@@ -472,7 +469,7 @@
             }
         }
 
-        // ================= GAME 1 JAVASCRIPT LOGIC =================
+        // ================= GAME 1 LIVE STOPWATCH & CONTROL LOGIC =================
         let g1Timer = null;
         let g1StartTime = 0;
         let g1ElapsedTime = 0;
@@ -513,25 +510,53 @@
             }
         }
 
+        // Live input sync from Mobile to Laptop
+        function g1SyncPlayerInput() {
+            const name = document.getElementById('g1-player-name').value;
+            const age = document.getElementById('g1-player-age').value;
+
+            if (conn && conn.open) {
+                conn.send({
+                    gameId: 'game1',
+                    action: 'sync_input',
+                    name: name,
+                    age: age
+                });
+            }
+        }
+
+        // Toggle Stopwatch (Start / Pause) & Sync to Laptop
         function g1ToggleStopwatch() {
             if (!g1IsRunning) {
                 playBeepSound('start');
                 g1StartTime = Date.now() - g1ElapsedTime;
-                g1Timer = setInterval(g1UpdateStopwatchDisplay, 30);
+                g1Timer = setInterval(() => {
+                    g1ElapsedTime = Date.now() - g1StartTime;
+                    g1UpdateStopwatchUI(g1ElapsedTime);
+                }, 30);
                 g1IsRunning = true;
+
+                // Send START command via P2P
+                if (conn && conn.open) {
+                    conn.send({ gameId: 'game1', action: 'sw_start', startTime: g1StartTime });
+                }
             } else {
                 playBeepSound('stop');
                 clearInterval(g1Timer);
                 g1IsRunning = false;
+
+                // Send PAUSE command via P2P
+                if (conn && conn.open) {
+                    conn.send({ gameId: 'game1', action: 'sw_pause', elapsedTime: g1ElapsedTime });
+                }
             }
         }
 
-        function g1UpdateStopwatchDisplay() {
-            g1ElapsedTime = Date.now() - g1StartTime;
-            let totalSeconds = g1ElapsedTime / 1000;
+        function g1UpdateStopwatchUI(elapsed) {
+            let totalSeconds = elapsed / 1000;
             let minutes = Math.floor(totalSeconds / 60);
             let seconds = Math.floor(totalSeconds % 60);
-            let milliseconds = Math.floor((g1ElapsedTime % 1000) / 10);
+            let milliseconds = Math.floor((elapsed % 1000) / 10);
 
             let formatted = 
                 (minutes < 10 ? "0" : "") + minutes + ":" +
@@ -546,7 +571,11 @@
             clearInterval(g1Timer);
             g1IsRunning = false;
             g1ElapsedTime = 0;
-            document.getElementById('g1-stopwatch-display').innerText = "00:00.00";
+            g1UpdateStopwatchUI(0);
+
+            if (conn && conn.open) {
+                conn.send({ gameId: 'game1', action: 'sw_reset' });
+            }
         }
 
         function g1SaveScore() {
@@ -572,7 +601,6 @@
                 time: timeInSeconds
             };
 
-            // Send data to laptop via P2P if connected from mobile
             if (conn && conn.open) {
                 conn.send({
                     gameId: 'game1',
@@ -591,7 +619,6 @@
         }
 
         function g1AddPlayerData(playerData) {
-            // Prevent duplicate insertion if synced via P2P
             if (!g1LeaderboardData.some(p => p.id === playerData.id)) {
                 g1LeaderboardData.push(playerData);
                 g1LeaderboardData.sort((a, b) => a.time - b.time);
@@ -664,10 +691,34 @@
             document.getElementById('g1-time-3').innerText = g1LeaderboardData[2] ? g1LeaderboardData[2].time + " সেকেন্ড" : "-";
         }
 
+        // Handle incoming data on Laptop / Projector side
         function handleGame1P2PData(data) {
-            if (data.action === 'add_score') {
+            if (data.action === 'sync_input') {
+                document.getElementById('g1-player-name').value = data.name;
+                document.getElementById('g1-player-age').value = data.age;
+            } 
+            else if (data.action === 'sw_start') {
+                g1StartTime = data.startTime;
+                clearInterval(g1Timer);
+                g1Timer = setInterval(() => {
+                    let currentElapsed = Date.now() - g1StartTime;
+                    g1UpdateStopwatchUI(currentElapsed);
+                }, 30);
+            } 
+            else if (data.action === 'sw_pause') {
+                clearInterval(g1Timer);
+                g1ElapsedTime = data.elapsedTime;
+                g1UpdateStopwatchUI(g1ElapsedTime);
+            } 
+            else if (data.action === 'sw_reset') {
+                clearInterval(g1Timer);
+                g1ElapsedTime = 0;
+                g1UpdateStopwatchUI(0);
+            }
+            else if (data.action === 'add_score') {
                 g1AddPlayerData(data.data);
-            } else if (data.action === 'delete_scores') {
+            } 
+            else if (data.action === 'delete_scores') {
                 g1LeaderboardData = g1LeaderboardData.filter(p => !data.ids.includes(p.id));
             }
             g1RenderLeaderboard();
