@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>কালীপুজো স্পেশাল গেমস - নিউ ঝালাপালা কমিটি</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- PeerJS for direct P2P connection -->
+    <script src="https://unpkg.com/peerjs@1.5.4/dist/peerjs.min.js"></script>
+    <!-- FontAwesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Tiro+Bangla:ital@0;1&display=swap');
+        body {
+            font-family: 'Tiro Bangla', serif;
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-purple-950 via-gray-900 to-indigo-950 text-white min-h-screen flex flex-col justify-between select-none">
+
+    <!-- P2P Connection Status Bar (Top) -->
+    <div id="p2p-status-bar" class="bg-red-600/90 text-white text-xs py-1.5 px-4 text-center font-semibold tracking-wide hidden z-50">
+        <i class="fa-solid fa-triangle-exclamation mr-1"></i> পিটুপি কানেকশন বিচ্ছিন্ন (ডিসকানেক্টেড)
+    </div>
+
+    <!-- MAIN CONTAINER -->
+    <div class="flex-grow flex flex-col items-center justify-center p-4 sm:p-6 w-full max-w-6xl mx-auto">
+
+        <!-- ================= 1. HOME SCREEN ================= -->
+        <div id="home-screen" class="w-full text-center space-y-8 animate-fade-in">
+            <!-- Header Section -->
+            <div class="space-y-3 bg-white/10 backdrop-blur-md p-6 sm:p-10 rounded-3xl border border-white/20 shadow-2xl">
+                <span class="bg-amber-500 text-gray-950 text-xs sm:text-sm font-bold px-4 py-1.5 rounded-full uppercase tracking-wider shadow">রজত জয়ন্তী বর্ষ ২০২৬</span>
+                <h1 class="text-2xl sm:text-4xl lg:text-5xl font-extrabold text-amber-300 leading-snug sm:leading-tight">
+                    নিউ ঝালাপালা কমিটি প্রযোজিত রজত জয়ন্তী বর্ষ উদযাপন উপলক্ষে বিশেষ আকর্ষণীয় খেলা
+                </h1>
+                <p class="text-gray-300 text-sm sm:text-base">নিচের যেকোনো একটি খেলায় অংশগ্রহণ করুন এবং আনন্দ উপভোগ করুন!</p>
+            </div>
+
+            <!-- Game Options Grid (Row/Column Structured) -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Game 1 -->
+                <div onclick="switchScreen('game1')" class="group bg-gradient-to-b from-indigo-900/60 to-purple-900/60 hover:from-amber-600 hover:to-orange-700 border border-purple-500/30 hover:border-amber-400 p-6 rounded-2xl cursor-pointer transition-all duration-300 transform hover:-translate-y-2 shadow-xl flex flex-col justify-between">
+                    <div>
+                        <div class="text-amber-400 group-hover:text-white text-3xl mb-3"><i class="fa-solid fa-shield-halved"></i></div>
+                        <h3 class="text-lg sm:text-xl font-bold text-amber-200 group-hover:text-white mb-2">সেফটিপিন এর মালা ফুটলে আঙুল জ্বালা</h3>
+                        <p class="text-xs text-gray-300 group-hover:text-gray-100">উত্তেজনাপূর্ণ ও সাবধানতার বিশেষ খেলা।</p>
+                    </div>
+                    <span class="mt-6 inline-block bg-amber-400 text-gray-900 text-xs font-bold px-4 py-2 rounded-lg group-hover:bg-white transition">খেলা শুরু করুন <i class="fa-solid fa-arrow-right ml-1"></i></span>
+                </div>
+
+                <!-- Game 2 -->
+                <div onclick="switchScreen('game2')" class="group bg-gradient-to-b from-indigo-900/60 to-purple-900/60 hover:from-amber-600 hover:to-orange-700 border border-purple-500/30 hover:border-amber-400 p-6 rounded-2xl cursor-pointer transition-all duration-300 transform hover:-translate-y-2 shadow-xl flex flex-col justify-between">
+                    <div>
+                        <div class="text-amber-400 group-hover:text-white text-3xl mb-3"><i class="fa-solid fa-brain"></i></div>
+                        <h3 class="text-lg sm:text-xl font-bold text-amber-200 group-hover:text-white mb-2">স্মৃতির খেলা শব্দের মেলা</h3>
+                        <p class="text-xs text-gray-300 group-hover:text-gray-100">বুদ্ধিমত্তা ও স্মৃতির দারুণ পরীক্ষা।</p>
+                    </div>
+                    <span class="mt-6 inline-block bg-amber-400 text-gray-900 text-xs font-bold px-4 py-2 rounded-lg group-hover:bg-white transition">খেলা শুরু করুন <i class="fa-solid fa-arrow-right ml-1"></i></span>
+                </div>
+
+                <!-- Game 3 -->
+                <div onclick="switchScreen('game3')" class="group bg-gradient-to-b from-indigo-900/60 to-purple-900/60 hover:from-amber-600 hover:to-orange-700 border border-purple-500/30 hover:border-amber-400 p-6 rounded-2xl cursor-pointer transition-all duration-300 transform hover:-translate-y-2 shadow-xl flex flex-col justify-between">
+                    <div>
+                        <div class="text-amber-400 group-hover:text-white text-3xl mb-3"><i class="fa-solid fa-puzzle-piece"></i></div>
+                        <h3 class="text-lg sm:text-xl font-bold text-amber-200 group-hover:text-white mb-2">শব্দ ছবির ধাঁধা</h3>
+                        <p class="text-xs text-gray-300 group-hover:text-gray-100">ছবি দেখে শব্দ মেলানোর আকর্ষণীয় ধাঁধা।</p>
+                    </div>
+                    <span class="mt-6 inline-block bg-amber-400 text-gray-900 text-xs font-bold px-4 py-2 rounded-lg group-hover:bg-white transition">খেলা শুরু করুন <i class="fa-solid fa-arrow-right ml-1"></i></span>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= 2. GAME CONTAINERS ================= -->
+        <!-- Game 1 Container -->
+        <div id="game1-screen" class="hidden w-full bg-gray-900/95 border border-purple-500/40 p-4 sm:p-6 rounded-3xl shadow-2xl space-y-6">
+            
+            <!-- Top Bar: Title & Home Button -->
+            <div class="flex justify-between items-center border-b border-gray-800 pb-3">
+                <h2 class="text-lg sm:text-2xl font-extrabold text-amber-300">
+                    <i class="fa-solid fa-shield-halved mr-2"></i> সেফটিপিন এর মালা ফুটলে আঙুল জ্বালা
+                </h2>
+                <button onclick="switchScreen('home')" class="bg-gray-800 hover:bg-gray-700 text-gray-200 px-4 py-2 rounded-xl text-sm font-semibold transition border border-gray-700">
+                    <i class="fa-solid fa-house mr-1"></i> হোম
+                </button>
+            </div>
+
+            <!-- SUB-SCREEN 1: RULES PAGE -->
+            <div id="g1-rules-view" class="space-y-6">
+                <div class="bg-black/50 border border-purple-500/30 p-6 rounded-2xl space-y-4 shadow-inner">
+                    <h3 class="text-xl font-bold text-amber-400 border-b border-gray-800 pb-2"><i class="fa-solid fa-circle-info mr-2"></i> খেলার নিয়মাবলী</h3>
+                    <ol class="space-y-3 text-gray-200 text-sm sm:text-base list-decimal list-inside leading-relaxed">
+                        <li class="p-2 bg-white/5 rounded-lg">টেবিলে ১০টি সেফটিপিন রাখা থাকবে।</li>
+                        <li class="p-2 bg-white/5 rounded-lg">প্রতিযোগীকে একটি সেফটিপিন তুলে তার ছিদ্রে অপর একটি সেফটিপিন প্রবেশ করাতে হবে।</li>
+                        <li class="p-2 bg-white/5 rounded-lg">এভাবে ওই ১০টি সেফটিপিন দিয়ে মালা তৈরি করতে হবে এবং প্রতিযোগী ওই মালা তৈরি করতে কত সময় নিল তা নথিভুক্ত করা হবে।</li>
+                        <li class="p-2 bg-white/5 rounded-lg">গৃহীত সময়ের উর্ধ্বক্রমের ভিত্তিতে প্রথম দ্বিতীয় ও তৃতীয় স্থানাধিকারী নির্বাচন করা হবে।</li>
+                    </ol>
+                </div>
+                <div class="flex justify-center pt-2">
+                    <button onclick="g1ShowMainGame()" class="bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-600 hover:to-orange-700 text-gray-950 font-extrabold text-lg px-8 py-3 rounded-2xl shadow-xl transition transform hover:scale-105">
+                        খেলা শুরু করুন <i class="fa-solid fa-play ml-2"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- SUB-SCREEN 2: MAIN GAME BOARD, LEADERBOARD & RESULTS -->
+            <div id="g1-game-view" class="hidden space-y-6">
+                
+                <!-- Navigation Tabs (Row-wise) -->
+                <div class="grid grid-cols-3 gap-2 bg-black/40 p-1.5 rounded-2xl border border-gray-800">
+                    <button onclick="g1SwitchTab('board')" id="g1-tab-board" class="py-2.5 rounded-xl text-xs sm:text-sm font-bold bg-amber-500 text-gray-950 transition shadow">গেম বোর্ড</button>
+                    <button onclick="g1SwitchTab('leaderboard')" id="g1-tab-leaderboard" class="py-2.5 rounded-xl text-xs sm:text-sm font-bold text-gray-300 hover:text-white transition">লিডারবোর্ড</button>
+                    <button onclick="g1SwitchTab('results')" id="g1-tab-results" class="py-2.5 rounded-xl text-xs sm:text-sm font-bold text-gray-300 hover:text-white transition">চূড়ান্ত ফলাফল</button>
+                </div>
+
+                <!-- TAB 1: GAME BOARD & STOPWATCH -->
+                <div id="g1-content-board" class="space-y-6">
+                    <!-- Player Details Input -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 bg-black/40 p-4 rounded-2xl border border-gray-800">
+                        <div>
+                            <label class="block text-xs font-semibold text-gray-400 mb-1">প্রতিযোগীর নাম:</label>
+                            <input type="text" id="g1-player-name" placeholder="নাম লিখুন..." class="w-full bg-gray-900 border border-gray-700 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-amber-400">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-gray-400 mb-1">বয়স:</label>
+                            <input type="number" id="g1-player-age" placeholder="বয়স লিখুন..." class="w-full bg-gray-900 border border-gray-700 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-amber-400">
+                        </div>
+                    </div>
+
+                    <!-- Fancy Digital Stopwatch -->
+                    <div class="bg-gradient-to-b from-black to-gray-950 border-2 border-amber-500/40 p-6 rounded-3xl text-center shadow-2xl space-y-4">
+                        <p class="text-xs tracking-widest text-amber-400 uppercase font-bold">স্টপওয়াচ (চালু/বন্ধ করতে ঘড়িতে ক্লিক করুন)</p>
+                        
+                        <!-- Clickable Stopwatch Display -->
+                        <div onclick="g1ToggleStopwatch()" class="inline-block cursor-pointer bg-black/80 border border-amber-500/30 px-8 py-4 rounded-3xl shadow-inner group transition transform hover:scale-105">
+                            <span id="g1-stopwatch-display" class="font-mono text-4xl sm:text-6xl font-black text-amber-300 tracking-wider">00:00.00</span>
+                        </div>
+
+                        <div class="flex justify-center items-center gap-4 pt-2">
+                            <button onclick="g1ResetStopwatch()" class="bg-gray-800 hover:bg-gray-700 text-gray-300 px-4 py-1.5 rounded-xl text-xs font-semibold border border-gray-700 transition">
+                                <i class="fa-solid fa-rotate-right mr-1"></i> রিসেট
+                            </button>
+                            <button onclick="g1SaveScore()" class="bg-emerald-600 hover:bg-emerald-500 text-white px-6 py-2 rounded-xl text-sm font-bold shadow-lg transition">
+                                <i class="fa-solid fa-floppy-disk mr-1"></i> সেভ করুন
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="flex justify-start">
+                        <button onclick="g1ShowRules()" class="text-xs text-gray-400 hover:text-white underline"><i class="fa-solid fa-arrow-left mr-1"></i> নিয়মাবলীতে ফিরে যান</button>
+                    </div>
+                </div>
+
+                <!-- TAB 2: LEADERBOARD -->
+                <div id="g1-content-leaderboard" class="hidden space-y-4">
+                    <div class="flex justify-between items-center">
+                        <h3 class="font-bold text-amber-300 text-base"><i class="fa-solid fa-trophy mr-1"></i> প্রতিযোগীদের লিডারবোর্ড</h3>
+                        <button onclick="g1DeleteSelected()" class="bg-red-900/80 hover:bg-red-800 text-red-200 px-3 py-1.5 rounded-xl text-xs font-semibold border border-red-700 transition">
+                            <i class="fa-solid fa-trash-can mr-1"></i> সিলেক্টেড মুছুন
+                        </button>
+                    </div>
+
+                    <div class="overflow-x-auto max-h-80 overflow-y-auto rounded-2xl border border-gray-800 bg-black/40">
+                        <table class="w-full text-left text-sm text-gray-300">
+                            <thead class="bg-gray-900 text-amber-400 text-xs uppercase">
+                                <tr>
+                                    <th class="p-3 text-center w-10"><input type="checkbox" id="g1-select-all" onclick="g1ToggleSelectAll(this)"></th>
+                                    <th class="p-3">র‍্যাংক</th>
+                                    <th class="p-3">নাম</th>
+                                    <th class="p-3">বয়স</th>
+                                    <th class="p-3 text-right">সময় (সেকেন্ড)</th>
+                                </tr>
+                            </thead>
+                            <tbody id="g1-leaderboard-body" class="divide-y divide-gray-800 font-medium">
+                                <!-- Dynamic rows will appear here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- TAB 3: FINAL RESULTS (1st, 2nd, 3rd) -->
+                <div id="g1-content-results" class="hidden space-y-4">
+                    <h3 class="font-bold text-amber-300 text-base text-center"><i class="fa-solid fa-medal mr-1"></i> চূড়ান্ত ফলাফল (পডিয়াম)</h3>
+                    
+                    <div id="g1-podium-container" class="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-2">
+                        <!-- 1st Place -->
+                        <div class="bg-gradient-to-b from-amber-600/30 to-gray-900 border-2 border-amber-400 p-5 rounded-2xl text-center space-y-2 shadow-xl">
+                            <div class="text-amber-400 text-2xl font-black">🥇 ১ম স্থান</div>
+                            <div id="g1-res-1" class="text-lg font-bold text-white">কেউ নেই</div>
+                            <div id="g1-time-1" class="text-xs text-amber-200 font-mono">-</div>
+                        </div>
+                        <!-- 2nd Place -->
+                        <div class="bg-gradient-to-b from-gray-400/20 to-gray-900 border border-gray-400 p-5 rounded-2xl text-center space-y-2 shadow-xl">
+                            <div class="text-gray-300 text-xl font-bold">🥈 ২য় স্থান</div>
+                            <div id="g1-res-2" class="text-base font-bold text-white">কেউ নেই</div>
+                            <div id="g1-time-2" class="text-xs text-gray-300 font-mono">-</div>
+                        </div>
+                        <!-- 3rd Place -->
+                        <div class="bg-gradient-to-b from-amber-800/30 to-gray-900 border border-amber-700 p-5 rounded-2xl text-center space-y-2 shadow-xl">
+                            <div class="text-amber-600 text-xl font-bold">🥉 ৩য় স্থান</div>
+                            <div id="g1-res-3" class="text-base font-bold text-white">কেউ নেই</div>
+                            <div id="g1-time-3" class="text-xs text-amber-400/70 font-mono">-</div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Game 2 Container -->
+        <div id="game2-screen" class="hidden w-full bg-gray-900/90 border border-purple-500/30 p-6 rounded-2xl shadow-2xl space-y-4">
+            <div class="flex justify-between items-center border-b border-gray-700 pb-3">
+                <h2 class="text-lg sm:text-xl font-bold text-amber-300">স্মৃতির খেলা শব্দের মেলা</h2>
+                <button onclick="switchScreen('home')" class="bg-gray-700 hover:bg-gray-600 px-3 py-1.5 rounded-lg text-sm"><i class="fa-solid fa-house mr-1"></i> হোম</button>
+            </div>
+            <div class="p-12 text-center text-gray-400 bg-gray-950/50 rounded-xl border border-dashed border-gray-700">
+                [ এখানে আপনার দ্বিতীয় গেমের কোড বসবে ]
+            </div>
+        </div>
+
+        <!-- Game 3 Container -->
+        <div id="game3-screen" class="hidden w-full bg-gray-900/90 border border-purple-500/30 p-6 rounded-2xl shadow-2xl space-y-4">
+            <div class="flex justify-between items-center border-b border-gray-700 pb-3">
+                <h2 class="text-lg sm:text-xl font-bold text-amber-300">শব্দ ছবির ধাঁধা</h2>
+                <button onclick="switchScreen('home')" class="bg-gray-700 hover:bg-gray-600 px-3 py-1.5 rounded-lg text-sm"><i class="fa-solid fa-house mr-1"></i> হোম</button>
+            </div>
+            <div class="p-12 text-center text-gray-400 bg-gray-950/50 rounded-xl border border-dashed border-gray-700">
+                [ এখানে আপনার তৃতীয় গেমের কোড বসবে ]
+            </div>
+        </div>
+
+    </div>
+
+    <!-- ================= 3. FOOTER WITH SETTINGS GEAR ================= -->
+    <footer class="w-full py-4 px-6 bg-black/40 border-t border-white/10 flex justify-between items-center">
+        <p class="text-xs text-gray-400">© ২০২৬ নিউ ঝালাপালা কমিটি</p>
+        <!-- Settings Gear Button -->
+        <button onclick="toggleSettingsModal(true)" class="bg-purple-800 hover:bg-purple-700 text-white w-10 h-10 rounded-full flex items-center justify-center shadow-lg transition transform hover:rotate-90">
+            <i class="fa-solid fa-gear"></i>
+        </button>
+    </footer>
+
+    <!-- ================= 4. SETTINGS MODAL (P2P ONLY) ================= -->
+    <div id="settings-modal" class="fixed inset-0 bg-black/70 backdrop-blur-sm hidden flex items-center justify-center p-4 z-50">
+        <div class="bg-gray-900 border border-purple-500/40 w-full max-w-md rounded-2xl p-6 shadow-2xl space-y-6 relative">
+            <div class="flex justify-between items-center border-b border-gray-800 pb-3">
+                <h3 class="text-lg font-bold text-amber-300"><i class="fa-solid fa-gear mr-2"></i> কন্ট্রোল প্যানেল ও লাইভ কাস্ট</h3>
+                <button onclick="toggleSettingsModal(false)" class="text-gray-400 hover:text-white text-xl"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+
+            <!-- Live Mirror Cast (P2P Connection) -->
+            <div class="space-y-3">
+                <label class="text-sm font-semibold text-gray-300"><i class="fa-solid fa-network-wired mr-1"></i> লাইভ মিরর কাস্ট (P2P কানেকশন)</label>
+                
+                <div class="grid grid-cols-2 gap-3">
+                    <button onclick="openP2PPanel('receiver')" class="bg-indigo-900 hover:bg-indigo-800 border border-indigo-600 py-2.5 rounded-xl text-sm font-semibold text-center transition">
+                        <i class="fa-solid fa-tv mr-1"></i> রিসিভার (ল্যাপটপ)
+                    </button>
+                    <button onclick="openP2PPanel('sender')" class="bg-emerald-900 hover:bg-emerald-800 border border-emerald-600 py-2.5 rounded-xl text-sm font-semibold text-center transition">
+                        <i class="fa-solid fa-mobile-screen mr-1"></i> সেন্ডার (মোবাইল)
+                    </button>
+                </div>
+
+                <!-- Dynamic P2P Box -->
+                <div id="p2p-panel-box" class="hidden bg-gray-950 p-4 rounded-xl border border-gray-800 space-y-3">
+                    <!-- Receiver Section -->
+                    <div id="receiver-box" class="hidden space-y-2">
+                        <p class="text-xs text-gray-400">এই ৪ সংখ্যার কোডটি আপনার মোবাইলে লিখুন:</p>
+                        <div class="flex items-center gap-2">
+                            <div id="my-short-code" class="flex-grow bg-black text-amber-400 font-mono text-xl font-bold py-2 text-center rounded border border-gray-800 tracking-widest">তৈরি হচ্ছে...</div>
+                            <button onclick="copyCode()" class="bg-gray-800 hover:bg-gray-700 text-amber-400 px-3 py-2 rounded border border-gray-700 text-sm" title="কপি করুন"><i class="fa-solid fa-copy"></i></button>
+                        </div>
+                    </div>
+                    <!-- Sender Section -->
+                    <div id="sender-box" class="hidden space-y-2">
+                        <p class="text-xs text-gray-400">রিসিভারের ৪ সংখ্যার কোড এখানে দিন:</p>
+                        <div class="flex gap-2">
+                            <input type="text" id="connect-peer-id" maxlength="4" placeholder="যেমন: 7421" class="flex-grow bg-black border border-gray-700 rounded px-3 py-1.5 text-sm text-white focus:outline-none focus:border-amber-400 font-mono text-center tracking-widest text-lg">
+                            <button onclick="connectToReceiver()" class="bg-amber-500 hover:bg-amber-600 text-gray-950 font-bold px-4 py-1.5 rounded text-sm transition">কানেক্ট</button>
+                        </div>
+                    </div>
+                    <div id="p2p-action-status" class="text-xs text-center text-gray-400 font-medium"></div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- ================= 5. JAVASCRIPT LOGIC ================= -->
+    <script>
+        // Screen Navigation Logic
+        function switchScreen(screenName) {
+            document.getElementById('home-screen').classList.add('hidden');
+            document.getElementById('game1-screen').classList.add('hidden');
+            document.getElementById('game2-screen').classList.add('hidden');
+            document.getElementById('game3-screen').classList.add('hidden');
+
+            if (screenName === 'home') {
+                document.getElementById('home-screen').classList.remove('hidden');
+            } else if (screenName === 'game1') {
+                document.getElementById('game1-screen').classList.remove('hidden');
+            } else if (screenName === 'game2') {
+                document.getElementById('game2-screen').classList.remove('hidden');
+            } else if (screenName === 'game3') {
+                document.getElementById('game3-screen').classList.remove('hidden');
+            }
+        }
+
+        // Settings Modal Toggle
+        function toggleSettingsModal(show) {
+            const modal = document.getElementById('settings-modal');
+            if (show) {
+                modal.classList.remove('hidden');
+            } else {
+                modal.classList.add('hidden');
+            }
+        }
+
+        // P2P Connection (Using 4-Digit Short Code)
+        let peer = null;
+        let conn = null;
+        let activeShortCode = "";
+
+        function openP2PPanel(role) {
+            const panelBox = document.getElementById('p2p-panel-box');
+            const receiverBox = document.getElementById('receiver-box');
+            const senderBox = document.getElementById('sender-box');
+            const statusText = document.getElementById('p2p-action-status');
+
+            panelBox.classList.remove('hidden');
+
+            if (role === 'receiver') {
+                receiverBox.classList.remove('hidden');
+                senderBox.classList.add('hidden');
+                
+                if (!peer || peer.destroyed) {
+                    activeShortCode = Math.floor(1000 + Math.random() * 9000).toString();
+                    const fullPeerId = "kali-game-" + activeShortCode;
+
+                    peer = new Peer(fullPeerId); 
+
+                    peer.on('open', (id) => {
+                        document.getElementById('my-short-code').innerText = activeShortCode;
+                        statusText.innerText = "রিসিভার তৈরি। কোড মোবাইলে দিন।";
+                    });
+
+                    peer.on('error', (err) => {
+                        if(err.type === 'unavailable-id') {
+                            location.reload();
+                        } else {
+                            statusText.innerText = "কানেকশন ত্রুটি: " + err.type;
+                        }
+                    });
+
+                    peer.on('connection', (connection) => {
+                        conn = connection;
+                        setupConnectionEvents();
+                        statusText.innerText = "মোবাইল সেন্ডারের সাথে সফলভাবে যুক্ত হয়েছে!";
+                        document.getElementById('p2p-status-bar').classList.add('hidden');
+                        toggleSettingsModal(false); 
+                    });
+                }
+            } else {
+                senderBox.classList.remove('hidden');
+                receiverBox.classList.add('hidden');
+                statusText.innerText = "রিসিভারের ৪ সংখ্যার কোডটি লিখে কানেক্ট করুন।";
+            }
+        }
+
+        // Copy Short Code Function
+        function copyCode() {
+            if(activeShortCode) {
+                navigator.clipboard.writeText(activeShortCode);
+                document.getElementById('p2p-action-status').innerText = "কোড ক্লিপবোর্ডে কপি করা হয়েছে!";
+            }
+        }
+
+        // Connect from Sender to Receiver using 4-digit code
+        function connectToReceiver() {
+            const codeInput = document.getElementById('connect-peer-id').value.trim();
+            const statusText = document.getElementById('p2p-action-status');
+
+            if (codeInput.length !== 4) {
+                statusText.innerText = "দয়া করে সঠিক ৪ সংখ্যার কোড দিন!";
+                return;
+            }
+
+            const targetFullId = "kali-game-" + codeInput;
+            statusText.innerText = "কানেক্ট হচ্ছে...";
+
+            if (!peer || peer.destroyed) {
+                peer = new Peer();
+                peer.on('open', () => {
+                    initiateConnection(targetFullId);
+                });
+            } else {
+                initiateConnection(targetFullId);
+            }
+        }
+
+        function initiateConnection(targetId) {
+            const statusText = document.getElementById('p2p-action-status');
+            conn = peer.connect(targetId);
+            
+            conn.on('open', () => {
+                statusText.innerText = "ল্যাপটপের সাথে সফলভাবে যুক্ত হয়েছে!";
+                document.getElementById('p2p-status-bar').classList.add('hidden');
+                toggleSettingsModal(false); 
+            });
+
+            conn.on('error', (err) => {
+                statusText.innerText = "কানেক্ট করা যায়নি! কোডটি চেক করুন।";
+            });
+
+            setupConnectionEvents();
+        }
+
+        function setupConnectionEvents() {
+            conn.on('data', (data) => {
+                console.log("রিসিভড ডাটা:", data);
+                if (data.gameId === 'game1') {
+                    handleGame1P2PData(data);
+                }
+            });
+
+            conn.on('close', () => {
+                document.getElementById('p2p-status-bar').classList.remove('hidden');
+                document.getElementById('p2p-action-status').innerText = "কানেকশন বিচ্ছিন্ন হয়ে গেছে!";
+            });
+        }
+
+        // ================= WEB AUDIO API FOR SOUND EFFECTS =================
+        function playBeepSound(type) {
+            try {
+                const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                const osc = audioCtx.createOscillator();
+                const gainNode = audioCtx.createGain();
+
+                osc.connect(gainNode);
+                gainNode.connect(audioCtx.destination);
+
+                if (type === 'start') {
+                    // High-pitch pleasant beep for START
+                    osc.frequency.setValueAtTime(800, audioCtx.currentTime);
+                    gainNode.gain.setValueAtTime(0.1, audioCtx.currentTime);
+                    gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.15);
+                    osc.start();
+                    osc.stop(audioCtx.currentTime + 0.15);
+                } else if (type === 'stop') {
+                    // Low-pitch click/stop sound for PAUSE/RESET
+                    osc.frequency.setValueAtTime(300, audioCtx.currentTime);
+                    gainNode.gain.setValueAtTime(0.15, audioCtx.currentTime);
+                    gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.1);
+                    osc.start();
+                    osc.stop(audioCtx.currentTime + 0.1);
+                }
+            } catch (e) {
+                console.log("Audio not supported or blocked by browser", e);
+            }
+        }
+
+        // ================= GAME 1 JAVASCRIPT LOGIC =================
+        let g1Timer = null;
+        let g1StartTime = 0;
+        let g1ElapsedTime = 0;
+        let g1IsRunning = false;
+        let g1LeaderboardData = [];
+
+        function g1ShowMainGame() {
+            document.getElementById('g1-rules-view').classList.add('hidden');
+            document.getElementById('g1-game-view').classList.remove('hidden');
+            g1SwitchTab('board');
+        }
+
+        function g1ShowRules() {
+            document.getElementById('g1-game-view').classList.add('hidden');
+            document.getElementById('g1-rules-view').classList.remove('hidden');
+        }
+
+        function g1SwitchTab(tabName) {
+            document.getElementById('g1-content-board').classList.add('hidden');
+            document.getElementById('g1-content-leaderboard').classList.add('hidden');
+            document.getElementById('g1-content-results').classList.add('hidden');
+
+            document.getElementById('g1-tab-board').className = "py-2.5 rounded-xl text-xs sm:text-sm font-bold text-gray-300 hover:text-white transition";
+            document.getElementById('g1-tab-leaderboard').className = "py-2.5 rounded-xl text-xs sm:text-sm font-bold text-gray-300 hover:text-white transition";
+            document.getElementById('g1-tab-results').className = "py-2.5 rounded-xl text-xs sm:text-sm font-bold text-gray-300 hover:text-white transition";
+
+            if (tabName === 'board') {
+                document.getElementById('g1-content-board').classList.remove('hidden');
+                document.getElementById('g1-tab-board').className = "py-2.5 rounded-xl text-xs sm:text-sm font-bold bg-amber-500 text-gray-950 transition shadow";
+            } else if (tabName === 'leaderboard') {
+                document.getElementById('g1-content-leaderboard').classList.remove('hidden');
+                document.getElementById('g1-tab-leaderboard').className = "py-2.5 rounded-xl text-xs sm:text-sm font-bold bg-amber-500 text-gray-950 transition shadow";
+                g1RenderLeaderboard();
+            } else if (tabName === 'results') {
+                document.getElementById('g1-content-results').classList.remove('hidden');
+                document.getElementById('g1-tab-results').className = "py-2.5 rounded-xl text-xs sm:text-sm font-bold bg-amber-500 text-gray-950 transition shadow";
+                g1UpdatePodium();
+            }
+        }
+
+        function g1ToggleStopwatch() {
+            if (!g1IsRunning) {
+                // START Sound
+                playBeepSound('start');
+                g1StartTime = Date.now() - g1ElapsedTime;
+                g1Timer = setInterval(g1UpdateStopwatchDisplay, 30);
+                g1IsRunning = true;
+            } else {
+                // PAUSE/STOP Sound
+                playBeepSound('stop');
+                clearInterval(g1Timer);
+                g1IsRunning = false;
+            }
+        }
+
+        function g1UpdateStopwatchDisplay() {
+            g1ElapsedTime = Date.now() - g1StartTime;
+            let totalSeconds = g1ElapsedTime / 1000;
+            let minutes = Math.floor(totalSeconds / 60);
+            let seconds = Math.floor(totalSeconds % 60);
+            let milliseconds = Math.floor((g1ElapsedTime % 1000) / 10);
+
+            let formatted = 
+                (minutes < 10 ? "0" : "") + minutes + ":" +
+                (seconds < 10 ? "0" : "") + seconds + "." +
+                (milliseconds < 10 ? "0" : "") + milliseconds;
+
+            document.getElementById('g1-stopwatch-display').innerText = formatted;
+        }
+
+        function g1ResetStopwatch() {
+            playBeepSound('stop');
+            clearInterval(g1Timer);
+            g1IsRunning = false;
+            g1ElapsedTime = 0;
+            document.getElementById('g1-stopwatch-display').innerText = "00:00.00";
+        }
+
+        function g1SaveScore() {
+            const name = document.getElementById('g1-player-name').value.trim();
+            const age = document.getElementById('g1-player-age').value.trim();
+
+            if (!name) {
+                alert("দয়া করে প্রতিযোগীর নাম লিখুন!");
+                return;
+            }
+            if (g1ElapsedTime === 0) {
+                alert("স্টপওয়াচ চালু করে সময় রেকর্ড করুন!");
+                return;
+            }
+
+            playBeepSound('stop');
+            const timeInSeconds = Number((g1ElapsedTime / 1000).toFixed(2));
+
+            const playerData = {
+                id: Date.now(),
+                name: name,
+                age: age || '-',
+                time: timeInSeconds
+            };
+
+            if (conn && conn.open) {
+                conn.send({
+                    gameId: 'game1',
+                    action: 'add_score',
+                    data: playerData
+                });
+            }
+
+            g1AddPlayerData(playerData);
+            
+            document.getElementById('g1-player-name').value = '';
+            document.getElementById('g1-player-age').value = '';
+            g1ResetStopwatch();
+            
+            g1SwitchTab('leaderboard');
+        }
+
+        function g1AddPlayerData(playerData) {
+            g1LeaderboardData.push(playerData);
+            g1LeaderboardData.sort((a, b) => a.time - b.time);
+        }
+
+        function g1RenderLeaderboard() {
+            const tbody = document.getElementById('g1-leaderboard-body');
+            tbody.innerHTML = '';
+
+            if (g1LeaderboardData.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="5" class="p-6 text-center text-gray-500">এখনো কোনো স্কোর জমা হয়নি।</td></tr>`;
+                return;
+            }
+
+            g1LeaderboardData.forEach((player, index) => {
+                let rankBadge = (index + 1);
+                if(index === 0) rankBadge = "🥇 1";
+                else if(index === 1) rankBadge = "🥈 2";
+                else if(index === 2) rankBadge = "🥉 3";
+
+                let tr = document.createElement('tr');
+                tr.className = "hover:bg-white/5 transition";
+                tr.innerHTML = `
+                    <td class="p-3 text-center"><input type="checkbox" class="g1-row-checkbox" data-id="${player.id}"></td>
+                    <td class="p-3 font-bold text-amber-400">${rankBadge}</td>
+                    <td class="p-3 text-white font-semibold">${player.name}</td>
+                    <td class="p-3 text-gray-400">${player.age}</td>
+                    <td class="p-3 text-right font-mono text-amber-300 font-bold">${player.time} সেঃ</td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function g1ToggleSelectAll(master) {
+            const checkboxes = document.querySelectorAll('.g1-row-checkbox');
+            checkboxes.forEach(cb => cb.checked = master.checked);
+        }
+
+        function g1DeleteSelected() {
+            const checkboxes = document.querySelectorAll('.g1-row-checkbox:checked');
+            if (checkboxes.length === 0) {
+                alert("ডিলিট করার জন্য অন্তত একটি রো সিলেক্ট করুন!");
+                return;
+            }
+
+            let idsToDelete = Array.from(checkboxes).map(cb => Number(cb.getAttribute('data-id')));
+            g1LeaderboardData = g1LeaderboardData.filter(p => !idsToDelete.includes(p.id));
+
+            if (conn && conn.open) {
+                conn.send({
+                    gameId: 'game1',
+                    action: 'delete_scores',
+                    ids: idsToDelete
+                });
+            }
+
+            g1RenderLeaderboard();
+        }
+
+        function g1UpdatePodium() {
+            document.getElementById('g1-res-1').innerText = g1LeaderboardData[0] ? g1LeaderboardData[0].name : "কেউ নেই";
+            document.getElementById('g1-time-1').innerText = g1LeaderboardData[0] ? g1LeaderboardData[0].time + " সেকেন্ড" : "-";
+
+            document.getElementById('g1-res-2').innerText = g1LeaderboardData[1] ? g1LeaderboardData[1].name : "কেউ নেই";
+            document.getElementById('g1-time-2').innerText = g1LeaderboardData[1] ? g1LeaderboardData[1].time + " সেকেন্ড" : "-";
+
+            document.getElementById('g1-res-3').innerText = g1LeaderboardData[2] ? g1LeaderboardData[2].name : "কেউ নেই";
+            document.getElementById('g1-time-3').innerText = g1LeaderboardData[2] ? g1LeaderboardData[2].time + " সেকেন্ড" : "-";
+        }
+
+        function handleGame1P2PData(data) {
+            if (data.action === 'add_score') {
+                g1AddPlayerData(data.data);
+            } else if (data.action === 'delete_scores') {
+                g1LeaderboardData = g1LeaderboardData.filter(p => !data.ids.includes(p.id));
+            }
+            g1RenderLeaderboard();
+            g1UpdatePodium();
+        }
+    </script>
+</body>
+</html>
