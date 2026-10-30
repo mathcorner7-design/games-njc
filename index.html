@@ -26,21 +26,22 @@
             border: 1.5px solid #551a1a;
             border-radius: 10px;
             padding: 10px 4px;
-            font-size: 1.2rem;
+            font-size: 1.25rem;
             font-weight: bold;
             text-align: center;
             user-select: none;
+            -webkit-user-select: none;
             cursor: pointer;
             min-height: 52px;
             display: flex;
             align-items: center;
             justify-content: center;
             color: #ffeedd;
-            transition: transform 0.1s ease, background 0.1s ease;
+            transition: transform 0.1s ease, background-color 0.1s ease;
             -webkit-tap-highlight-color: transparent;
         }
         .g2-word-tile:active {
-            transform: scale(0.96);
+            transform: scale(0.95);
         }
         .g2-word-tile.found {
             background: #1e7e34 !important;
@@ -81,7 +82,7 @@
 </head>
 <body class="bg-gradient-to-br from-purple-950 via-gray-900 to-indigo-950 text-white min-h-screen flex flex-col justify-between select-none">
 
-    <!-- P2P Connection Status Bar -->
+    <!-- P2P Status Bar -->
     <div id="p2p-status-bar" class="bg-red-600/90 text-white text-xs py-1.5 px-4 text-center font-semibold tracking-wide hidden z-50">
         <i class="fa-solid fa-triangle-exclamation mr-1"></i> পিটুপি কানেকশন বিচ্ছিন্ন (ডিসকানেক্টেড)
     </div>
@@ -141,7 +142,6 @@
                 </button>
             </div>
 
-            <!-- G1 Rules View -->
             <div id="g1-rules-view" class="space-y-6">
                 <div class="bg-black/50 border border-purple-500/30 p-6 rounded-2xl space-y-4 shadow-inner">
                     <h3 class="text-xl font-bold text-amber-400 border-b border-gray-800 pb-2"><i class="fa-solid fa-circle-info mr-2"></i> খেলার নিয়মাবলী</h3>
@@ -159,7 +159,6 @@
                 </div>
             </div>
 
-            <!-- G1 Game View -->
             <div id="g1-game-view" class="hidden space-y-6">
                 <div class="grid grid-cols-3 gap-2 bg-black/40 p-1.5 rounded-2xl border border-gray-800">
                     <button onclick="g1RequestSwitchTab('board')" id="g1-tab-board" class="py-2.5 rounded-xl text-xs sm:text-sm font-bold bg-amber-500 text-gray-950 transition shadow">গেম বোর্ড</button>
@@ -316,7 +315,7 @@
                     <span id="g2-timeTakenText" class="text-amber-300 font-mono text-xs sm:text-sm">সময়: --</span>
                 </div>
 
-                <!-- Words Container (Mobile Optimized) -->
+                <!-- Words Container -->
                 <div id="g2-wordsContainer" class="hidden grid grid-cols-2 sm:grid-cols-4 gap-2 pt-1 scroll-mt-4"></div>
 
                 <!-- Save Score Button -->
@@ -709,8 +708,8 @@
 
                 if (type === 'start') {
                     osc.frequency.setValueAtTime(800, audioCtx.currentTime);
-                    gainNode.gain.setValueAtTime(0.1, audioCtx.currentTime);
-                    gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.15);
+                    gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.15);
                     osc.start();
                     osc.stop(audioCtx.currentTime + 0.15);
                 } else if (type === 'stop') {
@@ -1175,35 +1174,42 @@
             words.forEach(word => {
                 const tile = document.createElement('div');
                 tile.className = 'g2-word-tile';
+                tile.setAttribute('data-word', word);
                 tile.textContent = word;
                 if (g2AnsweredWords.has(word)) tile.classList.add('found');
-                tile.onclick = (e) => {
+                
+                // Directly bind single pointer event to prevent multi-firing
+                tile.addEventListener('pointerdown', (e) => {
                     e.preventDefault();
                     g2OnWordClicked(word, false);
-                };
+                });
                 container.appendChild(tile);
             });
         }
 
-        // isRemote prevents P2P loopback & ghost double toggles
+        // isRemote eliminates echo loops; Direct class toggling avoids whole DOM re-renders
         function g2OnWordClicked(word, isRemote = false) {
             if (g2CurrentPhase !== 'recall' || g2IsPaused) return;
 
+            const tile = document.querySelector(`#g2-wordsContainer [data-word="${word}"]`);
+            
             if (!g2AnsweredWords.has(word)) {
                 g2AnsweredWords.add(word);
                 g2CurrentScore++;
+                // Exact time calculation: locks the exact millisecond of the last spoken word
                 g2LastWordTimeTakenMs = performance.now() - g2RecallStartTime;
+                if (tile) tile.classList.add('found');
                 playTone(950, 0.12);
             } else {
                 g2AnsweredWords.delete(word);
                 g2CurrentScore--;
+                if (tile) tile.classList.remove('found');
                 playTone(400, 0.08);
             }
 
             document.getElementById('g2-liveScore').textContent = g2CurrentScore;
-            g2RenderWordsGrid();
 
-            // Send to peer only if clicked locally
+            // Transmit through P2P ONLY if originated on local device
             if (!isRemote && conn && conn.open) {
                 conn.send({ gameId: 'game2', action: 'word_click', word: word });
             }
@@ -1227,6 +1233,7 @@
             g2AnsweredWords.clear();
             g2CurrentScore = 0;
             g2RecallElapsedMs = 0;
+            g2LastWordTimeTakenMs = 0;
 
             document.getElementById('g2-liveScore').textContent = "0";
             document.getElementById('g2-timeTakenText').textContent = "সময়: --";
@@ -1305,14 +1312,15 @@
             const wordsBox = document.getElementById('g2-wordsContainer');
             wordsBox.classList.remove('hidden');
 
-            // Auto-scroll smooth to words container so phone operator doesn't need to manually scroll
+            // Automatically scroll to words box on mobile so all 8 buttons stay right under fingers
             setTimeout(() => {
                 wordsBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-            }, 50);
+            }, 60);
 
             const totalLimit = 30000;
             g2RecallStartTime = performance.now();
             g2RecallElapsedMs = 0;
+            g2LastWordTimeTakenMs = 0;
             g2LastTickSecond = -1;
             document.getElementById('g2-timerNum').classList.remove('heartbeat-active');
             playTone(1100, 0.25);
@@ -1383,7 +1391,12 @@
             document.getElementById('g2-phaseText').textContent = "সময় সমাপ্ত (Time Up!)";
             document.getElementById('g2-subPhaseText').textContent = "স্কোর সংরক্ষণ করুন";
             document.getElementById('g2-timerNum').textContent = "0.00s";
-            document.getElementById('g2-timeTakenText').textContent = `সময়: 30.00s (সম্পূর্ণ)`;
+            
+            // If participant said at least 1 word, preserve the exact timestamp of their last correct word
+            const finalTime = (g2CurrentScore > 0 && g2LastWordTimeTakenMs > 0)
+                ? (g2LastWordTimeTakenMs / 1000).toFixed(2)
+                : "30.00";
+            document.getElementById('g2-timeTakenText').textContent = `সময়: ${finalTime}s (লক)`;
         }
 
         function g2FinishRecallEarly() {
@@ -1391,7 +1404,9 @@
             g2CurrentPhase = 'completed';
             document.getElementById('g2-timerNum').classList.remove('heartbeat-active');
             document.getElementById('g2-btnPause').classList.add('hidden');
-            const taken = (g2RecallElapsedMs / 1000).toFixed(2);
+            
+            // Accurate lock on the exact millisecond of the 8th word
+            const taken = (g2LastWordTimeTakenMs > 0 ? (g2LastWordTimeTakenMs / 1000) : (g2RecallElapsedMs / 1000)).toFixed(2);
             document.getElementById('g2-phaseText').textContent = "৮টি শব্দ সম্পূর্ণ!";
             document.getElementById('g2-subPhaseText').textContent = `মাত্র ${taken} সেকেন্ডে বলেছে`;
             document.getElementById('g2-timeTakenText').textContent = `সময়: ${taken}s (লক)`;
@@ -1436,7 +1451,9 @@
             const name = document.getElementById('g2-pName').value.trim();
             const age = document.getElementById('g2-pAge').value.trim() || "--";
             const setNum = g2CurrentSetIndex + 1;
-            const effectiveMs = (g2CurrentScore > 0) ? g2LastWordTimeTakenMs : g2RecallElapsedMs;
+            
+            // EXACT TIMING LOGIC: If participant got score > 0, always take the exact last-word timestamp
+            const effectiveMs = (g2CurrentScore > 0 && g2LastWordTimeTakenMs > 0) ? g2LastWordTimeTakenMs : g2RecallElapsedMs;
             const timeTaken = parseFloat((effectiveMs / 1000).toFixed(2));
             const allWords = [...G2_ALL_SETS[g2CurrentSetIndex]];
             const answered = Array.from(g2AnsweredWords);
@@ -1851,7 +1868,7 @@
             } else if (data.action === 'reset_round') {
                 g2ResetCurrentRound();
             } else if (data.action === 'word_click') {
-                // true flag prevents loopback
+                // isRemote = true flag prevents echo loops back to sender
                 g2OnWordClicked(data.word, true);
             } else if (data.action === 'spin_lucky') {
                 g2SpinLuckySet(data.targetSet);
