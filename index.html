@@ -41,7 +41,7 @@
             <!-- Game Options Grid (Row/Column Structured) -->
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <!-- Game 1 -->
-                <div onclick="switchScreen('game1')" class="group bg-gradient-to-b from-indigo-900/60 to-purple-900/60 hover:from-amber-600 hover:to-orange-700 border border-purple-500/30 hover:border-amber-400 p-6 rounded-2xl cursor-pointer transition-all duration-300 transform hover:-translate-y-2 shadow-xl flex flex-col justify-between">
+                <div onclick="requestSwitchScreen('game1')" class="group bg-gradient-to-b from-indigo-900/60 to-purple-900/60 hover:from-amber-600 hover:to-orange-700 border border-purple-500/30 hover:border-amber-400 p-6 rounded-2xl cursor-pointer transition-all duration-300 transform hover:-translate-y-2 shadow-xl flex flex-col justify-between">
                     <div>
                         <div class="text-amber-400 group-hover:text-white text-3xl mb-3"><i class="fa-solid fa-shield-halved"></i></div>
                         <h3 class="text-lg sm:text-xl font-bold text-amber-200 group-hover:text-white mb-2">সেফটিপিন এর মালা ফুটলে আঙুল জ্বালা</h3>
@@ -51,7 +51,7 @@
                 </div>
 
                 <!-- Game 2 -->
-                <div onclick="switchScreen('game2')" class="group bg-gradient-to-b from-indigo-900/60 to-purple-900/60 hover:from-amber-600 hover:to-orange-700 border border-purple-500/30 hover:border-amber-400 p-6 rounded-2xl cursor-pointer transition-all duration-300 transform hover:-translate-y-2 shadow-xl flex flex-col justify-between">
+                <div onclick="requestSwitchScreen('game2')" class="group bg-gradient-to-b from-indigo-900/60 to-purple-900/60 hover:from-amber-600 hover:to-orange-700 border border-purple-500/30 hover:border-amber-400 p-6 rounded-2xl cursor-pointer transition-all duration-300 transform hover:-translate-y-2 shadow-xl flex flex-col justify-between">
                     <div>
                         <div class="text-amber-400 group-hover:text-white text-3xl mb-3"><i class="fa-solid fa-brain"></i></div>
                         <h3 class="text-lg sm:text-xl font-bold text-amber-200 group-hover:text-white mb-2">স্মৃতির খেলা শব্দের মেলা</h3>
@@ -61,7 +61,7 @@
                 </div>
 
                 <!-- Game 3 -->
-                <div onclick="switchScreen('game3')" class="group bg-gradient-to-b from-indigo-900/60 to-purple-900/60 hover:from-amber-600 hover:to-orange-700 border border-purple-500/30 hover:border-amber-400 p-6 rounded-2xl cursor-pointer transition-all duration-300 transform hover:-translate-y-2 shadow-xl flex flex-col justify-between">
+                <div onclick="requestSwitchScreen('game3')" class="group bg-gradient-to-b from-indigo-900/60 to-purple-900/60 hover:from-amber-600 hover:to-orange-700 border border-purple-500/30 hover:border-amber-400 p-6 rounded-2xl cursor-pointer transition-all duration-300 transform hover:-translate-y-2 shadow-xl flex flex-col justify-between">
                     <div>
                         <div class="text-amber-400 group-hover:text-white text-3xl mb-3"><i class="fa-solid fa-puzzle-piece"></i></div>
                         <h3 class="text-lg sm:text-xl font-bold text-amber-200 group-hover:text-white mb-2">শব্দ ছবির ধাঁধা</h3>
@@ -81,7 +81,7 @@
                 <h2 class="text-lg sm:text-2xl font-extrabold text-amber-300">
                     <i class="fa-solid fa-shield-halved mr-2"></i> সেফটিপিন এর মালা ফুটলে আঙুল জ্বালা
                 </h2>
-                <button onclick="switchScreen('home')" class="bg-gray-800 hover:bg-gray-700 text-gray-200 px-4 py-2 rounded-xl text-sm font-semibold transition border border-gray-700">
+                <button onclick="requestSwitchScreen('home')" class="bg-gray-800 hover:bg-gray-700 text-gray-200 px-4 py-2 rounded-xl text-sm font-semibold transition border border-gray-700">
                     <i class="fa-solid fa-house mr-1"></i> হোম
                 </button>
             </div>
@@ -98,7 +98,7 @@
                     </ol>
                 </div>
                 <div class="flex justify-center pt-2">
-                    <button onclick="g1ShowMainGame()" class="bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-600 hover:to-orange-700 text-gray-950 font-extrabold text-lg px-8 py-3 rounded-2xl shadow-xl transition transform hover:scale-105">
+                    <button onclick="g1RequestShowMainGame()" class="bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-600 hover:to-orange-700 text-gray-950 font-extrabold text-lg px-8 py-3 rounded-2xl shadow-xl transition transform hover:scale-105">
                         খেলা শুরু করুন <i class="fa-solid fa-play ml-2"></i>
                     </button>
                 </div>
@@ -109,14 +109,14 @@
                 
                 <!-- Navigation Tabs (Row-wise) -->
                 <div class="grid grid-cols-3 gap-2 bg-black/40 p-1.5 rounded-2xl border border-gray-800">
-                    <button onclick="g1SwitchTab('board')" id="g1-tab-board" class="py-2.5 rounded-xl text-xs sm:text-sm font-bold bg-amber-500 text-gray-950 transition shadow">গেম বোর্ড</button>
-                    <button onclick="g1SwitchTab('leaderboard')" id="g1-tab-leaderboard" class="py-2.5 rounded-xl text-xs sm:text-sm font-bold text-gray-300 hover:text-white transition">লিডারবোর্ড</button>
-                    <button onclick="g1SwitchTab('results')" id="g1-tab-results" class="py-2.5 rounded-xl text-xs sm:text-sm font-bold text-gray-300 hover:text-white transition">চূড়ান্ত ফলাফল</button>
+                    <button onclick="g1RequestSwitchTab('board')" id="g1-tab-board" class="py-2.5 rounded-xl text-xs sm:text-sm font-bold bg-amber-500 text-gray-950 transition shadow">গেম বোর্ড</button>
+                    <button onclick="g1RequestSwitchTab('leaderboard')" id="g1-tab-leaderboard" class="py-2.5 rounded-xl text-xs sm:text-sm font-bold text-gray-300 hover:text-white transition">লিডারবোর্ড</button>
+                    <button onclick="g1RequestSwitchTab('results')" id="g1-tab-results" class="py-2.5 rounded-xl text-xs sm:text-sm font-bold text-gray-300 hover:text-white transition">চূড়ান্ত ফলাফল</button>
                 </div>
 
                 <!-- TAB 1: GAME BOARD & STOPWATCH -->
                 <div id="g1-content-board" class="space-y-6">
-                    <!-- Player Details Input (Live Syncs to Projector) -->
+                    <!-- Player Details Input -->
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 bg-black/40 p-4 rounded-2xl border border-gray-800">
                         <div>
                             <label class="block text-xs font-semibold text-gray-400 mb-1">প্রতিযোগীর নাম:</label>
@@ -148,7 +148,7 @@
                     </div>
 
                     <div class="flex justify-start">
-                        <button onclick="g1ShowRules()" class="text-xs text-gray-400 hover:text-white underline"><i class="fa-solid fa-arrow-left mr-1"></i> নিয়মাবলীতে ফিরে যান</button>
+                        <button onclick="g1RequestShowRules()" class="text-xs text-gray-400 hover:text-white underline"><i class="fa-solid fa-arrow-left mr-1"></i> নিয়মাবলীতে ফিরে যান</button>
                     </div>
                 </div>
 
@@ -212,7 +212,7 @@
         <div id="game2-screen" class="hidden w-full bg-gray-900/90 border border-purple-500/30 p-6 rounded-2xl shadow-2xl space-y-4">
             <div class="flex justify-between items-center border-b border-gray-700 pb-3">
                 <h2 class="text-lg sm:text-xl font-bold text-amber-300">স্মৃতির খেলা শব্দের মেলা</h2>
-                <button onclick="switchScreen('home')" class="bg-gray-700 hover:bg-gray-600 px-3 py-1.5 rounded-lg text-sm"><i class="fa-solid fa-house mr-1"></i> হোম</button>
+                <button onclick="requestSwitchScreen('home')" class="bg-gray-700 hover:bg-gray-600 px-3 py-1.5 rounded-lg text-sm"><i class="fa-solid fa-house mr-1"></i> হোম</button>
             </div>
             <div class="p-12 text-center text-gray-400 bg-gray-950/50 rounded-xl border border-dashed border-gray-700">
                 [ এখানে আপনার দ্বিতীয় গেমের কোড বসবে ]
@@ -223,7 +223,7 @@
         <div id="game3-screen" class="hidden w-full bg-gray-900/90 border border-purple-500/30 p-6 rounded-2xl shadow-2xl space-y-4">
             <div class="flex justify-between items-center border-b border-gray-700 pb-3">
                 <h2 class="text-lg sm:text-xl font-bold text-amber-300">শব্দ ছবির ধাঁধা</h2>
-                <button onclick="switchScreen('home')" class="bg-gray-700 hover:bg-gray-600 px-3 py-1.5 rounded-lg text-sm"><i class="fa-solid fa-house mr-1"></i> হোম</button>
+                <button onclick="requestSwitchScreen('home')" class="bg-gray-700 hover:bg-gray-600 px-3 py-1.5 rounded-lg text-sm"><i class="fa-solid fa-house mr-1"></i> হোম</button>
             </div>
             <div class="p-12 text-center text-gray-400 bg-gray-950/50 rounded-xl border border-dashed border-gray-700">
                 [ এখানে আপনার তৃতীয় গেমের কোড বসবে ]
@@ -289,7 +289,7 @@
 
     <!-- ================= 5. JAVASCRIPT LOGIC ================= -->
     <script>
-        // Screen Navigation Logic
+        // Screen Navigation Logic (Local & Remote Sync)
         function switchScreen(screenName) {
             document.getElementById('home-screen').classList.add('hidden');
             document.getElementById('game1-screen').classList.add('hidden');
@@ -304,6 +304,14 @@
                 document.getElementById('game2-screen').classList.remove('hidden');
             } else if (screenName === 'game3') {
                 document.getElementById('game3-screen').classList.remove('hidden');
+            }
+        }
+
+        // Request screen change from Mobile to Laptop
+        function requestSwitchScreen(screenName) {
+            switchScreen(screenName); // Switch locally on sender if needed
+            if (conn && conn.open) {
+                conn.send({ action: 'global_switch_screen', screen: screenName });
             }
         }
 
@@ -431,14 +439,21 @@
 
             conn.on('data', (data) => {
                 console.log("রিসিভড ডাটা:", data);
-                if (data.gameId === 'game1') {
-                    handleGame1P2PData(data);
-                }
+                handleGlobalP2PData(data);
             });
 
             conn.on('close', () => {
                 document.getElementById('p2p-status-bar').classList.remove('hidden');
             });
+        }
+
+        // Global P2P Handler for Screen switching and Game actions
+        function handleGlobalP2PData(data) {
+            if (data.action === 'global_switch_screen') {
+                switchScreen(data.screen);
+            } else {
+                handleGame1P2PData(data);
+            }
         }
 
         // ================= WEB AUDIO API FOR SOUND EFFECTS =================
@@ -482,9 +497,23 @@
             g1SwitchTab('board');
         }
 
+        function g1RequestShowMainGame() {
+            g1ShowMainGame();
+            if (conn && conn.open) {
+                conn.send({ gameId: 'game1', action: 'show_main_game' });
+            }
+        }
+
         function g1ShowRules() {
             document.getElementById('g1-game-view').classList.add('hidden');
             document.getElementById('g1-rules-view').classList.remove('hidden');
+        }
+
+        function g1RequestShowRules() {
+            g1ShowRules();
+            if (conn && conn.open) {
+                conn.send({ gameId: 'game1', action: 'show_rules' });
+            }
         }
 
         function g1SwitchTab(tabName) {
@@ -510,7 +539,13 @@
             }
         }
 
-        // Live input sync from Mobile to Laptop
+        function g1RequestSwitchTab(tabName) {
+            g1SwitchTab(tabName);
+            if (conn && conn.open) {
+                conn.send({ gameId: 'game1', action: 'switch_tab', tab: tabName });
+            }
+        }
+
         function g1SyncPlayerInput() {
             const name = document.getElementById('g1-player-name').value;
             const age = document.getElementById('g1-player-age').value;
@@ -525,7 +560,6 @@
             }
         }
 
-        // Toggle Stopwatch (Start / Pause) & Sync to Laptop
         function g1ToggleStopwatch() {
             if (!g1IsRunning) {
                 playBeepSound('start');
@@ -536,7 +570,6 @@
                 }, 30);
                 g1IsRunning = true;
 
-                // Send START command via P2P
                 if (conn && conn.open) {
                     conn.send({ gameId: 'game1', action: 'sw_start', startTime: g1StartTime });
                 }
@@ -545,7 +578,6 @@
                 clearInterval(g1Timer);
                 g1IsRunning = false;
 
-                // Send PAUSE command via P2P
                 if (conn && conn.open) {
                     conn.send({ gameId: 'game1', action: 'sw_pause', elapsedTime: g1ElapsedTime });
                 }
@@ -615,7 +647,7 @@
             document.getElementById('g1-player-age').value = '';
             g1ResetStopwatch();
             
-            g1SwitchTab('leaderboard');
+            g1RequestSwitchTab('leaderboard');
         }
 
         function g1AddPlayerData(playerData) {
@@ -693,36 +725,39 @@
 
         // Handle incoming data on Laptop / Projector side
         function handleGame1P2PData(data) {
-            if (data.action === 'sync_input') {
-                document.getElementById('g1-player-name').value = data.name;
-                document.getElementById('g1-player-age').value = data.age;
-            } 
-            else if (data.action === 'sw_start') {
-                g1StartTime = data.startTime;
-                clearInterval(g1Timer);
-                g1Timer = setInterval(() => {
-                    let currentElapsed = Date.now() - g1StartTime;
-                    g1UpdateStopwatchUI(currentElapsed);
-                }, 30);
-            } 
-            else if (data.action === 'sw_pause') {
-                clearInterval(g1Timer);
-                g1ElapsedTime = data.elapsedTime;
-                g1UpdateStopwatchUI(g1ElapsedTime);
-            } 
-            else if (data.action === 'sw_reset') {
-                clearInterval(g1Timer);
-                g1ElapsedTime = 0;
-                g1UpdateStopwatchUI(0);
+            if (data.gameId === 'game1') {
+                if (data.action === 'show_main_game') {
+                    g1ShowMainGame();
+                } else if (data.action === 'show_rules') {
+                    g1ShowRules();
+                } else if (data.action === 'switch_tab') {
+                    g1SwitchTab(data.tab);
+                } else if (data.action === 'sync_input') {
+                    document.getElementById('g1-player-name').value = data.name;
+                    document.getElementById('g1-player-age').value = data.age;
+                } else if (data.action === 'sw_start') {
+                    g1StartTime = data.startTime;
+                    clearInterval(g1Timer);
+                    g1Timer = setInterval(() => {
+                        let currentElapsed = Date.now() - g1StartTime;
+                        g1UpdateStopwatchUI(currentElapsed);
+                    }, 30);
+                } else if (data.action === 'sw_pause') {
+                    clearInterval(g1Timer);
+                    g1ElapsedTime = data.elapsedTime;
+                    g1UpdateStopwatchUI(g1ElapsedTime);
+                } else if (data.action === 'sw_reset') {
+                    clearInterval(g1Timer);
+                    g1ElapsedTime = 0;
+                    g1UpdateStopwatchUI(0);
+                } else if (data.action === 'add_score') {
+                    g1AddPlayerData(data.data);
+                } else if (data.action === 'delete_scores') {
+                    g1LeaderboardData = g1LeaderboardData.filter(p => !data.ids.includes(p.id));
+                }
+                g1RenderLeaderboard();
+                g1UpdatePodium();
             }
-            else if (data.action === 'add_score') {
-                g1AddPlayerData(data.data);
-            } 
-            else if (data.action === 'delete_scores') {
-                g1LeaderboardData = g1LeaderboardData.filter(p => !data.ids.includes(p.id));
-            }
-            g1RenderLeaderboard();
-            g1UpdatePodium();
         }
     </script>
 </body>
