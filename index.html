@@ -23,16 +23,16 @@
         }
         .g2-word-tile {
             background: #2a0b0b;
-            border: 1.5px solid #551a1a;
-            border-radius: 10px;
-            padding: 10px 4px;
-            font-size: 1.25rem;
+            border: 2px solid #551a1a;
+            border-radius: 12px;
+            padding: 12px 4px;
+            font-size: 1.3rem;
             font-weight: bold;
             text-align: center;
             user-select: none;
             -webkit-user-select: none;
             cursor: pointer;
-            min-height: 52px;
+            min-height: 56px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -48,7 +48,7 @@
             border-color: #5cd67c !important;
             color: #ffffff !important;
             transform: scale(1.02);
-            box-shadow: 0 0 12px rgba(92, 214, 124, 0.4);
+            box-shadow: 0 0 14px rgba(92, 214, 124, 0.45);
         }
         .g2-timer-circle.heartbeat-active {
             animation: g2HeartPulse 0.8s infinite;
@@ -255,135 +255,169 @@
                 </button>
             </div>
 
-            <!-- G2 Tab Nav -->
-            <div class="grid grid-cols-4 gap-1.5 sm:gap-2 bg-black/40 p-1.5 rounded-2xl border border-gray-800">
-                <button onclick="g2RequestSwitchTab('game')" id="g2-tab-game" class="py-2 rounded-xl text-xs sm:text-sm font-bold bg-amber-500 text-gray-950 transition shadow">গেম বোর্ড</button>
-                <button onclick="g2RequestSwitchTab('rank')" id="g2-tab-rank" class="py-2 rounded-xl text-xs sm:text-sm font-bold text-gray-300 hover:text-white transition">লিডারবোর্ড</button>
-                <button onclick="g2RequestSwitchTab('tie')" id="g2-tab-tie" class="py-2 rounded-xl text-xs sm:text-sm font-bold text-gray-300 hover:text-white transition">টাই বোর্ড</button>
-                <button onclick="g2RequestSwitchTab('final')" id="g2-tab-final" class="py-2 rounded-xl text-xs sm:text-sm font-bold text-gray-300 hover:text-white transition">ফলাফল</button>
+            <!-- G2 SUB-SCREEN 1: RULES VIEW -->
+            <div id="g2-rules-view" class="space-y-6">
+                <div class="bg-black/50 border border-purple-500/30 p-5 sm:p-7 rounded-2xl space-y-4 shadow-inner">
+                    <h3 class="text-xl font-bold text-amber-400 border-b border-gray-800 pb-2">
+                        <i class="fa-solid fa-circle-info mr-2"></i> খেলার নিয়মাবলী
+                    </h3>
+                    <p class="text-gray-200 text-sm sm:text-base leading-relaxed">
+                        প্রথমে লাকি ড্র -এর মাধ্যমে প্রতিযোগীকে একটি শব্দের সেট বেছে নিতে হবে। প্রতিটি শব্দের সেটে ৮ টি করে শব্দ থাকবে। এরপর ২০ সেকেন্ড সময়ের মধ্যে প্রতিযোগীকে ঐ শব্দগুলি স্ক্রিনে দেখে মনে রাখতে হবে। এরপর স্ক্রিনের বিপরীতে ঘুরে দাঁড়িয়ে ৩০ সেকেন্ড সময়ের মধ্যে কোন প্রতিযোগী কতগুলো শব্দ সঠিক বলতে পারল তা দেখা হবে।
+                    </p>
+                    <div class="p-3 bg-amber-500/10 border-l-4 border-amber-400 rounded-r-lg space-y-2 text-xs sm:text-sm text-amber-200/90 leading-relaxed">
+                        <p class="font-bold text-amber-300 uppercase tracking-wide">বিঃদ্রঃ</p>
+                        <p>১) মোট ৫০ টি শব্দ সেট আছে। আর কোনো প্রতিযোগী যত নম্বর শব্দের সেট পাবে সেটা আর দ্বিতীয়বার লাকি ড্র তে আসবে না।</p>
+                        <p>২) যদি দুই বা তার বেশি প্রতিযোগী সমসংখ্যক সঠিক শব্দ বলে তখন তাদের সর্বশেষ বলা শব্দটি বলতে গৃহীত সময় নথিভুক্ত করা হবে। ঐ গৃহীত সময়ের ঊর্ধ্বক্রমানুসারে প্রতিযোগীদের অর্জিত স্থান নির্ধারণ করা হবে।</p>
+                    </div>
+                </div>
+                <div class="flex justify-center pt-2">
+                    <button onclick="g2RequestShowMainGame()" class="bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-600 hover:to-orange-700 text-gray-950 font-extrabold text-lg px-8 py-3 rounded-2xl shadow-xl transition transform hover:scale-105">
+                        খেলা শুরু করুন <i class="fa-solid fa-play ml-2"></i>
+                    </button>
+                </div>
             </div>
 
-            <!-- TAB 1: G2 Game Board -->
-            <div id="g2-content-game" class="space-y-3.5">
-                <!-- Lucky Spin Box -->
-                <div class="flex items-center justify-between gap-3 bg-gradient-to-r from-red-950/40 to-amber-950/40 border border-amber-500/40 p-2.5 sm:p-3 rounded-2xl">
-                    <button id="g2-btn-lucky" onclick="g2RequestLuckySpin()" class="bg-gradient-to-r from-orange-600 to-amber-500 hover:from-orange-700 hover:to-amber-600 text-gray-950 font-black px-3.5 py-2 rounded-xl text-xs sm:text-sm shadow transition">
-                        🎰 লাকি ড্র (সেট বাছুন)
+            <!-- G2 SUB-SCREEN 2: MAIN GAME DASHBOARD -->
+            <div id="g2-game-view" class="hidden space-y-5">
+                <!-- G2 Tab Nav -->
+                <div class="grid grid-cols-4 gap-1.5 sm:gap-2 bg-black/40 p-1.5 rounded-2xl border border-gray-800">
+                    <button onclick="g2RequestSwitchTab('game')" id="g2-tab-game" class="py-2 rounded-xl text-xs sm:text-sm font-bold bg-amber-500 text-gray-950 transition shadow">গেম বোর্ড</button>
+                    <button onclick="g2RequestSwitchTab('rank')" id="g2-tab-rank" class="py-2 rounded-xl text-xs sm:text-sm font-bold text-gray-300 hover:text-white transition">লিডারবোর্ড</button>
+                    <button onclick="g2RequestSwitchTab('tie')" id="g2-tab-tie" class="py-2 rounded-xl text-xs sm:text-sm font-bold text-gray-300 hover:text-white transition">টাই বোর্ড</button>
+                    <button onclick="g2RequestSwitchTab('final')" id="g2-tab-final" class="py-2 rounded-xl text-xs sm:text-sm font-bold text-gray-300 hover:text-white transition">ফলাফল</button>
+                </div>
+
+                <!-- TAB 1: G2 Game Board -->
+                <div id="g2-content-game" class="space-y-3.5">
+                    <!-- Setup Container (Collapses during recall phase for zero scrolling) -->
+                    <div id="g2-setup-container" class="space-y-3">
+                        <!-- Lucky Spin Box -->
+                        <div class="flex items-center justify-between gap-3 bg-gradient-to-r from-red-950/40 to-amber-950/40 border border-amber-500/40 p-2.5 sm:p-3 rounded-2xl">
+                            <button id="g2-btn-lucky" onclick="g2RequestLuckySpin()" class="bg-gradient-to-r from-orange-600 to-amber-500 hover:from-orange-700 hover:to-amber-600 text-gray-950 font-black px-3.5 py-2 rounded-xl text-xs sm:text-sm shadow transition">
+                                🎰 লাকি ড্র (সেট বাছুন)
+                            </button>
+                            <div id="g2-lucky-slot" class="w-14 h-10 bg-black border-2 border-amber-400 text-amber-300 font-mono font-black text-lg sm:text-xl rounded-xl flex items-center justify-center shadow-inner">
+                                ?
+                            </div>
+                        </div>
+
+                        <!-- Input Row -->
+                        <div class="grid grid-cols-1 sm:grid-cols-4 gap-2.5 bg-black/40 p-3 rounded-2xl border border-gray-800">
+                            <input type="text" id="g2-pName" oninput="g2SyncInputs()" placeholder="প্রতিযোগীর নাম..." class="sm:col-span-2 bg-gray-900 border border-gray-700 rounded-xl px-3.5 py-2 text-sm text-white focus:outline-none focus:border-amber-400">
+                            <input type="number" id="g2-pAge" oninput="g2SyncInputs()" placeholder="বয়স" class="bg-gray-900 border border-gray-700 rounded-xl px-3.5 py-2 text-sm text-white focus:outline-none focus:border-amber-400">
+                            <select id="g2-setSelector" onchange="g2OnSetChange()" class="bg-gray-900 border border-gray-700 rounded-xl px-2 py-2 text-sm text-amber-300 font-bold focus:outline-none focus:border-amber-400"></select>
+                        </div>
+                    </div>
+
+                    <!-- Timer & Phase Banner -->
+                    <div id="g2-timer-section" class="flex justify-between items-center bg-black/60 border border-amber-500/40 p-3 rounded-2xl">
+                        <div>
+                            <div id="g2-phaseText" class="font-extrabold text-amber-400 text-sm sm:text-base">রাউন্ড রেডি</div>
+                            <div id="g2-subPhaseText" class="text-xs text-gray-400">নাম লিখে পড়া শুরু করুন</div>
+                        </div>
+                        <div id="g2-timerNum" class="g2-timer-circle bg-red-700 text-white font-mono font-black text-xl px-4 py-1.5 rounded-2xl shadow-lg border border-red-500">
+                            --
+                        </div>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                        <button id="g2-btnMemorize" onclick="g2RequestStartMemorize()" class="bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-600 hover:to-orange-700 text-gray-950 font-bold text-xs sm:text-sm py-2.5 rounded-xl shadow">
+                            পড়া শুরু (২০ সে.)
+                        </button>
+                        <button id="g2-btnRecall" onclick="g2RequestStartRecall()" class="hidden bg-gradient-to-r from-emerald-600 to-teal-500 text-white font-bold text-xs sm:text-sm py-2.5 rounded-xl shadow">
+                            উত্তর শুরু (৩০ সে.)
+                        </button>
+                        <button id="g2-btnPause" onclick="g2RequestTogglePause()" class="hidden bg-amber-600 hover:bg-amber-500 text-white font-bold text-xs sm:text-sm py-2.5 rounded-xl shadow">
+                            থামুন
+                        </button>
+                        <button onclick="g2RequestResetRound()" class="bg-red-800 hover:bg-red-700 text-white font-bold text-xs sm:text-sm py-2.5 rounded-xl shadow">
+                            রিসেট
+                        </button>
+                    </div>
+
+                    <!-- Live Score Bar -->
+                    <div class="flex justify-between items-center bg-black/40 border border-gray-800 p-2.5 rounded-xl text-sm font-bold">
+                        <span class="text-gray-300">সঠিক শব্দ: <span id="g2-liveScore" class="text-emerald-400 text-lg">0</span> / 8</span>
+                        <span id="g2-timeTakenText" class="text-amber-300 font-mono text-xs sm:text-sm">সময়: --</span>
+                    </div>
+
+                    <!-- Words Container (Mobile Viewport Optimized) -->
+                    <div id="g2-wordsContainer" class="hidden grid grid-cols-2 sm:grid-cols-4 gap-2.5 pt-1"></div>
+
+                    <!-- Save Score Button -->
+                    <button id="g2-btnSaveScore" onclick="g2RequestSaveScore()" class="hidden w-full bg-gradient-to-r from-cyan-600 to-blue-700 hover:from-cyan-700 hover:to-blue-800 text-white font-black py-3 rounded-2xl shadow-xl transition transform hover:scale-[1.01]">
+                        💾 স্কোর সেভ ও সমাপ্ত করুন
                     </button>
-                    <div id="g2-lucky-slot" class="w-14 h-10 bg-black border-2 border-amber-400 text-amber-300 font-mono font-black text-lg sm:text-xl rounded-xl flex items-center justify-center shadow-inner">
-                        ?
+
+                    <div class="flex justify-start pt-2">
+                        <button onclick="g2RequestShowRules()" class="text-xs text-gray-400 hover:text-white underline">
+                            <i class="fa-solid fa-arrow-left mr-1"></i> নিয়মাবলীতে ফিরে যান
+                        </button>
                     </div>
                 </div>
 
-                <!-- Input Row -->
-                <div class="grid grid-cols-1 sm:grid-cols-4 gap-2.5 bg-black/40 p-3 rounded-2xl border border-gray-800">
-                    <input type="text" id="g2-pName" oninput="g2SyncInputs()" placeholder="প্রতিযোগীর নাম..." class="sm:col-span-2 bg-gray-900 border border-gray-700 rounded-xl px-3.5 py-2 text-sm text-white focus:outline-none focus:border-amber-400">
-                    <input type="number" id="g2-pAge" oninput="g2SyncInputs()" placeholder="বয়স" class="bg-gray-900 border border-gray-700 rounded-xl px-3.5 py-2 text-sm text-white focus:outline-none focus:border-amber-400">
-                    <select id="g2-setSelector" onchange="g2OnSetChange()" class="bg-gray-900 border border-gray-700 rounded-xl px-2 py-2 text-sm text-amber-300 font-bold focus:outline-none focus:border-amber-400"></select>
-                </div>
-
-                <!-- Timer & Phase Banner -->
-                <div id="g2-timer-section" class="flex justify-between items-center bg-black/60 border border-amber-500/40 p-3 rounded-2xl">
-                    <div>
-                        <div id="g2-phaseText" class="font-extrabold text-amber-400 text-sm sm:text-base">রাউন্ড রেডি</div>
-                        <div id="g2-subPhaseText" class="text-xs text-gray-400">নাম লিখে পড়া শুরু করুন</div>
+                <!-- TAB 2: G2 Main Leaderboard -->
+                <div id="g2-content-rank" class="hidden space-y-4">
+                    <div class="flex justify-between items-center">
+                        <h3 class="font-bold text-amber-300 text-base">📋 মূল লিডারবোর্ড</h3>
+                        <button onclick="g2SendSelectedToTieBoard()" class="bg-amber-600 hover:bg-amber-500 text-gray-950 font-bold px-3 py-1.5 rounded-xl text-xs shadow">
+                            টাই বোর্ডে পাঠান ⚔️
+                        </button>
                     </div>
-                    <div id="g2-timerNum" class="g2-timer-circle bg-red-700 text-white font-mono font-black text-xl px-4 py-1.5 rounded-2xl shadow-lg border border-red-500">
-                        --
+                    <div class="overflow-x-auto max-h-80 overflow-y-auto rounded-2xl border border-gray-800 bg-black/40">
+                        <table class="w-full text-left text-sm text-gray-300">
+                            <thead class="bg-gray-900 text-amber-400 text-xs uppercase">
+                                <tr>
+                                    <th class="p-2.5 text-center w-10">সিলেক্ট</th>
+                                    <th class="p-2.5 text-center">ক্রম</th>
+                                    <th class="p-2.5">নাম (বয়স)</th>
+                                    <th class="p-2.5 text-center">সেট</th>
+                                    <th class="p-2.5 text-center">স্কোর</th>
+                                    <th class="p-2.5 text-center">সময়</th>
+                                    <th class="p-2.5 text-center">স্থান দিন</th>
+                                </tr>
+                            </thead>
+                            <tbody id="g2-rankTableBody" class="divide-y divide-gray-800 font-medium"></tbody>
+                        </table>
+                    </div>
+                    <div class="flex justify-end pt-2">
+                        <button onclick="g2PromptClearAllData()" class="bg-red-900/70 hover:bg-red-800 text-red-200 text-xs font-bold px-4 py-2 rounded-xl border border-red-700 transition">
+                            সব ডাটা মুছুন
+                        </button>
                     </div>
                 </div>
 
-                <!-- Action Buttons -->
-                <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
-                    <button id="g2-btnMemorize" onclick="g2RequestStartMemorize()" class="bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-600 hover:to-orange-700 text-gray-950 font-bold text-xs sm:text-sm py-2.5 rounded-xl shadow">
-                        পড়া শুরু (২০ সে.)
-                    </button>
-                    <button id="g2-btnRecall" onclick="g2RequestStartRecall()" class="hidden bg-gradient-to-r from-emerald-600 to-teal-500 text-white font-bold text-xs sm:text-sm py-2.5 rounded-xl shadow">
-                        উত্তর শুরু (৩০ সে.)
-                    </button>
-                    <button id="g2-btnPause" onclick="g2RequestTogglePause()" class="hidden bg-amber-600 hover:bg-amber-500 text-white font-bold text-xs sm:text-sm py-2.5 rounded-xl shadow">
-                        থামুন
-                    </button>
-                    <button onclick="g2RequestResetRound()" class="bg-red-800 hover:bg-red-700 text-white font-bold text-xs sm:text-sm py-2.5 rounded-xl shadow">
-                        রিসেট
-                    </button>
+                <!-- TAB 3: G2 Tie Board -->
+                <div id="g2-content-tie" class="hidden space-y-4">
+                    <div class="flex justify-between items-center">
+                        <h3 class="font-bold text-amber-300 text-base">⚔️ টাই-ব্রেকার রুম</h3>
+                        <button onclick="g2ReTieSelectedPlayers()" class="bg-amber-600 hover:bg-amber-500 text-gray-950 font-bold px-3 py-1.5 rounded-xl text-xs shadow">
+                            আবার টাই খেলান (Re-Tie) 🔄
+                        </button>
+                    </div>
+                    <div class="overflow-x-auto max-h-80 overflow-y-auto rounded-2xl border border-gray-800 bg-black/40">
+                        <table class="w-full text-left text-sm text-gray-300">
+                            <thead class="bg-gray-900 text-amber-400 text-xs uppercase">
+                                <tr>
+                                    <th class="p-2.5 text-center w-10">সিলেক্ট</th>
+                                    <th class="p-2.5">নাম</th>
+                                    <th class="p-2.5 text-center">টাই স্কোর</th>
+                                    <th class="p-2.5 text-center">টাই সময়</th>
+                                    <th class="p-2.5 text-center">খেলা</th>
+                                    <th class="p-2.5 text-center">চূড়ান্ত স্থান</th>
+                                </tr>
+                            </thead>
+                            <tbody id="g2-tieTableBody" class="divide-y divide-gray-800 font-medium"></tbody>
+                        </table>
+                    </div>
                 </div>
 
-                <!-- Live Score Bar -->
-                <div class="flex justify-between items-center bg-black/40 border border-gray-800 p-2.5 rounded-xl text-sm font-bold">
-                    <span class="text-gray-300">সঠিক শব্দ: <span id="g2-liveScore" class="text-emerald-400 text-lg">0</span> / 8</span>
-                    <span id="g2-timeTakenText" class="text-amber-300 font-mono text-xs sm:text-sm">সময়: --</span>
+                <!-- TAB 4: G2 Final Winners -->
+                <div id="g2-content-final" class="hidden space-y-4">
+                    <h3 class="font-bold text-amber-300 text-base text-center">🌟 চূড়ান্ত বিজয়ী তালিকা 🌟</h3>
+                    <div id="g2-finalWinnersContainer" class="space-y-3"></div>
                 </div>
-
-                <!-- Words Container -->
-                <div id="g2-wordsContainer" class="hidden grid grid-cols-2 sm:grid-cols-4 gap-2 pt-1 scroll-mt-4"></div>
-
-                <!-- Save Score Button -->
-                <button id="g2-btnSaveScore" onclick="g2RequestSaveScore()" class="hidden w-full bg-gradient-to-r from-cyan-600 to-blue-700 hover:from-cyan-700 hover:to-blue-800 text-white font-black py-3 rounded-2xl shadow-xl transition transform hover:scale-[1.01]">
-                    💾 স্কোর সেভ ও সমাপ্ত করুন
-                </button>
-            </div>
-
-            <!-- TAB 2: G2 Main Leaderboard -->
-            <div id="g2-content-rank" class="hidden space-y-4">
-                <div class="flex justify-between items-center">
-                    <h3 class="font-bold text-amber-300 text-base">📋 মূল লিডারবোর্ড</h3>
-                    <button onclick="g2SendSelectedToTieBoard()" class="bg-amber-600 hover:bg-amber-500 text-gray-950 font-bold px-3 py-1.5 rounded-xl text-xs shadow">
-                        টাই বোর্ডে পাঠান ⚔️
-                    </button>
-                </div>
-                <div class="overflow-x-auto max-h-80 overflow-y-auto rounded-2xl border border-gray-800 bg-black/40">
-                    <table class="w-full text-left text-sm text-gray-300">
-                        <thead class="bg-gray-900 text-amber-400 text-xs uppercase">
-                            <tr>
-                                <th class="p-2.5 text-center w-10">সিলেক্ট</th>
-                                <th class="p-2.5 text-center">ক্রম</th>
-                                <th class="p-2.5">নাম (বয়স)</th>
-                                <th class="p-2.5 text-center">সেট</th>
-                                <th class="p-2.5 text-center">স্কোর</th>
-                                <th class="p-2.5 text-center">সময়</th>
-                                <th class="p-2.5 text-center">স্থান দিন</th>
-                            </tr>
-                        </thead>
-                        <tbody id="g2-rankTableBody" class="divide-y divide-gray-800 font-medium"></tbody>
-                    </table>
-                </div>
-                <div class="flex justify-end pt-2">
-                    <button onclick="g2PromptClearAllData()" class="bg-red-900/70 hover:bg-red-800 text-red-200 text-xs font-bold px-4 py-2 rounded-xl border border-red-700 transition">
-                        সব ডাটা মুছুন
-                    </button>
-                </div>
-            </div>
-
-            <!-- TAB 3: G2 Tie Board -->
-            <div id="g2-content-tie" class="hidden space-y-4">
-                <div class="flex justify-between items-center">
-                    <h3 class="font-bold text-amber-300 text-base">⚔️ টাই-ব্রেকার রুম</h3>
-                    <button onclick="g2ReTieSelectedPlayers()" class="bg-amber-600 hover:bg-amber-500 text-gray-950 font-bold px-3 py-1.5 rounded-xl text-xs shadow">
-                        আবার টাই খেলান (Re-Tie) 🔄
-                    </button>
-                </div>
-                <div class="overflow-x-auto max-h-80 overflow-y-auto rounded-2xl border border-gray-800 bg-black/40">
-                    <table class="w-full text-left text-sm text-gray-300">
-                        <thead class="bg-gray-900 text-amber-400 text-xs uppercase">
-                            <tr>
-                                <th class="p-2.5 text-center w-10">সিলেক্ট</th>
-                                <th class="p-2.5">নাম</th>
-                                <th class="p-2.5 text-center">টাই স্কোর</th>
-                                <th class="p-2.5 text-center">টাই সময়</th>
-                                <th class="p-2.5 text-center">খেলা</th>
-                                <th class="p-2.5 text-center">চূড়ান্ত স্থান</th>
-                            </tr>
-                        </thead>
-                        <tbody id="g2-tieTableBody" class="divide-y divide-gray-800 font-medium"></tbody>
-                    </table>
-                </div>
-            </div>
-
-            <!-- TAB 4: G2 Final Winners -->
-            <div id="g2-content-final" class="hidden space-y-4">
-                <h3 class="font-bold text-amber-300 text-base text-center">🌟 চূড়ান্ত বিজয়ী তালিকা 🌟</h3>
-                <div id="g2-finalWinnersContainer" class="space-y-3"></div>
             </div>
         </div>
 
@@ -552,6 +586,7 @@
                 document.getElementById('game1-screen').classList.remove('hidden');
             } else if (screenName === 'game2') {
                 document.getElementById('game2-screen').classList.remove('hidden');
+                g2ShowRules(); // Rules view opens first
                 g2Init();
             } else if (screenName === 'game3') {
                 document.getElementById('game3-screen').classList.remove('hidden');
@@ -1115,6 +1150,27 @@
             g2UpdateFinalWinners();
         }
 
+        function g2ShowRules() {
+            document.getElementById('g2-game-view').classList.add('hidden');
+            document.getElementById('g2-rules-view').classList.remove('hidden');
+        }
+
+        function g2RequestShowRules() {
+            g2ShowRules();
+            if (conn && conn.open) conn.send({ gameId: 'game2', action: 'show_rules' });
+        }
+
+        function g2ShowMainGame() {
+            document.getElementById('g2-rules-view').classList.add('hidden');
+            document.getElementById('g2-game-view').classList.remove('hidden');
+            g2SwitchTab('game');
+        }
+
+        function g2RequestShowMainGame() {
+            g2ShowMainGame();
+            if (conn && conn.open) conn.send({ gameId: 'game2', action: 'show_main_game' });
+        }
+
         function g2OnSetChange() {
             g2CurrentSetIndex = parseInt(document.getElementById('g2-setSelector').value);
             g2ResetCurrentRound();
@@ -1178,7 +1234,7 @@
                 tile.textContent = word;
                 if (g2AnsweredWords.has(word)) tile.classList.add('found');
                 
-                // Directly bind single pointer event to prevent multi-firing
+                // Pointerdown handler prevents multi-taps and ghost clicks
                 tile.addEventListener('pointerdown', (e) => {
                     e.preventDefault();
                     g2OnWordClicked(word, false);
@@ -1187,7 +1243,7 @@
             });
         }
 
-        // isRemote eliminates echo loops; Direct class toggling avoids whole DOM re-renders
+        // isRemote prevents P2P loopback; Direct class toggle eliminates whole-grid DOM re-renders
         function g2OnWordClicked(word, isRemote = false) {
             if (g2CurrentPhase !== 'recall' || g2IsPaused) return;
 
@@ -1209,7 +1265,6 @@
 
             document.getElementById('g2-liveScore').textContent = g2CurrentScore;
 
-            // Transmit through P2P ONLY if originated on local device
             if (!isRemote && conn && conn.open) {
                 conn.send({ gameId: 'game2', action: 'word_click', word: word });
             }
@@ -1308,14 +1363,12 @@
             document.getElementById('g2-phaseText').textContent = "উত্তর পর্ব চলছে...";
             document.getElementById('g2-subPhaseText').textContent = "প্রতিযোগী যা বলবে টাচ করুন";
 
+            // HIDE Setup box on mobile so all 8 word tiles fit in one screen with ZERO scrolling!
+            document.getElementById('g2-setup-container').classList.add('hidden');
+
             g2RenderWordsGrid();
             const wordsBox = document.getElementById('g2-wordsContainer');
             wordsBox.classList.remove('hidden');
-
-            // Automatically scroll to words box on mobile so all 8 buttons stay right under fingers
-            setTimeout(() => {
-                wordsBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-            }, 60);
 
             const totalLimit = 30000;
             g2RecallStartTime = performance.now();
@@ -1392,7 +1445,7 @@
             document.getElementById('g2-subPhaseText').textContent = "স্কোর সংরক্ষণ করুন";
             document.getElementById('g2-timerNum').textContent = "0.00s";
             
-            // If participant said at least 1 word, preserve the exact timestamp of their last correct word
+            // If participant said at least 1 word, lock the exact timestamp of their last correct word
             const finalTime = (g2CurrentScore > 0 && g2LastWordTimeTakenMs > 0)
                 ? (g2LastWordTimeTakenMs / 1000).toFixed(2)
                 : "30.00";
@@ -1432,6 +1485,7 @@
             document.getElementById('g2-btnPause').classList.add('hidden');
             document.getElementById('g2-btnSaveScore').classList.add('hidden');
             document.getElementById('g2-wordsContainer').classList.add('hidden');
+            document.getElementById('g2-setup-container').classList.remove('hidden');
             document.getElementById('g2-memoFullscreenOverlay').classList.add('hidden');
             document.getElementById('g2-memoFullscreenOverlay').classList.remove('flex');
             g2RenderWordsGrid();
@@ -1848,7 +1902,11 @@
         }
 
         function handleGame2P2PData(data) {
-            if (data.action === 'switch_tab') {
+            if (data.action === 'show_rules') {
+                g2ShowRules();
+            } else if (data.action === 'show_main_game') {
+                g2ShowMainGame();
+            } else if (data.action === 'switch_tab') {
                 g2SwitchTab(data.tab);
             } else if (data.action === 'sync_inputs') {
                 document.getElementById('g2-pName').value = data.name;
