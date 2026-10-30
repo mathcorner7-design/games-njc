@@ -317,7 +317,7 @@
             }
         }
 
-        // P2P Connection (Using 4-Digit Short Code with Custom PeerJS Server fallback)
+        // P2P Connection Setup
         let peer = null;
         let conn = null;
         let activeShortCode = "";
@@ -338,12 +338,10 @@
                     activeShortCode = Math.floor(1000 + Math.random() * 9000).toString();
                     const fullPeerId = "kali-game-2026-" + activeShortCode;
 
-                    // Using official public PeerJS cloud server securely
                     peer = new Peer(fullPeerId, {
                         host: '0.peerjs.com',
                         port: 443,
-                        secure: true,
-                        debug: 1
+                        secure: true
                     });
 
                     peer.on('open', (id) => {
@@ -353,19 +351,19 @@
 
                     peer.on('error', (err) => {
                         if(err.type === 'unavailable-id') {
-                            // If ID is taken, retry with a new code automatically
                             setTimeout(() => openP2PPanel('receiver'), 1000);
                         } else {
-                            statusText.innerText = "কানেকশন ত্রুটি: " + err.type;
+                            statusText.innerText = "ত্রুটি: " + err.type;
                         }
                     });
 
+                    // THIS IS CRITICAL: Receiver listening for incoming connection from mobile sender
                     peer.on('connection', (connection) => {
                         conn = connection;
                         setupConnectionEvents();
                         statusText.innerText = "মোবাইল সেন্ডারের সাথে সফলভাবে যুক্ত হয়েছে!";
                         document.getElementById('p2p-status-bar').classList.add('hidden');
-                        toggleSettingsModal(false); 
+                        setTimeout(() => toggleSettingsModal(false), 1500); 
                     });
                 }
             } else {
@@ -383,7 +381,7 @@
             }
         }
 
-        // Connect from Sender to Receiver using 4-digit code
+        // Connect from Sender (Mobile) to Receiver (Laptop)
         function connectToReceiver() {
             const codeInput = document.getElementById('connect-peer-id').value.trim();
             const statusText = document.getElementById('p2p-action-status');
@@ -400,8 +398,7 @@
                 peer = new Peer({
                     host: '0.peerjs.com',
                     port: 443,
-                    secure: true,
-                    debug: 1
+                    secure: true
                 });
                 
                 peer.on('open', () => {
@@ -409,7 +406,7 @@
                 });
 
                 peer.on('error', (err) => {
-                    statusText.innerText = "সার্ভার কানেকশন ত্রুটি: " + err.type;
+                    statusText.innerText = "সার্ভার ত্রুটি: " + err.type;
                 });
             } else {
                 initiateConnection(targetFullId);
@@ -423,21 +420,20 @@
             conn.on('open', () => {
                 statusText.innerText = "ল্যাপটপের সাথে সফলভাবে যুক্ত হয়েছে!";
                 document.getElementById('p2p-status-bar').classList.add('hidden');
-                toggleSettingsModal(false); 
+                setupConnectionEvents(); // Listen for data on sender side too if needed
+                setTimeout(() => toggleSettingsModal(false), 1500); 
             });
 
             conn.on('error', (err) => {
-                statusText.innerText = "কানেক্ট করা যায়নি! কোডটি সঠিক আছে তো?";
+                statusText.innerText = "কানেক্ট করা যায়নি! কোডটি চেক করুন।";
             });
-
-            setupConnectionEvents();
         }
 
         function setupConnectionEvents() {
             if (!conn) return;
 
             conn.on('data', (data) => {
-                console.log("রিসিভড ডাটা:", data);
+                console.log("ল্যাপটপ রিসিভ করল ডাটা:", data);
                 if (data.gameId === 'game1') {
                     handleGame1P2PData(data);
                 }
@@ -445,7 +441,6 @@
 
             conn.on('close', () => {
                 document.getElementById('p2p-status-bar').classList.remove('hidden');
-                document.getElementById('p2p-action-status').innerText = "কানেকশন বিচ্ছিন্ন হয়ে গেছে!";
             });
         }
 
@@ -577,6 +572,7 @@
                 time: timeInSeconds
             };
 
+            // Send data to laptop via P2P if connected from mobile
             if (conn && conn.open) {
                 conn.send({
                     gameId: 'game1',
@@ -589,15 +585,17 @@
             
             document.getElementById('g1-player-name').value = '';
             document.getElementById('g1-player-age').value = '';
-            g1ResetStopworld = g1ResetStopwatch();
             g1ResetStopwatch();
             
             g1SwitchTab('leaderboard');
         }
 
         function g1AddPlayerData(playerData) {
-            g1LeaderboardData.push(playerData);
-            g1LeaderboardData.sort((a, b) => a.time - b.time);
+            // Prevent duplicate insertion if synced via P2P
+            if (!g1LeaderboardData.some(p => p.id === playerData.id)) {
+                g1LeaderboardData.push(playerData);
+                g1LeaderboardData.sort((a, b) => a.time - b.time);
+            }
         }
 
         function g1RenderLeaderboard() {
@@ -652,6 +650,7 @@
             }
 
             g1RenderLeaderboard();
+            g1UpdatePodium();
         }
 
         function g1UpdatePodium() {
