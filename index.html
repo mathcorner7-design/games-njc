@@ -448,6 +448,15 @@
                 <div class="flex justify-center items-center bg-black/60 border border-purple-500/30 rounded-2xl p-3 sm:p-5 shadow-2xl min-h-[300px]">
                     <img id="g3-puzzle-img" src="" alt="Puzzle Image" class="max-h-[380px] sm:max-h-[440px] w-auto rounded-xl object-contain shadow-lg border border-white/10 transition duration-300">
                 </div>
+                <!-- ⬅️➡️ Next & Previous Control Buttons -->
+                <div class="flex justify-center items-center gap-4 py-2">
+                    <button onclick="g3RequestPrevPuzzle()" class="bg-gray-800 hover:bg-gray-700 text-amber-300 font-bold px-5 py-2.5 rounded-xl text-sm sm:text-base border border-gray-700 shadow-md transition transform hover:scale-105">
+                        <i class="fa-solid fa-arrow-left mr-1"></i> পূর্ববর্তী (Prev)
+                    </button>
+                    <button onclick="g3RequestNextPuzzle()" class="bg-gray-800 hover:bg-gray-700 text-amber-300 font-bold px-5 py-2.5 rounded-xl text-sm sm:text-base border border-gray-700 shadow-md transition transform hover:scale-105">
+                        পরবর্তী (Next) <i class="fa-solid fa-arrow-right ml-1"></i>
+                    </button>
+                </div>
 
                 <div class="text-center space-y-4">
                     <button id="g3-answer-btn" onclick="g3RequestToggleAnswer()" class="bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-600 hover:to-orange-700 text-gray-950 font-black text-sm sm:text-base px-8 py-3 rounded-2xl shadow-xl transition transform hover:scale-105">
@@ -1992,6 +2001,9 @@
         }
 
         function g3SelectPuzzle(index) {
+            if (index >= g3PuzzlesData.length) index = 0;
+            if (index < 0) index = g3PuzzlesData.length - 1;
+
             g3CurrentIndex = index;
             const puz = g3PuzzlesData[index];
 
@@ -2018,6 +2030,35 @@
             g3SelectPuzzle(index);
             if (conn && conn.open) {
                 conn.send({ gameId: 'game3', action: 'select_puzzle', index: index });
+            }
+        }
+        // ⬅️ Previous Puzzle Handler & P2P Sync
+        function g3PrevPuzzle() {
+            if (g3CurrentIndex > 0) {
+                g3SelectPuzzle(g3CurrentIndex - 1);
+            } else {
+                g3SelectPuzzle(g3PuzzlesData.length - 1);
+            }
+        }
+        function g3RequestPrevPuzzle() {
+            g3PrevPuzzle();
+            if (conn && conn.open) {
+                conn.send({ gameId: 'game3', action: 'prev_puzzle' });
+            }
+        }
+
+        // ➡️ Next Puzzle Handler & P2P Sync
+        function g3NextPuzzle() {
+            if (g3CurrentIndex < g3PuzzlesData.length - 1) {
+                g3SelectPuzzle(g3CurrentIndex + 1);
+            } else {
+                g3SelectPuzzle(0);
+            }
+        }
+        function g3RequestNextPuzzle() {
+            g3NextPuzzle();
+            if (conn && conn.open) {
+                conn.send({ gameId: 'game3', action: 'next_puzzle' });
             }
         }
 
@@ -2060,6 +2101,10 @@
         function handleGame3P2PData(data) {
             if (data.action === 'select_puzzle') {
                 g3SelectPuzzle(data.index);
+            } else if (data.action === 'next_puzzle') {
+                g3NextPuzzle();
+            } else if (data.action === 'prev_puzzle') {
+                g3PrevPuzzle();
             } else if (data.action === 'back_to_grid') {
                 g3BackToGrid();
             } else if (data.action === 'toggle_answer') {
