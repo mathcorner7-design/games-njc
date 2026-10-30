@@ -835,7 +835,7 @@
         let g1StartTime = 0;
         let g1ElapsedTime = 0;
         let g1IsRunning = false;
-        let g1LeaderboardData = [];
+        let g1LeaderboardData = JSON.parse(localStorage.getItem('khela_g1_lb_v1') || '[]');
 
         function g1ShowMainGame() {
             document.getElementById('g1-rules-view').classList.add('hidden');
@@ -955,6 +955,7 @@
             if (conn && conn.open) conn.send({ gameId: 'game1', action: 'add_score', data: playerData });
 
             g1AddPlayerData(playerData);
+            localStorage.setItem('khela_g1_lb_v1', JSON.stringify(g1LeaderboardData));
             document.getElementById('g1-player-name').value = '';
             document.getElementById('g1-player-age').value = '';
             g1ResetStopwatch();
@@ -1010,6 +1011,7 @@
 
             let idsToDelete = Array.from(checkboxes).map(cb => Number(cb.getAttribute('data-id')));
             g1LeaderboardData = g1LeaderboardData.filter(p => !idsToDelete.includes(p.id));
+            localStorage.setItem('khela_g1_lb_v1', JSON.stringify(g1LeaderboardData));
 
             if (conn && conn.open) conn.send({ gameId: 'game1', action: 'delete_scores', ids: idsToDelete });
 
