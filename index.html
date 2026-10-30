@@ -29,7 +29,6 @@
 
         <!-- ================= 1. HOME SCREEN ================= -->
         <div id="home-screen" class="w-full text-center space-y-8 animate-fade-in">
-            <!-- Header Section -->
             <div class="space-y-3 bg-white/10 backdrop-blur-md p-6 sm:p-10 rounded-3xl border border-white/20 shadow-2xl">
                 <span class="bg-amber-500 text-gray-950 text-xs sm:text-sm font-bold px-4 py-1.5 rounded-full uppercase tracking-wider shadow">রজত জয়ন্তী বর্ষ ২০২৬</span>
                 <h1 class="text-2xl sm:text-4xl lg:text-5xl font-extrabold text-amber-300 leading-snug sm:leading-tight">
@@ -38,7 +37,7 @@
                 <p class="text-gray-300 text-sm sm:text-base">নিচের যেকোনো একটি খেলায় অংশগ্রহণ করুন এবং আনন্দ উপভোগ করুন!</p>
             </div>
 
-            <!-- Game Options Grid (Row/Column Structured) -->
+            <!-- Game Options Grid -->
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <!-- Game 1 -->
                 <div onclick="requestSwitchScreen('game1')" class="group bg-gradient-to-b from-indigo-900/60 to-purple-900/60 hover:from-amber-600 hover:to-orange-700 border border-purple-500/30 hover:border-amber-400 p-6 rounded-2xl cursor-pointer transition-all duration-300 transform hover:-translate-y-2 shadow-xl flex flex-col justify-between">
@@ -72,11 +71,8 @@
             </div>
         </div>
 
-        <!-- ================= 2. GAME CONTAINERS ================= -->
-        <!-- Game 1 Container -->
+        <!-- ================= 2. GAME 1 CONTAINER ================= -->
         <div id="game1-screen" class="hidden w-full bg-gray-900/95 border border-purple-500/40 p-4 sm:p-6 rounded-3xl shadow-2xl space-y-6">
-            
-            <!-- Top Bar: Title & Home Button -->
             <div class="flex justify-between items-center border-b border-gray-800 pb-3">
                 <h2 class="text-lg sm:text-2xl font-extrabold text-amber-300">
                     <i class="fa-solid fa-shield-halved mr-2"></i> সেফটিপিন এর মালা ফুটলে আঙুল জ্বালা
@@ -86,14 +82,14 @@
                 </button>
             </div>
 
-            <!-- SUB-SCREEN 1: RULES PAGE -->
+            <!-- G1 Rules View -->
             <div id="g1-rules-view" class="space-y-6">
                 <div class="bg-black/50 border border-purple-500/30 p-6 rounded-2xl space-y-4 shadow-inner">
                     <h3 class="text-xl font-bold text-amber-400 border-b border-gray-800 pb-2"><i class="fa-solid fa-circle-info mr-2"></i> খেলার নিয়মাবলী</h3>
                     <ol class="space-y-3 text-gray-200 text-sm sm:text-base list-decimal list-inside leading-relaxed">
                         <li class="p-2 bg-white/5 rounded-lg">টেবিলে ১০টি সেফটিপিন রাখা থাকবে।</li>
                         <li class="p-2 bg-white/5 rounded-lg">প্রতিযোগীকে একটি সেফটিপিন তুলে তার ছিদ্রে অপর একটি সেফটিপিন প্রবেশ করাতে হবে।</li>
-                        <li class="p-2 bg-white/5 rounded-lg">এভাবে ওই ১০টি সেফটিপিন দিয়ে মালা তৈরি করতে হবে এবং প্রতিযোগী ওই মালা তৈরি করতে কত সময় নিল তা নথিভুক্ত করা হবে।</li>
+                        <li class="p-2 bg-white/5 rounded-lg">এভাবে ওই ১০টি সেফটিপিন দিয়ে মালা তৈরি করতে হবে এবং প্রতিযোগী কত সময় নিল তা নথিভুক্ত করা হবে।</li>
                         <li class="p-2 bg-white/5 rounded-lg">গৃহীত সময়ের উর্ধ্বক্রমের ভিত্তিতে প্রথম দ্বিতীয় ও তৃতীয় স্থানাধিকারী নির্বাচন করা হবে।</li>
                     </ol>
                 </div>
@@ -104,19 +100,15 @@
                 </div>
             </div>
 
-            <!-- SUB-SCREEN 2: MAIN GAME BOARD, LEADERBOARD & RESULTS -->
+            <!-- G1 Game View -->
             <div id="g1-game-view" class="hidden space-y-6">
-                
-                <!-- Navigation Tabs (Row-wise) -->
                 <div class="grid grid-cols-3 gap-2 bg-black/40 p-1.5 rounded-2xl border border-gray-800">
                     <button onclick="g1RequestSwitchTab('board')" id="g1-tab-board" class="py-2.5 rounded-xl text-xs sm:text-sm font-bold bg-amber-500 text-gray-950 transition shadow">গেম বোর্ড</button>
                     <button onclick="g1RequestSwitchTab('leaderboard')" id="g1-tab-leaderboard" class="py-2.5 rounded-xl text-xs sm:text-sm font-bold text-gray-300 hover:text-white transition">লিডারবোর্ড</button>
                     <button onclick="g1RequestSwitchTab('results')" id="g1-tab-results" class="py-2.5 rounded-xl text-xs sm:text-sm font-bold text-gray-300 hover:text-white transition">চূড়ান্ত ফলাফল</button>
                 </div>
 
-                <!-- TAB 1: GAME BOARD & STOPWATCH -->
                 <div id="g1-content-board" class="space-y-6">
-                    <!-- Player Details Input -->
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 bg-black/40 p-4 rounded-2xl border border-gray-800">
                         <div>
                             <label class="block text-xs font-semibold text-gray-400 mb-1">প্রতিযোগীর নাম:</label>
@@ -128,15 +120,11 @@
                         </div>
                     </div>
 
-                    <!-- Fancy Digital Stopwatch -->
                     <div class="bg-gradient-to-b from-black to-gray-950 border-2 border-amber-500/40 p-6 rounded-3xl text-center shadow-2xl space-y-4">
                         <p class="text-xs tracking-widest text-amber-400 uppercase font-bold">স্টপওয়াচ (চালু/বন্ধ করতে ঘড়িতে ক্লিক করুন)</p>
-                        
-                        <!-- Clickable Stopwatch Display -->
                         <div onclick="g1ToggleStopwatch()" class="inline-block cursor-pointer bg-black/80 border border-amber-500/30 px-8 py-4 rounded-3xl shadow-inner group transition transform hover:scale-105">
                             <span id="g1-stopwatch-display" class="font-mono text-4xl sm:text-6xl font-black text-amber-300 tracking-wider">00:00.00</span>
                         </div>
-
                         <div class="flex justify-center items-center gap-4 pt-2">
                             <button onclick="g1ResetStopwatch()" class="bg-gray-800 hover:bg-gray-700 text-gray-300 px-4 py-1.5 rounded-xl text-xs font-semibold border border-gray-700 transition">
                                 <i class="fa-solid fa-rotate-right mr-1"></i> রিসেট
@@ -152,7 +140,6 @@
                     </div>
                 </div>
 
-                <!-- TAB 2: LEADERBOARD -->
                 <div id="g1-content-leaderboard" class="hidden space-y-4">
                     <div class="flex justify-between items-center">
                         <h3 class="font-bold text-amber-300 text-base"><i class="fa-solid fa-trophy mr-1"></i> প্রতিযোগীদের লিডারবোর্ড</h3>
@@ -160,7 +147,6 @@
                             <i class="fa-solid fa-trash-can mr-1"></i> সিলেক্টেড মুছুন
                         </button>
                     </div>
-
                     <div class="overflow-x-auto max-h-80 overflow-y-auto rounded-2xl border border-gray-800 bg-black/40">
                         <table class="w-full text-left text-sm text-gray-300">
                             <thead class="bg-gray-900 text-amber-400 text-xs uppercase">
@@ -172,31 +158,24 @@
                                     <th class="p-3 text-right">সময় (সেকেন্ড)</th>
                                 </tr>
                             </thead>
-                            <tbody id="g1-leaderboard-body" class="divide-y divide-gray-800 font-medium">
-                                <!-- Dynamic rows will appear here -->
-                            </tbody>
+                            <tbody id="g1-leaderboard-body" class="divide-y divide-gray-800 font-medium"></tbody>
                         </table>
                     </div>
                 </div>
 
-                <!-- TAB 3: FINAL RESULTS (1st, 2nd, 3rd) -->
                 <div id="g1-content-results" class="hidden space-y-4">
                     <h3 class="font-bold text-amber-300 text-base text-center"><i class="fa-solid fa-medal mr-1"></i> চূড়ান্ত ফলাফল (পডিয়াম)</h3>
-                    
                     <div id="g1-podium-container" class="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-2">
-                        <!-- 1st Place -->
                         <div class="bg-gradient-to-b from-amber-600/30 to-gray-900 border-2 border-amber-400 p-5 rounded-2xl text-center space-y-2 shadow-xl">
                             <div class="text-amber-400 text-2xl font-black">🥇 ১ম স্থান</div>
                             <div id="g1-res-1" class="text-lg font-bold text-white">কেউ নেই</div>
                             <div id="g1-time-1" class="text-xs text-amber-200 font-mono">-</div>
                         </div>
-                        <!-- 2nd Place -->
                         <div class="bg-gradient-to-b from-gray-400/20 to-gray-900 border border-gray-400 p-5 rounded-2xl text-center space-y-2 shadow-xl">
                             <div class="text-gray-300 text-xl font-bold">🥈 ২য় স্থান</div>
                             <div id="g1-res-2" class="text-base font-bold text-white">কেউ নেই</div>
                             <div id="g1-time-2" class="text-xs text-gray-300 font-mono">-</div>
                         </div>
-                        <!-- 3rd Place -->
                         <div class="bg-gradient-to-b from-amber-800/30 to-gray-900 border border-amber-700 p-5 rounded-2xl text-center space-y-2 shadow-xl">
                             <div class="text-amber-600 text-xl font-bold">🥉 ৩য় স্থান</div>
                             <div id="g1-res-3" class="text-base font-bold text-white">কেউ নেই</div>
@@ -204,44 +183,80 @@
                         </div>
                     </div>
                 </div>
-
             </div>
         </div>
 
-        <!-- Game 2 Container -->
+        <!-- ================= 3. GAME 2 CONTAINER ================= -->
         <div id="game2-screen" class="hidden w-full bg-gray-900/90 border border-purple-500/30 p-6 rounded-2xl shadow-2xl space-y-4">
             <div class="flex justify-between items-center border-b border-gray-700 pb-3">
                 <h2 class="text-lg sm:text-xl font-bold text-amber-300">স্মৃতির খেলা শব্দের মেলা</h2>
                 <button onclick="requestSwitchScreen('home')" class="bg-gray-700 hover:bg-gray-600 px-3 py-1.5 rounded-lg text-sm"><i class="fa-solid fa-house mr-1"></i> হোম</button>
             </div>
             <div class="p-12 text-center text-gray-400 bg-gray-950/50 rounded-xl border border-dashed border-gray-700">
-                [ এখানে আপনার দ্বিতীয় গেমের কোড বসবে ]
+                [ পরবর্তী ধাপে এটি সংযুক্ত করা হবে ]
             </div>
         </div>
 
-        <!-- Game 3 Container -->
-        <div id="game3-screen" class="hidden w-full bg-gray-900/90 border border-purple-500/30 p-6 rounded-2xl shadow-2xl space-y-4">
-            <div class="flex justify-between items-center border-b border-gray-700 pb-3">
-                <h2 class="text-lg sm:text-xl font-bold text-amber-300">শব্দ ছবির ধাঁধা</h2>
-                <button onclick="requestSwitchScreen('home')" class="bg-gray-700 hover:bg-gray-600 px-3 py-1.5 rounded-lg text-sm"><i class="fa-solid fa-house mr-1"></i> হোম</button>
+        <!-- ================= 4. GAME 3: শব্দ ছবির ধাঁধা ================= -->
+        <div id="game3-screen" class="hidden w-full bg-gray-900/95 border border-purple-500/40 p-4 sm:p-6 rounded-3xl shadow-2xl space-y-6">
+            <!-- Game 3 Header -->
+            <div class="flex justify-between items-center border-b border-gray-800 pb-3">
+                <h2 class="text-lg sm:text-2xl font-extrabold text-amber-300">
+                    <i class="fa-solid fa-puzzle-piece mr-2"></i> শব্দ ছবির ধাঁধা
+                </h2>
+                <button onclick="requestSwitchScreen('home')" class="bg-gray-800 hover:bg-gray-700 text-gray-200 px-4 py-2 rounded-xl text-sm font-semibold transition border border-gray-700">
+                    <i class="fa-solid fa-house mr-1"></i> হোম
+                </button>
             </div>
-            <div class="p-12 text-center text-gray-400 bg-gray-950/50 rounded-xl border border-dashed border-gray-700">
-                [ এখানে আপনার তৃতীয় গেমের কোড বসবে ]
+
+            <!-- VIEW 1: 15 Puzzle Grid Selection -->
+            <div id="g3-grid-view" class="space-y-4">
+                <div class="text-center text-sm text-gray-300 font-medium">নিচের যেকোনো একটি ধাঁধা নির্বাচন করুন:</div>
+                <div id="g3-puzzles-grid" class="grid grid-cols-3 sm:grid-cols-5 gap-3 sm:gap-4 pt-2">
+                    <!-- Populated dynamically via JS -->
+                </div>
+            </div>
+
+            <!-- VIEW 2: Puzzle Active Image & Reveal Answer Screen -->
+            <div id="g3-detail-view" class="hidden space-y-6">
+                <div class="flex justify-between items-center">
+                    <button onclick="g3RequestBackToGrid()" class="bg-gray-800 hover:bg-gray-700 text-amber-300 px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition border border-gray-700">
+                        <i class="fa-solid fa-arrow-left mr-1"></i> সব ধাঁধায় ফিরে যান
+                    </button>
+                    <span id="g3-current-title" class="font-extrabold text-amber-400 text-base sm:text-xl">ধাঁধা</span>
+                </div>
+
+                <!-- Puzzle Image Container -->
+                <div class="flex justify-center items-center bg-black/60 border border-purple-500/30 rounded-2xl p-3 sm:p-5 shadow-2xl min-h-[300px]">
+                    <img id="g3-puzzle-img" src="" alt="Puzzle Image" class="max-h-[380px] sm:max-h-[440px] w-auto rounded-xl object-contain shadow-lg border border-white/10 transition duration-300">
+                </div>
+
+                <!-- Answer Toggle Box -->
+                <div class="text-center space-y-4">
+                    <button id="g3-answer-btn" onclick="g3RequestToggleAnswer()" class="bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-600 hover:to-orange-700 text-gray-950 font-black text-sm sm:text-base px-8 py-3 rounded-2xl shadow-xl transition transform hover:scale-105">
+                        <i class="fa-solid fa-eye mr-2"></i> উত্তর দেখুন
+                    </button>
+
+                    <!-- Hidden/Revealed Answer Display -->
+                    <div id="g3-answer-box" class="hidden bg-emerald-950/80 border-2 border-emerald-500 p-4 rounded-2xl shadow-2xl max-w-md mx-auto transition transform">
+                        <p class="text-xs text-emerald-300 font-bold uppercase tracking-wider mb-1">সঠিক উত্তর</p>
+                        <h4 id="g3-answer-text" class="text-2xl sm:text-3xl font-black text-white">উত্তর</h4>
+                    </div>
+                </div>
             </div>
         </div>
 
     </div>
 
-    <!-- ================= 3. FOOTER WITH SETTINGS GEAR ================= -->
+    <!-- ================= 5. FOOTER WITH SETTINGS GEAR ================= -->
     <footer class="w-full py-4 px-6 bg-black/40 border-t border-white/10 flex justify-between items-center">
         <p class="text-xs text-gray-400">© ২০২৬ নিউ ঝালাপালা কমিটি</p>
-        <!-- Settings Gear Button -->
         <button onclick="toggleSettingsModal(true)" class="bg-purple-800 hover:bg-purple-700 text-white w-10 h-10 rounded-full flex items-center justify-center shadow-lg transition transform hover:rotate-90">
             <i class="fa-solid fa-gear"></i>
         </button>
     </footer>
 
-    <!-- ================= 4. SETTINGS MODAL (P2P ONLY) ================= -->
+    <!-- ================= 6. SETTINGS MODAL (P2P ONLY) ================= -->
     <div id="settings-modal" class="fixed inset-0 bg-black/70 backdrop-blur-sm hidden flex items-center justify-center p-4 z-50">
         <div class="bg-gray-900 border border-purple-500/40 w-full max-w-md rounded-2xl p-6 shadow-2xl space-y-6 relative">
             <div class="flex justify-between items-center border-b border-gray-800 pb-3">
@@ -249,10 +264,9 @@
                 <button onclick="toggleSettingsModal(false)" class="text-gray-400 hover:text-white text-xl"><i class="fa-solid fa-xmark"></i></button>
             </div>
 
-            <!-- Live Mirror Cast (P2P Connection) -->
+            <!-- Live Mirror Cast -->
             <div class="space-y-3">
                 <label class="text-sm font-semibold text-gray-300"><i class="fa-solid fa-network-wired mr-1"></i> লাইভ মিরর কাস্ট (P2P কানেকশন)</label>
-                
                 <div class="grid grid-cols-2 gap-3">
                     <button onclick="openP2PPanel('receiver')" class="bg-indigo-900 hover:bg-indigo-800 border border-indigo-600 py-2.5 rounded-xl text-sm font-semibold text-center transition">
                         <i class="fa-solid fa-tv mr-1"></i> রিসিভার (ল্যাপটপ)
@@ -262,9 +276,7 @@
                     </button>
                 </div>
 
-                <!-- Dynamic P2P Box -->
                 <div id="p2p-panel-box" class="hidden bg-gray-950 p-4 rounded-xl border border-gray-800 space-y-3">
-                    <!-- Receiver Section -->
                     <div id="receiver-box" class="hidden space-y-2">
                         <p class="text-xs text-gray-400">এই ৪ সংখ্যার কোডটি আপনার মোবাইলে লিখুন:</p>
                         <div class="flex items-center gap-2">
@@ -272,7 +284,6 @@
                             <button onclick="copyCode()" class="bg-gray-800 hover:bg-gray-700 text-amber-400 px-3 py-2 rounded border border-gray-700 text-sm" title="কপি করুন"><i class="fa-solid fa-copy"></i></button>
                         </div>
                     </div>
-                    <!-- Sender Section -->
                     <div id="sender-box" class="hidden space-y-2">
                         <p class="text-xs text-gray-400">রিসিভারের ৪ সংখ্যার কোড এখানে দিন:</p>
                         <div class="flex gap-2">
@@ -283,13 +294,12 @@
                     <div id="p2p-action-status" class="text-xs text-center text-gray-400 font-medium"></div>
                 </div>
             </div>
-
         </div>
     </div>
 
-    <!-- ================= 5. JAVASCRIPT LOGIC ================= -->
+    <!-- ================= 7. JAVASCRIPT LOGIC ================= -->
     <script>
-        // Screen Navigation Logic (Local & Remote Sync)
+        // ---------------- SCREEN SWITCHING ----------------
         function switchScreen(screenName) {
             document.getElementById('home-screen').classList.add('hidden');
             document.getElementById('game1-screen').classList.add('hidden');
@@ -304,28 +314,24 @@
                 document.getElementById('game2-screen').classList.remove('hidden');
             } else if (screenName === 'game3') {
                 document.getElementById('game3-screen').classList.remove('hidden');
+                g3RenderPuzzlesGrid();
             }
         }
 
-        // Request screen change from Mobile to Laptop
         function requestSwitchScreen(screenName) {
-            switchScreen(screenName); // Switch locally on sender if needed
+            switchScreen(screenName);
             if (conn && conn.open) {
                 conn.send({ action: 'global_switch_screen', screen: screenName });
             }
         }
 
-        // Settings Modal Toggle
         function toggleSettingsModal(show) {
             const modal = document.getElementById('settings-modal');
-            if (show) {
-                modal.classList.remove('hidden');
-            } else {
-                modal.classList.add('hidden');
-            }
+            if (show) modal.classList.remove('hidden');
+            else modal.classList.add('hidden');
         }
 
-        // P2P Connection Setup
+        // ---------------- P2P ENGINE (PEERJS) ----------------
         let peer = null;
         let conn = null;
         let activeShortCode = "";
@@ -346,11 +352,7 @@
                     activeShortCode = Math.floor(1000 + Math.random() * 9000).toString();
                     const fullPeerId = "kali-game-2026-" + activeShortCode;
 
-                    peer = new Peer(fullPeerId, {
-                        host: '0.peerjs.com',
-                        port: 443,
-                        secure: true
-                    });
+                    peer = new Peer(fullPeerId, { host: '0.peerjs.com', port: 443, secure: true });
 
                     peer.on('open', (id) => {
                         document.getElementById('my-short-code').innerText = activeShortCode;
@@ -400,19 +402,9 @@
             statusText.innerText = "কানেক্ট হচ্ছে...";
 
             if (!peer || peer.destroyed) {
-                peer = new Peer({
-                    host: '0.peerjs.com',
-                    port: 443,
-                    secure: true
-                });
-                
-                peer.on('open', () => {
-                    initiateConnection(targetFullId);
-                });
-
-                peer.on('error', (err) => {
-                    statusText.innerText = "সার্ভার ত্রুটি: " + err.type;
-                });
+                peer = new Peer({ host: '0.peerjs.com', port: 443, secure: true });
+                peer.on('open', () => initiateConnection(targetFullId));
+                peer.on('error', (err) => statusText.innerText = "সার্ভার ত্রুটি: " + err.type);
             } else {
                 initiateConnection(targetFullId);
             }
@@ -429,7 +421,7 @@
                 setTimeout(() => toggleSettingsModal(false), 1500); 
             });
 
-            conn.on('error', (err) => {
+            conn.on('error', () => {
                 statusText.innerText = "কানেক্ট করা যায়নি! কোডটি চেক করুন।";
             });
         }
@@ -447,16 +439,17 @@
             });
         }
 
-        // Global P2P Handler for Screen switching and Game actions
         function handleGlobalP2PData(data) {
             if (data.action === 'global_switch_screen') {
                 switchScreen(data.screen);
-            } else {
+            } else if (data.gameId === 'game1') {
                 handleGame1P2PData(data);
+            } else if (data.gameId === 'game3') {
+                handleGame3P2PData(data);
             }
         }
 
-        // ================= WEB AUDIO API FOR SOUND EFFECTS =================
+        // ---------------- WEB AUDIO API SOUNDS ----------------
         function playBeepSound(type) {
             try {
                 const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
@@ -484,7 +477,7 @@
             }
         }
 
-        // ================= GAME 1 LIVE STOPWATCH & CONTROL LOGIC =================
+        // ================= GAME 1 LOGIC =================
         let g1Timer = null;
         let g1StartTime = 0;
         let g1ElapsedTime = 0;
@@ -499,9 +492,7 @@
 
         function g1RequestShowMainGame() {
             g1ShowMainGame();
-            if (conn && conn.open) {
-                conn.send({ gameId: 'game1', action: 'show_main_game' });
-            }
+            if (conn && conn.open) conn.send({ gameId: 'game1', action: 'show_main_game' });
         }
 
         function g1ShowRules() {
@@ -511,9 +502,7 @@
 
         function g1RequestShowRules() {
             g1ShowRules();
-            if (conn && conn.open) {
-                conn.send({ gameId: 'game1', action: 'show_rules' });
-            }
+            if (conn && conn.open) conn.send({ gameId: 'game1', action: 'show_rules' });
         }
 
         function g1SwitchTab(tabName) {
@@ -541,22 +530,14 @@
 
         function g1RequestSwitchTab(tabName) {
             g1SwitchTab(tabName);
-            if (conn && conn.open) {
-                conn.send({ gameId: 'game1', action: 'switch_tab', tab: tabName });
-            }
+            if (conn && conn.open) conn.send({ gameId: 'game1', action: 'switch_tab', tab: tabName });
         }
 
         function g1SyncPlayerInput() {
             const name = document.getElementById('g1-player-name').value;
             const age = document.getElementById('g1-player-age').value;
-
             if (conn && conn.open) {
-                conn.send({
-                    gameId: 'game1',
-                    action: 'sync_input',
-                    name: name,
-                    age: age
-                });
+                conn.send({ gameId: 'game1', action: 'sync_input', name: name, age: age });
             }
         }
 
@@ -569,18 +550,12 @@
                     g1UpdateStopwatchUI(g1ElapsedTime);
                 }, 30);
                 g1IsRunning = true;
-
-                if (conn && conn.open) {
-                    conn.send({ gameId: 'game1', action: 'sw_start', startTime: g1StartTime });
-                }
+                if (conn && conn.open) conn.send({ gameId: 'game1', action: 'sw_start', startTime: g1StartTime });
             } else {
                 playBeepSound('stop');
                 clearInterval(g1Timer);
                 g1IsRunning = false;
-
-                if (conn && conn.open) {
-                    conn.send({ gameId: 'game1', action: 'sw_pause', elapsedTime: g1ElapsedTime });
-                }
+                if (conn && conn.open) conn.send({ gameId: 'game1', action: 'sw_pause', elapsedTime: g1ElapsedTime });
             }
         }
 
@@ -604,10 +579,7 @@
             g1IsRunning = false;
             g1ElapsedTime = 0;
             g1UpdateStopwatchUI(0);
-
-            if (conn && conn.open) {
-                conn.send({ gameId: 'game1', action: 'sw_reset' });
-            }
+            if (conn && conn.open) conn.send({ gameId: 'game1', action: 'sw_reset' });
         }
 
         function g1SaveScore() {
@@ -625,28 +597,14 @@
 
             playBeepSound('stop');
             const timeInSeconds = Number((g1ElapsedTime / 1000).toFixed(2));
+            const playerData = { id: Date.now(), name: name, age: age || '-', time: timeInSeconds };
 
-            const playerData = {
-                id: Date.now(),
-                name: name,
-                age: age || '-',
-                time: timeInSeconds
-            };
-
-            if (conn && conn.open) {
-                conn.send({
-                    gameId: 'game1',
-                    action: 'add_score',
-                    data: playerData
-                });
-            }
+            if (conn && conn.open) conn.send({ gameId: 'game1', action: 'add_score', data: playerData });
 
             g1AddPlayerData(playerData);
-            
             document.getElementById('g1-player-name').value = '';
             document.getElementById('g1-player-age').value = '';
             g1ResetStopwatch();
-            
             g1RequestSwitchTab('leaderboard');
         }
 
@@ -700,13 +658,7 @@
             let idsToDelete = Array.from(checkboxes).map(cb => Number(cb.getAttribute('data-id')));
             g1LeaderboardData = g1LeaderboardData.filter(p => !idsToDelete.includes(p.id));
 
-            if (conn && conn.open) {
-                conn.send({
-                    gameId: 'game1',
-                    action: 'delete_scores',
-                    ids: idsToDelete
-                });
-            }
+            if (conn && conn.open) conn.send({ gameId: 'game1', action: 'delete_scores', ids: idsToDelete });
 
             g1RenderLeaderboard();
             g1UpdatePodium();
@@ -723,40 +675,153 @@
             document.getElementById('g1-time-3').innerText = g1LeaderboardData[2] ? g1LeaderboardData[2].time + " সেকেন্ড" : "-";
         }
 
-        // Handle incoming data on Laptop / Projector side
         function handleGame1P2PData(data) {
-            if (data.gameId === 'game1') {
-                if (data.action === 'show_main_game') {
-                    g1ShowMainGame();
-                } else if (data.action === 'show_rules') {
-                    g1ShowRules();
-                } else if (data.action === 'switch_tab') {
-                    g1SwitchTab(data.tab);
-                } else if (data.action === 'sync_input') {
-                    document.getElementById('g1-player-name').value = data.name;
-                    document.getElementById('g1-player-age').value = data.age;
-                } else if (data.action === 'sw_start') {
-                    g1StartTime = data.startTime;
-                    clearInterval(g1Timer);
-                    g1Timer = setInterval(() => {
-                        let currentElapsed = Date.now() - g1StartTime;
-                        g1UpdateStopwatchUI(currentElapsed);
-                    }, 30);
-                } else if (data.action === 'sw_pause') {
-                    clearInterval(g1Timer);
-                    g1ElapsedTime = data.elapsedTime;
-                    g1UpdateStopwatchUI(g1ElapsedTime);
-                } else if (data.action === 'sw_reset') {
-                    clearInterval(g1Timer);
-                    g1ElapsedTime = 0;
-                    g1UpdateStopwatchUI(0);
-                } else if (data.action === 'add_score') {
-                    g1AddPlayerData(data.data);
-                } else if (data.action === 'delete_scores') {
-                    g1LeaderboardData = g1LeaderboardData.filter(p => !data.ids.includes(p.id));
-                }
-                g1RenderLeaderboard();
-                g1UpdatePodium();
+            if (data.action === 'show_main_game') g1ShowMainGame();
+            else if (data.action === 'show_rules') g1ShowRules();
+            else if (data.action === 'switch_tab') g1SwitchTab(data.tab);
+            else if (data.action === 'sync_input') {
+                document.getElementById('g1-player-name').value = data.name;
+                document.getElementById('g1-player-age').value = data.age;
+            } 
+            else if (data.action === 'sw_start') {
+                g1StartTime = data.startTime;
+                clearInterval(g1Timer);
+                g1Timer = setInterval(() => {
+                    let currentElapsed = Date.now() - g1StartTime;
+                    g1UpdateStopwatchUI(currentElapsed);
+                }, 30);
+            } 
+            else if (data.action === 'sw_pause') {
+                clearInterval(g1Timer);
+                g1ElapsedTime = data.elapsedTime;
+                g1UpdateStopwatchUI(g1ElapsedTime);
+            } 
+            else if (data.action === 'sw_reset') {
+                clearInterval(g1Timer);
+                g1ElapsedTime = 0;
+                g1UpdateStopwatchUI(0);
+            }
+            else if (data.action === 'add_score') g1AddPlayerData(data.data);
+            else if (data.action === 'delete_scores') g1LeaderboardData = g1LeaderboardData.filter(p => !data.ids.includes(p.id));
+            g1RenderLeaderboard();
+            g1UpdatePodium();
+        }
+
+        // ================= GAME 3: শব্দ ছবির ধাঁধা LOGIC =================
+        // Default Hardcoded Array of 15 Puzzles
+        const g3PuzzlesData = [
+            { id: 1, title: "ধাঁধা ১", img: "https://i.ibb.co/vx88CVK1/1793348492713.jpg", answer: "টিউলিপ ফুল" },
+            { id: 2, title: "ধাঁধা ২", img: "https://i.ibb.co/qMpDJvG8/1793348492726.png", answer: "রসগোল্লা" },
+            { id: 3, title: "ধাঁধা ৩", img: "https://i.ibb.co/W4mkL9mJ/1793348492740.png", answer: "ভারত" },
+            { id: 4, title: "ধাঁধা ৪", img: "https://i.ibb.co/Dg12yyMr/1793348492754.png", answer: "ঢাকা" },
+            { id: 5, title: "ধাঁধা ৫", img: "https://i.ibb.co/gbkgyknP/1793348492771.png", answer: "আনারস" },
+            { id: 6, title: "ধাঁধা ৬", img: "https://i.ibb.co/mCRYhXfW/1793348492787.png", answer: "জলপাই" },
+            { id: 7, title: "ধাঁধা ৭", img: "https://i.ibb.co/xq9KsTjh/1793348492803.png", answer: "কান্না" },
+            { id: 8, title: "ধাঁধা ৮", img: "https://i.ibb.co/BHzDMb88/1793348492818.png", answer: "জামাই" },
+            { id: 9, title: "ধাঁধা ৯", img: "https://i.ibb.co/wrBfVcGv/1793348492832.png", answer: "বেলুন" },
+            { id: 10, title: "ধাঁধা ১০", img: "https://i.ibb.co/7tWSZCFV/1793348492847.png", answer: "জামরুল" },
+            { id: 11, title: "ধাঁধা ১১", img: "", answer: "শীঘ্রই আসছে..." },
+            { id: 12, title: "ধাঁধা ১২", img: "", answer: "শীঘ্রই আসছে..." },
+            { id: 13, title: "ধাঁধা ১৩", img: "", answer: "শীঘ্রই আসছে..." },
+            { id: 14, title: "ধাঁধা ১৪", img: "", answer: "শীঘ্রই আসছে..." },
+            { id: 15, title: "ধাঁধা ১৫", img: "", answer: "শীঘ্রই আসছে..." }
+        ];
+
+        let g3CurrentIndex = -1;
+        let g3AnswerVisible = false;
+
+        function g3RenderPuzzlesGrid() {
+            const gridContainer = document.getElementById('g3-puzzles-grid');
+            gridContainer.innerHTML = '';
+
+            g3PuzzlesData.forEach((puz, index) => {
+                const btn = document.createElement('button');
+                btn.onclick = () => g3RequestSelectPuzzle(index);
+                btn.className = "bg-gradient-to-br from-indigo-950 to-purple-950 hover:from-amber-600 hover:to-orange-600 border border-purple-500/30 hover:border-amber-400 p-4 sm:p-6 rounded-2xl flex flex-col items-center justify-center space-y-2 shadow-lg transition transform hover:-translate-y-1 group";
+                
+                btn.innerHTML = `
+                    <div class="text-amber-400 group-hover:text-white text-xl sm:text-2xl transition"><i class="fa-solid fa-puzzle-piece"></i></div>
+                    <span class="font-bold text-amber-200 group-hover:text-white text-xs sm:text-sm">${puz.title}</span>
+                `;
+                gridContainer.appendChild(btn);
+            });
+        }
+
+        function g3SelectPuzzle(index) {
+            g3CurrentIndex = index;
+            const puz = g3PuzzlesData[index];
+
+            document.getElementById('g3-current-title').innerText = puz.title;
+            const puzImg = document.getElementById('g3-puzzle-img');
+            
+            if (puz.img) {
+                puzImg.src = puz.img;
+                puzImg.classList.remove('hidden');
+            } else {
+                puzImg.src = "https://placehold.co/600x400/1e1b4b/amber?text=" + encodeURIComponent(puz.title);
+            }
+
+            document.getElementById('g3-answer-text').innerText = puz.answer;
+            
+            // Hide answer initially
+            g3AnswerVisible = false;
+            document.getElementById('g3-answer-box').classList.add('hidden');
+            document.getElementById('g3-answer-btn').innerHTML = `<i class="fa-solid fa-eye mr-2"></i> উত্তর দেখুন`;
+
+            document.getElementById('g3-grid-view').classList.add('hidden');
+            document.getElementById('g3-detail-view').classList.remove('hidden');
+        }
+
+        function g3RequestSelectPuzzle(index) {
+            g3SelectPuzzle(index);
+            if (conn && conn.open) {
+                conn.send({ gameId: 'game3', action: 'select_puzzle', index: index });
+            }
+        }
+
+        function g3BackToGrid() {
+            document.getElementById('g3-detail-view').classList.add('hidden');
+            document.getElementById('g3-grid-view').classList.remove('hidden');
+            g3CurrentIndex = -1;
+        }
+
+        function g3RequestBackToGrid() {
+            g3BackToGrid();
+            if (conn && conn.open) {
+                conn.send({ gameId: 'game3', action: 'back_to_grid' });
+            }
+        }
+
+        function g3ToggleAnswer() {
+            g3AnswerVisible = !g3AnswerVisible;
+            const box = document.getElementById('g3-answer-box');
+            const btn = document.getElementById('g3-answer-btn');
+
+            if (g3AnswerVisible) {
+                box.classList.remove('hidden');
+                btn.innerHTML = `<i class="fa-solid fa-eye-slash mr-2"></i> উত্তর লুকান`;
+                playBeepSound('start');
+            } else {
+                box.classList.add('hidden');
+                btn.innerHTML = `<i class="fa-solid fa-eye mr-2"></i> উত্তর দেখুন`;
+                playBeepSound('stop');
+            }
+        }
+
+        function g3RequestToggleAnswer() {
+            g3ToggleAnswer();
+            if (conn && conn.open) {
+                conn.send({ gameId: 'game3', action: 'toggle_answer' });
+            }
+        }
+
+        function handleGame3P2PData(data) {
+            if (data.action === 'select_puzzle') {
+                g3SelectPuzzle(data.index);
+            } else if (data.action === 'back_to_grid') {
+                g3BackToGrid();
+            } else if (data.action === 'toggle_answer') {
+                g3ToggleAnswer();
             }
         }
     </script>
