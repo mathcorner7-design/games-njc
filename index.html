@@ -2,7 +2,7 @@
 <html lang="bn">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>কালীপুজো স্পেশাল গেমস - নিউ ঝালাপালা কমিটি</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -14,9 +14,9 @@
         @import url('https://fonts.googleapis.com/css2?family=Tiro+Bangla:ital@0;1&display=swap');
         body {
             font-family: 'Tiro Bangla', serif;
+            touch-action: manipulation;
         }
 
-        /* Game 2 Specific Styles */
         :root {
             --g2-gold: #f5af19;
             --g2-crimson: #c31432;
@@ -25,27 +25,29 @@
             background: #2a0b0b;
             border: 1.5px solid #551a1a;
             border-radius: 10px;
-            padding: 14px 6px;
-            font-size: 1.25rem;
+            padding: 10px 4px;
+            font-size: 1.2rem;
             font-weight: bold;
             text-align: center;
             user-select: none;
             cursor: pointer;
-            min-height: 56px;
+            min-height: 52px;
             display: flex;
             align-items: center;
             justify-content: center;
             color: #ffeedd;
-            transition: all 0.15s ease;
+            transition: transform 0.1s ease, background 0.1s ease;
+            -webkit-tap-highlight-color: transparent;
         }
-        .g2-word-tile:hover {
-            border-color: var(--g2-gold);
+        .g2-word-tile:active {
+            transform: scale(0.96);
         }
         .g2-word-tile.found {
             background: #1e7e34 !important;
             border-color: #5cd67c !important;
             color: #ffffff !important;
-            transform: scale(1.03);
+            transform: scale(1.02);
+            box-shadow: 0 0 12px rgba(92, 214, 124, 0.4);
         }
         .g2-timer-circle.heartbeat-active {
             animation: g2HeartPulse 0.8s infinite;
@@ -61,7 +63,7 @@
             background: linear-gradient(135deg, #381212, #200606);
             border: 2px solid var(--g2-gold);
             border-radius: 14px;
-            padding: 22px 8px;
+            padding: 20px 8px;
             font-size: 1.8rem;
             font-weight: 900;
             color: #fff;
@@ -79,7 +81,7 @@
 </head>
 <body class="bg-gradient-to-br from-purple-950 via-gray-900 to-indigo-950 text-white min-h-screen flex flex-col justify-between select-none">
 
-    <!-- P2P Connection Status Bar (Top) -->
+    <!-- P2P Connection Status Bar -->
     <div id="p2p-status-bar" class="bg-red-600/90 text-white text-xs py-1.5 px-4 text-center font-semibold tracking-wide hidden z-50">
         <i class="fa-solid fa-triangle-exclamation mr-1"></i> পিটুপি কানেকশন বিচ্ছিন্ন (ডিসকানেক্টেড)
     </div>
@@ -99,7 +101,6 @@
 
             <!-- Game Options Grid -->
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <!-- Game 1 Card -->
                 <div onclick="requestSwitchScreen('game1')" class="group bg-gradient-to-b from-indigo-900/60 to-purple-900/60 hover:from-amber-600 hover:to-orange-700 border border-purple-500/30 hover:border-amber-400 p-6 rounded-2xl cursor-pointer transition-all duration-300 transform hover:-translate-y-2 shadow-xl flex flex-col justify-between">
                     <div>
                         <div class="text-amber-400 group-hover:text-white text-3xl mb-3"><i class="fa-solid fa-shield-halved"></i></div>
@@ -109,7 +110,6 @@
                     <span class="mt-6 inline-block bg-amber-400 text-gray-900 text-xs font-bold px-4 py-2 rounded-lg group-hover:bg-white transition">খেলা শুরু করুন <i class="fa-solid fa-arrow-right ml-1"></i></span>
                 </div>
 
-                <!-- Game 2 Card -->
                 <div onclick="requestSwitchScreen('game2')" class="group bg-gradient-to-b from-indigo-900/60 to-purple-900/60 hover:from-amber-600 hover:to-orange-700 border border-purple-500/30 hover:border-amber-400 p-6 rounded-2xl cursor-pointer transition-all duration-300 transform hover:-translate-y-2 shadow-xl flex flex-col justify-between">
                     <div>
                         <div class="text-amber-400 group-hover:text-white text-3xl mb-3"><i class="fa-solid fa-brain"></i></div>
@@ -119,7 +119,6 @@
                     <span class="mt-6 inline-block bg-amber-400 text-gray-900 text-xs font-bold px-4 py-2 rounded-lg group-hover:bg-white transition">খেলা শুরু করুন <i class="fa-solid fa-arrow-right ml-1"></i></span>
                 </div>
 
-                <!-- Game 3 Card -->
                 <div onclick="requestSwitchScreen('game3')" class="group bg-gradient-to-b from-indigo-900/60 to-purple-900/60 hover:from-amber-600 hover:to-orange-700 border border-purple-500/30 hover:border-amber-400 p-6 rounded-2xl cursor-pointer transition-all duration-300 transform hover:-translate-y-2 shadow-xl flex flex-col justify-between">
                     <div>
                         <div class="text-amber-400 group-hover:text-white text-3xl mb-3"><i class="fa-solid fa-puzzle-piece"></i></div>
@@ -247,7 +246,7 @@
         </div>
 
         <!-- ================= 3. GAME 2: স্মৃতির খেলা শব্দের মেলা ================= -->
-        <div id="game2-screen" class="hidden w-full bg-gray-900/95 border border-purple-500/40 p-4 sm:p-6 rounded-3xl shadow-2xl space-y-6">
+        <div id="game2-screen" class="hidden w-full bg-gray-900/95 border border-purple-500/40 p-3 sm:p-6 rounded-3xl shadow-2xl space-y-5">
             <div class="flex justify-between items-center border-b border-gray-800 pb-3">
                 <h2 class="text-lg sm:text-2xl font-extrabold text-amber-300">
                     <i class="fa-solid fa-brain mr-2"></i> স্মৃতির খেলা শব্দের মেলা
@@ -258,34 +257,34 @@
             </div>
 
             <!-- G2 Tab Nav -->
-            <div class="grid grid-cols-4 gap-2 bg-black/40 p-1.5 rounded-2xl border border-gray-800">
-                <button onclick="g2RequestSwitchTab('game')" id="g2-tab-game" class="py-2.5 rounded-xl text-xs sm:text-sm font-bold bg-amber-500 text-gray-950 transition shadow">গেম বোর্ড</button>
-                <button onclick="g2RequestSwitchTab('rank')" id="g2-tab-rank" class="py-2.5 rounded-xl text-xs sm:text-sm font-bold text-gray-300 hover:text-white transition">লিডারবোর্ড</button>
-                <button onclick="g2RequestSwitchTab('tie')" id="g2-tab-tie" class="py-2.5 rounded-xl text-xs sm:text-sm font-bold text-gray-300 hover:text-white transition">টাই বোর্ড</button>
-                <button onclick="g2RequestSwitchTab('final')" id="g2-tab-final" class="py-2.5 rounded-xl text-xs sm:text-sm font-bold text-gray-300 hover:text-white transition">ফলাফল</button>
+            <div class="grid grid-cols-4 gap-1.5 sm:gap-2 bg-black/40 p-1.5 rounded-2xl border border-gray-800">
+                <button onclick="g2RequestSwitchTab('game')" id="g2-tab-game" class="py-2 rounded-xl text-xs sm:text-sm font-bold bg-amber-500 text-gray-950 transition shadow">গেম বোর্ড</button>
+                <button onclick="g2RequestSwitchTab('rank')" id="g2-tab-rank" class="py-2 rounded-xl text-xs sm:text-sm font-bold text-gray-300 hover:text-white transition">লিডারবোর্ড</button>
+                <button onclick="g2RequestSwitchTab('tie')" id="g2-tab-tie" class="py-2 rounded-xl text-xs sm:text-sm font-bold text-gray-300 hover:text-white transition">টাই বোর্ড</button>
+                <button onclick="g2RequestSwitchTab('final')" id="g2-tab-final" class="py-2 rounded-xl text-xs sm:text-sm font-bold text-gray-300 hover:text-white transition">ফলাফল</button>
             </div>
 
             <!-- TAB 1: G2 Game Board -->
-            <div id="g2-content-game" class="space-y-4">
+            <div id="g2-content-game" class="space-y-3.5">
                 <!-- Lucky Spin Box -->
-                <div class="flex items-center justify-between gap-3 bg-gradient-to-r from-red-950/40 to-amber-950/40 border border-amber-500/40 p-3 rounded-2xl">
-                    <button id="g2-btn-lucky" onclick="g2RequestLuckySpin()" class="bg-gradient-to-r from-orange-600 to-amber-500 hover:from-orange-700 hover:to-amber-600 text-gray-950 font-black px-4 py-2.5 rounded-xl text-xs sm:text-sm shadow-lg transition">
+                <div class="flex items-center justify-between gap-3 bg-gradient-to-r from-red-950/40 to-amber-950/40 border border-amber-500/40 p-2.5 sm:p-3 rounded-2xl">
+                    <button id="g2-btn-lucky" onclick="g2RequestLuckySpin()" class="bg-gradient-to-r from-orange-600 to-amber-500 hover:from-orange-700 hover:to-amber-600 text-gray-950 font-black px-3.5 py-2 rounded-xl text-xs sm:text-sm shadow transition">
                         🎰 লাকি ড্র (সেট বাছুন)
                     </button>
-                    <div id="g2-lucky-slot" class="w-16 h-11 bg-black border-2 border-amber-400 text-amber-300 font-mono font-black text-xl rounded-xl flex items-center justify-center shadow-inner">
+                    <div id="g2-lucky-slot" class="w-14 h-10 bg-black border-2 border-amber-400 text-amber-300 font-mono font-black text-lg sm:text-xl rounded-xl flex items-center justify-center shadow-inner">
                         ?
                     </div>
                 </div>
 
                 <!-- Input Row -->
-                <div class="grid grid-cols-1 sm:grid-cols-4 gap-3 bg-black/40 p-3.5 rounded-2xl border border-gray-800">
-                    <input type="text" id="g2-pName" oninput="g2SyncInputs()" placeholder="প্রতিযোগীর নাম..." class="sm:col-span-2 bg-gray-900 border border-gray-700 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-amber-400">
-                    <input type="number" id="g2-pAge" oninput="g2SyncInputs()" placeholder="বয়স" class="bg-gray-900 border border-gray-700 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-amber-400">
-                    <select id="g2-setSelector" onchange="g2OnSetChange()" class="bg-gray-900 border border-gray-700 rounded-xl px-3 py-2.5 text-sm text-amber-300 font-bold focus:outline-none focus:border-amber-400"></select>
+                <div class="grid grid-cols-1 sm:grid-cols-4 gap-2.5 bg-black/40 p-3 rounded-2xl border border-gray-800">
+                    <input type="text" id="g2-pName" oninput="g2SyncInputs()" placeholder="প্রতিযোগীর নাম..." class="sm:col-span-2 bg-gray-900 border border-gray-700 rounded-xl px-3.5 py-2 text-sm text-white focus:outline-none focus:border-amber-400">
+                    <input type="number" id="g2-pAge" oninput="g2SyncInputs()" placeholder="বয়স" class="bg-gray-900 border border-gray-700 rounded-xl px-3.5 py-2 text-sm text-white focus:outline-none focus:border-amber-400">
+                    <select id="g2-setSelector" onchange="g2OnSetChange()" class="bg-gray-900 border border-gray-700 rounded-xl px-2 py-2 text-sm text-amber-300 font-bold focus:outline-none focus:border-amber-400"></select>
                 </div>
 
                 <!-- Timer & Phase Banner -->
-                <div class="flex justify-between items-center bg-black/60 border border-amber-500/40 p-3.5 rounded-2xl">
+                <div id="g2-timer-section" class="flex justify-between items-center bg-black/60 border border-amber-500/40 p-3 rounded-2xl">
                     <div>
                         <div id="g2-phaseText" class="font-extrabold text-amber-400 text-sm sm:text-base">রাউন্ড রেডি</div>
                         <div id="g2-subPhaseText" class="text-xs text-gray-400">নাম লিখে পড়া শুরু করুন</div>
@@ -297,28 +296,28 @@
 
                 <!-- Action Buttons -->
                 <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
-                    <button id="g2-btnMemorize" onclick="g2RequestStartMemorize()" class="bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-600 hover:to-orange-700 text-gray-950 font-bold text-xs sm:text-sm py-3 rounded-xl shadow">
+                    <button id="g2-btnMemorize" onclick="g2RequestStartMemorize()" class="bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-600 hover:to-orange-700 text-gray-950 font-bold text-xs sm:text-sm py-2.5 rounded-xl shadow">
                         পড়া শুরু (২০ সে.)
                     </button>
-                    <button id="g2-btnRecall" onclick="g2RequestStartRecall()" class="hidden bg-gradient-to-r from-emerald-600 to-teal-500 text-white font-bold text-xs sm:text-sm py-3 rounded-xl shadow">
+                    <button id="g2-btnRecall" onclick="g2RequestStartRecall()" class="hidden bg-gradient-to-r from-emerald-600 to-teal-500 text-white font-bold text-xs sm:text-sm py-2.5 rounded-xl shadow">
                         উত্তর শুরু (৩০ সে.)
                     </button>
-                    <button id="g2-btnPause" onclick="g2RequestTogglePause()" class="hidden bg-amber-600 hover:bg-amber-500 text-white font-bold text-xs sm:text-sm py-3 rounded-xl shadow">
+                    <button id="g2-btnPause" onclick="g2RequestTogglePause()" class="hidden bg-amber-600 hover:bg-amber-500 text-white font-bold text-xs sm:text-sm py-2.5 rounded-xl shadow">
                         থামুন
                     </button>
-                    <button onclick="g2RequestResetRound()" class="bg-red-800 hover:bg-red-700 text-white font-bold text-xs sm:text-sm py-3 rounded-xl shadow">
+                    <button onclick="g2RequestResetRound()" class="bg-red-800 hover:bg-red-700 text-white font-bold text-xs sm:text-sm py-2.5 rounded-xl shadow">
                         রিসেট
                     </button>
                 </div>
 
                 <!-- Live Score Bar -->
-                <div class="flex justify-between items-center bg-black/40 border border-gray-800 p-3 rounded-xl text-sm font-bold">
+                <div class="flex justify-between items-center bg-black/40 border border-gray-800 p-2.5 rounded-xl text-sm font-bold">
                     <span class="text-gray-300">সঠিক শব্দ: <span id="g2-liveScore" class="text-emerald-400 text-lg">0</span> / 8</span>
                     <span id="g2-timeTakenText" class="text-amber-300 font-mono text-xs sm:text-sm">সময়: --</span>
                 </div>
 
-                <!-- Words Container -->
-                <div id="g2-wordsContainer" class="hidden grid grid-cols-2 sm:grid-cols-4 gap-2.5 pt-2"></div>
+                <!-- Words Container (Mobile Optimized) -->
+                <div id="g2-wordsContainer" class="hidden grid grid-cols-2 sm:grid-cols-4 gap-2 pt-1 scroll-mt-4"></div>
 
                 <!-- Save Score Button -->
                 <button id="g2-btnSaveScore" onclick="g2RequestSaveScore()" class="hidden w-full bg-gradient-to-r from-cyan-600 to-blue-700 hover:from-cyan-700 hover:to-blue-800 text-white font-black py-3 rounded-2xl shadow-xl transition transform hover:scale-[1.01]">
@@ -400,13 +399,11 @@
                 </button>
             </div>
 
-            <!-- 15 Puzzle Grid -->
             <div id="g3-grid-view" class="space-y-4">
                 <div class="text-center text-sm text-gray-300 font-medium">নিচের যেকোনো একটি ধাঁধা নির্বাচন করুন:</div>
                 <div id="g3-puzzles-grid" class="grid grid-cols-3 sm:grid-cols-5 gap-3 sm:gap-4 pt-2"></div>
             </div>
 
-            <!-- Puzzle Active Image & Reveal Answer Screen -->
             <div id="g3-detail-view" class="hidden space-y-6">
                 <div class="flex justify-between items-center">
                     <button onclick="g3RequestBackToGrid()" class="bg-gray-800 hover:bg-gray-700 text-amber-300 px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition border border-gray-700">
@@ -493,7 +490,7 @@
         </div>
     </div>
 
-    <!-- ================= 5. FOOTER WITH SETTINGS GEAR ================= -->
+    <!-- ================= 5. FOOTER ================= -->
     <footer class="w-full py-4 px-6 bg-black/40 border-t border-white/10 flex justify-between items-center">
         <p class="text-xs text-gray-400">© ২০২৬ নিউ ঝালাপালা কমিটি</p>
         <button onclick="toggleSettingsModal(true)" class="bg-purple-800 hover:bg-purple-700 text-white w-10 h-10 rounded-full flex items-center justify-center shadow-lg transition transform hover:rotate-90">
@@ -501,7 +498,7 @@
         </button>
     </footer>
 
-    <!-- ================= 6. SETTINGS MODAL (P2P ONLY) ================= -->
+    <!-- ================= 6. SETTINGS MODAL ================= -->
     <div id="settings-modal" class="fixed inset-0 bg-black/70 backdrop-blur-sm hidden flex items-center justify-center p-4 z-50">
         <div class="bg-gray-900 border border-purple-500/40 w-full max-w-md rounded-2xl p-6 shadow-2xl space-y-6 relative">
             <div class="flex justify-between items-center border-b border-gray-800 pb-3">
@@ -712,8 +709,8 @@
 
                 if (type === 'start') {
                     osc.frequency.setValueAtTime(800, audioCtx.currentTime);
-                    gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
-                    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.15);
+                    gainNode.gain.setValueAtTime(0.1, audioCtx.currentTime);
+                    gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.15);
                     osc.start();
                     osc.stop(audioCtx.currentTime + 0.15);
                 } else if (type === 'stop') {
@@ -1141,25 +1138,25 @@
             document.getElementById('g2-content-tie').classList.add('hidden');
             document.getElementById('g2-content-final').classList.add('hidden');
 
-            document.getElementById('g2-tab-game').className = "py-2.5 rounded-xl text-xs sm:text-sm font-bold text-gray-300 hover:text-white transition";
-            document.getElementById('g2-tab-rank').className = "py-2.5 rounded-xl text-xs sm:text-sm font-bold text-gray-300 hover:text-white transition";
-            document.getElementById('g2-tab-tie').className = "py-2.5 rounded-xl text-xs sm:text-sm font-bold text-gray-300 hover:text-white transition";
-            document.getElementById('g2-tab-final').className = "py-2.5 rounded-xl text-xs sm:text-sm font-bold text-gray-300 hover:text-white transition";
+            document.getElementById('g2-tab-game').className = "py-2 rounded-xl text-xs sm:text-sm font-bold text-gray-300 hover:text-white transition";
+            document.getElementById('g2-tab-rank').className = "py-2 rounded-xl text-xs sm:text-sm font-bold text-gray-300 hover:text-white transition";
+            document.getElementById('g2-tab-tie').className = "py-2 rounded-xl text-xs sm:text-sm font-bold text-gray-300 hover:text-white transition";
+            document.getElementById('g2-tab-final').className = "py-2 rounded-xl text-xs sm:text-sm font-bold text-gray-300 hover:text-white transition";
 
             if (tabName === 'game') {
                 document.getElementById('g2-content-game').classList.remove('hidden');
-                document.getElementById('g2-tab-game').className = "py-2.5 rounded-xl text-xs sm:text-sm font-bold bg-amber-500 text-gray-950 transition shadow";
+                document.getElementById('g2-tab-game').className = "py-2 rounded-xl text-xs sm:text-sm font-bold bg-amber-500 text-gray-950 transition shadow";
             } else if (tabName === 'rank') {
                 document.getElementById('g2-content-rank').classList.remove('hidden');
-                document.getElementById('g2-tab-rank').className = "py-2.5 rounded-xl text-xs sm:text-sm font-bold bg-amber-500 text-gray-950 transition shadow";
+                document.getElementById('g2-tab-rank').className = "py-2 rounded-xl text-xs sm:text-sm font-bold bg-amber-500 text-gray-950 transition shadow";
                 g2UpdateMainLeaderboard();
             } else if (tabName === 'tie') {
                 document.getElementById('g2-content-tie').classList.remove('hidden');
-                document.getElementById('g2-tab-tie').className = "py-2.5 rounded-xl text-xs sm:text-sm font-bold bg-amber-500 text-gray-950 transition shadow";
+                document.getElementById('g2-tab-tie').className = "py-2 rounded-xl text-xs sm:text-sm font-bold bg-amber-500 text-gray-950 transition shadow";
                 g2UpdateTieBoard();
             } else if (tabName === 'final') {
                 document.getElementById('g2-content-final').classList.remove('hidden');
-                document.getElementById('g2-tab-final').className = "py-2.5 rounded-xl text-xs sm:text-sm font-bold bg-amber-500 text-gray-950 transition shadow";
+                document.getElementById('g2-tab-final').className = "py-2 rounded-xl text-xs sm:text-sm font-bold bg-amber-500 text-gray-950 transition shadow";
                 g2UpdateFinalWinners();
             }
         }
@@ -1180,12 +1177,16 @@
                 tile.className = 'g2-word-tile';
                 tile.textContent = word;
                 if (g2AnsweredWords.has(word)) tile.classList.add('found');
-                tile.onclick = () => g2OnWordClicked(word);
+                tile.onclick = (e) => {
+                    e.preventDefault();
+                    g2OnWordClicked(word, false);
+                };
                 container.appendChild(tile);
             });
         }
 
-        function g2OnWordClicked(word) {
+        // isRemote prevents P2P loopback & ghost double toggles
+        function g2OnWordClicked(word, isRemote = false) {
             if (g2CurrentPhase !== 'recall' || g2IsPaused) return;
 
             if (!g2AnsweredWords.has(word)) {
@@ -1202,7 +1203,8 @@
             document.getElementById('g2-liveScore').textContent = g2CurrentScore;
             g2RenderWordsGrid();
 
-            if (conn && conn.open) {
+            // Send to peer only if clicked locally
+            if (!isRemote && conn && conn.open) {
                 conn.send({ gameId: 'game2', action: 'word_click', word: word });
             }
 
@@ -1300,7 +1302,13 @@
             document.getElementById('g2-subPhaseText').textContent = "প্রতিযোগী যা বলবে টাচ করুন";
 
             g2RenderWordsGrid();
-            document.getElementById('g2-wordsContainer').classList.remove('hidden');
+            const wordsBox = document.getElementById('g2-wordsContainer');
+            wordsBox.classList.remove('hidden');
+
+            // Auto-scroll smooth to words container so phone operator doesn't need to manually scroll
+            setTimeout(() => {
+                wordsBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }, 50);
 
             const totalLimit = 30000;
             g2RecallStartTime = performance.now();
@@ -1843,7 +1851,8 @@
             } else if (data.action === 'reset_round') {
                 g2ResetCurrentRound();
             } else if (data.action === 'word_click') {
-                g2OnWordClicked(data.word);
+                // true flag prevents loopback
+                g2OnWordClicked(data.word, true);
             } else if (data.action === 'spin_lucky') {
                 g2SpinLuckySet(data.targetSet);
             } else if (data.action === 'show_summary') {
