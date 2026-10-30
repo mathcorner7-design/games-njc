@@ -15,6 +15,66 @@
         body {
             font-family: 'Tiro Bangla', serif;
         }
+
+        /* Game 2 Specific Styles */
+        :root {
+            --g2-gold: #f5af19;
+            --g2-crimson: #c31432;
+        }
+        .g2-word-tile {
+            background: #2a0b0b;
+            border: 1.5px solid #551a1a;
+            border-radius: 10px;
+            padding: 14px 6px;
+            font-size: 1.25rem;
+            font-weight: bold;
+            text-align: center;
+            user-select: none;
+            cursor: pointer;
+            min-height: 56px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #ffeedd;
+            transition: all 0.15s ease;
+        }
+        .g2-word-tile:hover {
+            border-color: var(--g2-gold);
+        }
+        .g2-word-tile.found {
+            background: #1e7e34 !important;
+            border-color: #5cd67c !important;
+            color: #ffffff !important;
+            transform: scale(1.03);
+        }
+        .g2-timer-circle.heartbeat-active {
+            animation: g2HeartPulse 0.8s infinite;
+        }
+        @keyframes g2HeartPulse {
+            0% { transform: scale(1); }
+            30% { transform: scale(1.1); background: #ff0033; }
+            50% { transform: scale(1); }
+            70% { transform: scale(1.08); background: #ff0033; }
+            100% { transform: scale(1); }
+        }
+        .g2-memo-card {
+            background: linear-gradient(135deg, #381212, #200606);
+            border: 2px solid var(--g2-gold);
+            border-radius: 14px;
+            padding: 22px 8px;
+            font-size: 1.8rem;
+            font-weight: 900;
+            color: #fff;
+            text-align: center;
+            box-shadow: 0 0 20px rgba(245, 175, 25, 0.25);
+        }
+        @keyframes g2PopScale {
+            0% { transform: scale(0.7); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        .g2-pop-anim {
+            animation: g2PopScale 0.3s ease-out forwards;
+        }
     </style>
 </head>
 <body class="bg-gradient-to-br from-purple-950 via-gray-900 to-indigo-950 text-white min-h-screen flex flex-col justify-between select-none">
@@ -25,7 +85,7 @@
     </div>
 
     <!-- MAIN CONTAINER -->
-    <div class="flex-grow flex flex-col items-center justify-center p-4 sm:p-6 w-full max-w-6xl mx-auto">
+    <div class="flex-grow flex flex-col items-center justify-center p-3 sm:p-6 w-full max-w-6xl mx-auto">
 
         <!-- ================= 1. HOME SCREEN ================= -->
         <div id="home-screen" class="w-full text-center space-y-8 animate-fade-in">
@@ -39,7 +99,7 @@
 
             <!-- Game Options Grid -->
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <!-- Game 1 -->
+                <!-- Game 1 Card -->
                 <div onclick="requestSwitchScreen('game1')" class="group bg-gradient-to-b from-indigo-900/60 to-purple-900/60 hover:from-amber-600 hover:to-orange-700 border border-purple-500/30 hover:border-amber-400 p-6 rounded-2xl cursor-pointer transition-all duration-300 transform hover:-translate-y-2 shadow-xl flex flex-col justify-between">
                     <div>
                         <div class="text-amber-400 group-hover:text-white text-3xl mb-3"><i class="fa-solid fa-shield-halved"></i></div>
@@ -49,17 +109,17 @@
                     <span class="mt-6 inline-block bg-amber-400 text-gray-900 text-xs font-bold px-4 py-2 rounded-lg group-hover:bg-white transition">খেলা শুরু করুন <i class="fa-solid fa-arrow-right ml-1"></i></span>
                 </div>
 
-                <!-- Game 2 -->
+                <!-- Game 2 Card -->
                 <div onclick="requestSwitchScreen('game2')" class="group bg-gradient-to-b from-indigo-900/60 to-purple-900/60 hover:from-amber-600 hover:to-orange-700 border border-purple-500/30 hover:border-amber-400 p-6 rounded-2xl cursor-pointer transition-all duration-300 transform hover:-translate-y-2 shadow-xl flex flex-col justify-between">
                     <div>
                         <div class="text-amber-400 group-hover:text-white text-3xl mb-3"><i class="fa-solid fa-brain"></i></div>
                         <h3 class="text-lg sm:text-xl font-bold text-amber-200 group-hover:text-white mb-2">স্মৃতির খেলা শব্দের মেলা</h3>
-                        <p class="text-xs text-gray-300 group-hover:text-gray-100">বুদ্ধিমত্তা ও স্মৃতির দারুণ পরীক্ষা।</p>
+                        <p class="text-xs text-gray-300 group-hover:text-gray-100">বুদ্ধিমত্তা ও স্মৃতিশক্তির দারুণ প্রতিযোগিতা।</p>
                     </div>
                     <span class="mt-6 inline-block bg-amber-400 text-gray-900 text-xs font-bold px-4 py-2 rounded-lg group-hover:bg-white transition">খেলা শুরু করুন <i class="fa-solid fa-arrow-right ml-1"></i></span>
                 </div>
 
-                <!-- Game 3 -->
+                <!-- Game 3 Card -->
                 <div onclick="requestSwitchScreen('game3')" class="group bg-gradient-to-b from-indigo-900/60 to-purple-900/60 hover:from-amber-600 hover:to-orange-700 border border-purple-500/30 hover:border-amber-400 p-6 rounded-2xl cursor-pointer transition-all duration-300 transform hover:-translate-y-2 shadow-xl flex flex-col justify-between">
                     <div>
                         <div class="text-amber-400 group-hover:text-white text-3xl mb-3"><i class="fa-solid fa-puzzle-piece"></i></div>
@@ -186,20 +246,151 @@
             </div>
         </div>
 
-        <!-- ================= 3. GAME 2 CONTAINER ================= -->
-        <div id="game2-screen" class="hidden w-full bg-gray-900/90 border border-purple-500/30 p-6 rounded-2xl shadow-2xl space-y-4">
-            <div class="flex justify-between items-center border-b border-gray-700 pb-3">
-                <h2 class="text-lg sm:text-xl font-bold text-amber-300">স্মৃতির খেলা শব্দের মেলা</h2>
-                <button onclick="requestSwitchScreen('home')" class="bg-gray-700 hover:bg-gray-600 px-3 py-1.5 rounded-lg text-sm"><i class="fa-solid fa-house mr-1"></i> হোম</button>
+        <!-- ================= 3. GAME 2: স্মৃতির খেলা শব্দের মেলা ================= -->
+        <div id="game2-screen" class="hidden w-full bg-gray-900/95 border border-purple-500/40 p-4 sm:p-6 rounded-3xl shadow-2xl space-y-6">
+            <div class="flex justify-between items-center border-b border-gray-800 pb-3">
+                <h2 class="text-lg sm:text-2xl font-extrabold text-amber-300">
+                    <i class="fa-solid fa-brain mr-2"></i> স্মৃতির খেলা শব্দের মেলা
+                </h2>
+                <button onclick="requestSwitchScreen('home')" class="bg-gray-800 hover:bg-gray-700 text-gray-200 px-4 py-2 rounded-xl text-sm font-semibold transition border border-gray-700">
+                    <i class="fa-solid fa-house mr-1"></i> হোম
+                </button>
             </div>
-            <div class="p-12 text-center text-gray-400 bg-gray-950/50 rounded-xl border border-dashed border-gray-700">
-                [ পরবর্তী ধাপে এটি সংযুক্ত করা হবে ]
+
+            <!-- G2 Tab Nav -->
+            <div class="grid grid-cols-4 gap-2 bg-black/40 p-1.5 rounded-2xl border border-gray-800">
+                <button onclick="g2RequestSwitchTab('game')" id="g2-tab-game" class="py-2.5 rounded-xl text-xs sm:text-sm font-bold bg-amber-500 text-gray-950 transition shadow">গেম বোর্ড</button>
+                <button onclick="g2RequestSwitchTab('rank')" id="g2-tab-rank" class="py-2.5 rounded-xl text-xs sm:text-sm font-bold text-gray-300 hover:text-white transition">লিডারবোর্ড</button>
+                <button onclick="g2RequestSwitchTab('tie')" id="g2-tab-tie" class="py-2.5 rounded-xl text-xs sm:text-sm font-bold text-gray-300 hover:text-white transition">টাই বোর্ড</button>
+                <button onclick="g2RequestSwitchTab('final')" id="g2-tab-final" class="py-2.5 rounded-xl text-xs sm:text-sm font-bold text-gray-300 hover:text-white transition">ফলাফল</button>
+            </div>
+
+            <!-- TAB 1: G2 Game Board -->
+            <div id="g2-content-game" class="space-y-4">
+                <!-- Lucky Spin Box -->
+                <div class="flex items-center justify-between gap-3 bg-gradient-to-r from-red-950/40 to-amber-950/40 border border-amber-500/40 p-3 rounded-2xl">
+                    <button id="g2-btn-lucky" onclick="g2RequestLuckySpin()" class="bg-gradient-to-r from-orange-600 to-amber-500 hover:from-orange-700 hover:to-amber-600 text-gray-950 font-black px-4 py-2.5 rounded-xl text-xs sm:text-sm shadow-lg transition">
+                        🎰 লাকি ড্র (সেট বাছুন)
+                    </button>
+                    <div id="g2-lucky-slot" class="w-16 h-11 bg-black border-2 border-amber-400 text-amber-300 font-mono font-black text-xl rounded-xl flex items-center justify-center shadow-inner">
+                        ?
+                    </div>
+                </div>
+
+                <!-- Input Row -->
+                <div class="grid grid-cols-1 sm:grid-cols-4 gap-3 bg-black/40 p-3.5 rounded-2xl border border-gray-800">
+                    <input type="text" id="g2-pName" oninput="g2SyncInputs()" placeholder="প্রতিযোগীর নাম..." class="sm:col-span-2 bg-gray-900 border border-gray-700 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-amber-400">
+                    <input type="number" id="g2-pAge" oninput="g2SyncInputs()" placeholder="বয়স" class="bg-gray-900 border border-gray-700 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-amber-400">
+                    <select id="g2-setSelector" onchange="g2OnSetChange()" class="bg-gray-900 border border-gray-700 rounded-xl px-3 py-2.5 text-sm text-amber-300 font-bold focus:outline-none focus:border-amber-400"></select>
+                </div>
+
+                <!-- Timer & Phase Banner -->
+                <div class="flex justify-between items-center bg-black/60 border border-amber-500/40 p-3.5 rounded-2xl">
+                    <div>
+                        <div id="g2-phaseText" class="font-extrabold text-amber-400 text-sm sm:text-base">রাউন্ড রেডি</div>
+                        <div id="g2-subPhaseText" class="text-xs text-gray-400">নাম লিখে পড়া শুরু করুন</div>
+                    </div>
+                    <div id="g2-timerNum" class="g2-timer-circle bg-red-700 text-white font-mono font-black text-xl px-4 py-1.5 rounded-2xl shadow-lg border border-red-500">
+                        --
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                    <button id="g2-btnMemorize" onclick="g2RequestStartMemorize()" class="bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-600 hover:to-orange-700 text-gray-950 font-bold text-xs sm:text-sm py-3 rounded-xl shadow">
+                        পড়া শুরু (২০ সে.)
+                    </button>
+                    <button id="g2-btnRecall" onclick="g2RequestStartRecall()" class="hidden bg-gradient-to-r from-emerald-600 to-teal-500 text-white font-bold text-xs sm:text-sm py-3 rounded-xl shadow">
+                        উত্তর শুরু (৩০ সে.)
+                    </button>
+                    <button id="g2-btnPause" onclick="g2RequestTogglePause()" class="hidden bg-amber-600 hover:bg-amber-500 text-white font-bold text-xs sm:text-sm py-3 rounded-xl shadow">
+                        থামুন
+                    </button>
+                    <button onclick="g2RequestResetRound()" class="bg-red-800 hover:bg-red-700 text-white font-bold text-xs sm:text-sm py-3 rounded-xl shadow">
+                        রিসেট
+                    </button>
+                </div>
+
+                <!-- Live Score Bar -->
+                <div class="flex justify-between items-center bg-black/40 border border-gray-800 p-3 rounded-xl text-sm font-bold">
+                    <span class="text-gray-300">সঠিক শব্দ: <span id="g2-liveScore" class="text-emerald-400 text-lg">0</span> / 8</span>
+                    <span id="g2-timeTakenText" class="text-amber-300 font-mono text-xs sm:text-sm">সময়: --</span>
+                </div>
+
+                <!-- Words Container -->
+                <div id="g2-wordsContainer" class="hidden grid grid-cols-2 sm:grid-cols-4 gap-2.5 pt-2"></div>
+
+                <!-- Save Score Button -->
+                <button id="g2-btnSaveScore" onclick="g2RequestSaveScore()" class="hidden w-full bg-gradient-to-r from-cyan-600 to-blue-700 hover:from-cyan-700 hover:to-blue-800 text-white font-black py-3 rounded-2xl shadow-xl transition transform hover:scale-[1.01]">
+                    💾 স্কোর সেভ ও সমাপ্ত করুন
+                </button>
+            </div>
+
+            <!-- TAB 2: G2 Main Leaderboard -->
+            <div id="g2-content-rank" class="hidden space-y-4">
+                <div class="flex justify-between items-center">
+                    <h3 class="font-bold text-amber-300 text-base">📋 মূল লিডারবোর্ড</h3>
+                    <button onclick="g2SendSelectedToTieBoard()" class="bg-amber-600 hover:bg-amber-500 text-gray-950 font-bold px-3 py-1.5 rounded-xl text-xs shadow">
+                        টাই বোর্ডে পাঠান ⚔️
+                    </button>
+                </div>
+                <div class="overflow-x-auto max-h-80 overflow-y-auto rounded-2xl border border-gray-800 bg-black/40">
+                    <table class="w-full text-left text-sm text-gray-300">
+                        <thead class="bg-gray-900 text-amber-400 text-xs uppercase">
+                            <tr>
+                                <th class="p-2.5 text-center w-10">সিলেক্ট</th>
+                                <th class="p-2.5 text-center">ক্রম</th>
+                                <th class="p-2.5">নাম (বয়স)</th>
+                                <th class="p-2.5 text-center">সেট</th>
+                                <th class="p-2.5 text-center">স্কোর</th>
+                                <th class="p-2.5 text-center">সময়</th>
+                                <th class="p-2.5 text-center">স্থান দিন</th>
+                            </tr>
+                        </thead>
+                        <tbody id="g2-rankTableBody" class="divide-y divide-gray-800 font-medium"></tbody>
+                    </table>
+                </div>
+                <div class="flex justify-end pt-2">
+                    <button onclick="g2PromptClearAllData()" class="bg-red-900/70 hover:bg-red-800 text-red-200 text-xs font-bold px-4 py-2 rounded-xl border border-red-700 transition">
+                        সব ডাটা মুছুন
+                    </button>
+                </div>
+            </div>
+
+            <!-- TAB 3: G2 Tie Board -->
+            <div id="g2-content-tie" class="hidden space-y-4">
+                <div class="flex justify-between items-center">
+                    <h3 class="font-bold text-amber-300 text-base">⚔️ টাই-ব্রেকার রুম</h3>
+                    <button onclick="g2ReTieSelectedPlayers()" class="bg-amber-600 hover:bg-amber-500 text-gray-950 font-bold px-3 py-1.5 rounded-xl text-xs shadow">
+                        আবার টাই খেলান (Re-Tie) 🔄
+                    </button>
+                </div>
+                <div class="overflow-x-auto max-h-80 overflow-y-auto rounded-2xl border border-gray-800 bg-black/40">
+                    <table class="w-full text-left text-sm text-gray-300">
+                        <thead class="bg-gray-900 text-amber-400 text-xs uppercase">
+                            <tr>
+                                <th class="p-2.5 text-center w-10">সিলেক্ট</th>
+                                <th class="p-2.5">নাম</th>
+                                <th class="p-2.5 text-center">টাই স্কোর</th>
+                                <th class="p-2.5 text-center">টাই সময়</th>
+                                <th class="p-2.5 text-center">খেলা</th>
+                                <th class="p-2.5 text-center">চূড়ান্ত স্থান</th>
+                            </tr>
+                        </thead>
+                        <tbody id="g2-tieTableBody" class="divide-y divide-gray-800 font-medium"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- TAB 4: G2 Final Winners -->
+            <div id="g2-content-final" class="hidden space-y-4">
+                <h3 class="font-bold text-amber-300 text-base text-center">🌟 চূড়ান্ত বিজয়ী তালিকা 🌟</h3>
+                <div id="g2-finalWinnersContainer" class="space-y-3"></div>
             </div>
         </div>
 
         <!-- ================= 4. GAME 3: শব্দ ছবির ধাঁধা ================= -->
         <div id="game3-screen" class="hidden w-full bg-gray-900/95 border border-purple-500/40 p-4 sm:p-6 rounded-3xl shadow-2xl space-y-6">
-            <!-- Game 3 Header -->
             <div class="flex justify-between items-center border-b border-gray-800 pb-3">
                 <h2 class="text-lg sm:text-2xl font-extrabold text-amber-300">
                     <i class="fa-solid fa-puzzle-piece mr-2"></i> শব্দ ছবির ধাঁধা
@@ -209,15 +400,13 @@
                 </button>
             </div>
 
-            <!-- VIEW 1: 15 Puzzle Grid Selection -->
+            <!-- 15 Puzzle Grid -->
             <div id="g3-grid-view" class="space-y-4">
                 <div class="text-center text-sm text-gray-300 font-medium">নিচের যেকোনো একটি ধাঁধা নির্বাচন করুন:</div>
-                <div id="g3-puzzles-grid" class="grid grid-cols-3 sm:grid-cols-5 gap-3 sm:gap-4 pt-2">
-                    <!-- Populated dynamically via JS -->
-                </div>
+                <div id="g3-puzzles-grid" class="grid grid-cols-3 sm:grid-cols-5 gap-3 sm:gap-4 pt-2"></div>
             </div>
 
-            <!-- VIEW 2: Puzzle Active Image & Reveal Answer Screen -->
+            <!-- Puzzle Active Image & Reveal Answer Screen -->
             <div id="g3-detail-view" class="hidden space-y-6">
                 <div class="flex justify-between items-center">
                     <button onclick="g3RequestBackToGrid()" class="bg-gray-800 hover:bg-gray-700 text-amber-300 px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition border border-gray-700">
@@ -226,18 +415,14 @@
                     <span id="g3-current-title" class="font-extrabold text-amber-400 text-base sm:text-xl">ধাঁধা</span>
                 </div>
 
-                <!-- Puzzle Image Container -->
                 <div class="flex justify-center items-center bg-black/60 border border-purple-500/30 rounded-2xl p-3 sm:p-5 shadow-2xl min-h-[300px]">
                     <img id="g3-puzzle-img" src="" alt="Puzzle Image" class="max-h-[380px] sm:max-h-[440px] w-auto rounded-xl object-contain shadow-lg border border-white/10 transition duration-300">
                 </div>
 
-                <!-- Answer Toggle Box -->
                 <div class="text-center space-y-4">
                     <button id="g3-answer-btn" onclick="g3RequestToggleAnswer()" class="bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-600 hover:to-orange-700 text-gray-950 font-black text-sm sm:text-base px-8 py-3 rounded-2xl shadow-xl transition transform hover:scale-105">
                         <i class="fa-solid fa-eye mr-2"></i> উত্তর দেখুন
                     </button>
-
-                    <!-- Hidden/Revealed Answer Display -->
                     <div id="g3-answer-box" class="hidden bg-emerald-950/80 border-2 border-emerald-500 p-4 rounded-2xl shadow-2xl max-w-md mx-auto transition transform">
                         <p class="text-xs text-emerald-300 font-bold uppercase tracking-wider mb-1">সঠিক উত্তর</p>
                         <h4 id="g3-answer-text" class="text-2xl sm:text-3xl font-black text-white">উত্তর</h4>
@@ -246,6 +431,66 @@
             </div>
         </div>
 
+    </div>
+
+    <!-- ================= MODALS & OVERLAYS ================= -->
+    <!-- G2 Fullscreen 20-Sec Memory Display -->
+    <div id="g2-memoFullscreenOverlay" class="fixed inset-0 bg-black/95 z-[60] hidden flex-col items-center justify-center p-4 backdrop-blur-md">
+        <div class="absolute top-5 flex flex-col items-center gap-2">
+            <span class="text-amber-400 font-bold tracking-widest text-base sm:text-xl">📖 মন দিয়ে দেখে মুখস্থ করুন</span>
+            <div id="g2-memoCornerTimer" class="bg-red-700 border-2 border-amber-400 text-white font-mono font-black text-3xl px-8 py-2 rounded-full shadow-2xl">
+                20s
+            </div>
+        </div>
+        <div id="g2-memoFullscreenGrid" class="w-full max-w-4xl grid grid-cols-2 sm:grid-cols-4 gap-4 mt-20"></div>
+    </div>
+
+    <!-- G2 Lucky Wheel Fullscreen Overlay -->
+    <div id="g2-luckyFullscreenOverlay" class="fixed inset-0 bg-black/95 z-[70] hidden flex-col items-center justify-center p-4 backdrop-blur-md">
+        <h3 class="text-amber-400 font-black text-2xl tracking-wider mb-6">🎰 লাকি ড্র চলছে... 🎰</h3>
+        <div id="g2-luckyBigSlotNum" class="w-48 h-48 bg-gray-950 border-4 border-amber-400 rounded-3xl flex items-center justify-center text-7xl font-mono font-black text-white shadow-2xl">
+            ?
+        </div>
+        <p id="g2-luckyBigSubtext" class="text-amber-200 font-bold text-lg mt-6">ভাগ্যের চাকা ঘুরছে...</p>
+    </div>
+
+    <!-- G2 Round Summary Modal -->
+    <div id="g2-roundSummaryModal" class="fixed inset-0 bg-black/90 z-[80] hidden items-center justify-center p-4 backdrop-blur-sm">
+        <div class="bg-gradient-to-br from-gray-950 to-red-950 border-2 border-amber-400 rounded-3xl p-6 w-full max-w-lg text-center relative g2-pop-anim space-y-4 shadow-2xl">
+            <button onclick="g2CloseRoundSummaryModal()" class="absolute top-4 right-4 bg-white/10 hover:bg-white/20 text-amber-400 w-8 h-8 rounded-full font-bold border border-amber-400/50 flex items-center justify-center">✕</button>
+            <h3 class="text-amber-400 font-black text-xl">🌟 রাউন্ড সমাপ্তি রিপোর্ট 🌟</h3>
+            <div class="flex justify-around items-center bg-black/60 p-3 rounded-2xl border border-gray-800 text-sm">
+                <div class="text-left">
+                    <div class="text-xs text-gray-400">নাম</div>
+                    <div id="g2-sumPlayerName" class="font-bold text-amber-300 text-base">--</div>
+                </div>
+                <div>
+                    <div class="text-xs text-gray-400">বয়স</div>
+                    <div id="g2-sumPlayerAge" class="font-bold text-white">--</div>
+                </div>
+                <div>
+                    <div class="text-xs text-gray-400">সেট</div>
+                    <div id="g2-sumPlayerSet" class="font-bold text-amber-400">সেট --</div>
+                </div>
+            </div>
+            <div class="grid grid-cols-2 gap-3 text-center">
+                <div class="bg-black/60 border border-emerald-500/50 p-3 rounded-xl">
+                    <div class="text-xs text-emerald-300 font-bold">সঠিক শব্দ</div>
+                    <div id="g2-sumPlayerScore" class="text-2xl font-black text-emerald-400">0 / 8</div>
+                </div>
+                <div class="bg-black/60 border border-amber-500/50 p-3 rounded-xl">
+                    <div class="text-xs text-amber-300 font-bold">সময় লেগেছে</div>
+                    <div id="g2-sumPlayerTime" class="text-2xl font-black text-amber-400">0.00s</div>
+                </div>
+            </div>
+            <div class="text-left space-y-1">
+                <span class="text-xs text-gray-300 font-bold">শব্দ বিশ্লেষণ:</span>
+                <div id="g2-sumWordsBreakdown" class="grid grid-cols-4 gap-2 text-xs text-center font-bold"></div>
+            </div>
+            <button onclick="g2CloseRoundSummaryModal()" class="w-full bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-600 hover:to-orange-700 text-gray-950 font-black py-2.5 rounded-xl shadow-lg">
+                📋 লিডারবোর্ডে যান ➔
+            </button>
+        </div>
     </div>
 
     <!-- ================= 5. FOOTER WITH SETTINGS GEAR ================= -->
@@ -264,7 +509,6 @@
                 <button onclick="toggleSettingsModal(false)" class="text-gray-400 hover:text-white text-xl"><i class="fa-solid fa-xmark"></i></button>
             </div>
 
-            <!-- Live Mirror Cast -->
             <div class="space-y-3">
                 <label class="text-sm font-semibold text-gray-300"><i class="fa-solid fa-network-wired mr-1"></i> লাইভ মিরর কাস্ট (P2P কানেকশন)</label>
                 <div class="grid grid-cols-2 gap-3">
@@ -312,6 +556,7 @@
                 document.getElementById('game1-screen').classList.remove('hidden');
             } else if (screenName === 'game2') {
                 document.getElementById('game2-screen').classList.remove('hidden');
+                g2Init();
             } else if (screenName === 'game3') {
                 document.getElementById('game3-screen').classList.remove('hidden');
                 g3RenderPuzzlesGrid();
@@ -354,7 +599,7 @@
 
                     peer = new Peer(fullPeerId, { host: '0.peerjs.com', port: 443, secure: true });
 
-                    peer.on('open', (id) => {
+                    peer.on('open', () => {
                         document.getElementById('my-short-code').innerText = activeShortCode;
                         statusText.innerText = "রিসিভার তৈরি। কোড মোবাইলে দিন।";
                     });
@@ -444,37 +689,114 @@
                 switchScreen(data.screen);
             } else if (data.gameId === 'game1') {
                 handleGame1P2PData(data);
+            } else if (data.gameId === 'game2') {
+                handleGame2P2PData(data);
             } else if (data.gameId === 'game3') {
                 handleGame3P2PData(data);
             }
         }
 
-        // ---------------- WEB AUDIO API SOUNDS ----------------
+        // ---------------- WEB AUDIO ENGINE ----------------
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        function ensureAudioReady() {
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+        }
+
         function playBeepSound(type) {
             try {
-                const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                ensureAudioReady();
                 const osc = audioCtx.createOscillator();
-                const gainNode = audioCtx.createGain();
-
-                osc.connect(gainNode);
-                gainNode.connect(audioCtx.destination);
+                const gain = audioCtx.createGain();
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
 
                 if (type === 'start') {
                     osc.frequency.setValueAtTime(800, audioCtx.currentTime);
-                    gainNode.gain.setValueAtTime(0.1, audioCtx.currentTime);
-                    gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.15);
+                    gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.15);
                     osc.start();
                     osc.stop(audioCtx.currentTime + 0.15);
                 } else if (type === 'stop') {
                     osc.frequency.setValueAtTime(300, audioCtx.currentTime);
-                    gainNode.gain.setValueAtTime(0.15, audioCtx.currentTime);
-                    gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.1);
+                    gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.1);
                     osc.start();
                     osc.stop(audioCtx.currentTime + 0.1);
                 }
-            } catch (e) {
-                console.log("Audio not supported", e);
-            }
+            } catch(e) {}
+        }
+
+        function playTone(freq = 800, duration = 0.1) {
+            try {
+                ensureAudioReady();
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+                gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.start();
+                osc.stop(audioCtx.currentTime + duration);
+            } catch(e) {}
+        }
+
+        function playClockTick() {
+            try {
+                ensureAudioReady();
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.type = 'triangle';
+                osc.frequency.setValueAtTime(1200, audioCtx.currentTime);
+                gain.gain.setValueAtTime(0.06, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.04);
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.start();
+                osc.stop(audioCtx.currentTime + 0.04);
+            } catch(e) {}
+        }
+
+        function playHeartbeat() {
+            try {
+                ensureAudioReady();
+                const now = audioCtx.currentTime;
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(90, now);
+                osc.frequency.exponentialRampToValueAtTime(45, now + 0.15);
+                gain.gain.setValueAtTime(0.35, now);
+                gain.gain.exponentialRampToValueAtTime(0.001, now + 0.15);
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.start(now);
+                osc.stop(now + 0.15);
+            } catch(e) {}
+        }
+
+        function playLoudBuzzer() {
+            try {
+                ensureAudioReady();
+                const now = audioCtx.currentTime;
+                const osc1 = audioCtx.createOscillator();
+                const osc2 = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc1.type = 'sawtooth';
+                osc2.type = 'square';
+                osc1.frequency.setValueAtTime(220, now);
+                osc2.frequency.setValueAtTime(225, now);
+                gain.gain.setValueAtTime(0.5, now);
+                gain.gain.exponentialRampToValueAtTime(0.001, now + 1.0);
+                osc1.connect(gain);
+                osc2.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc1.start(now);
+                osc2.start(now);
+                osc1.stop(now + 1.0);
+                osc2.stop(now + 1.0);
+            } catch(e) {}
         }
 
         // ================= GAME 1 LOGIC =================
@@ -707,8 +1029,845 @@
             g1UpdatePodium();
         }
 
+        // ================= GAME 2: স্মৃতির খেলা শব্দের মেলা LOGIC =================
+        const G2_ALL_SETS = [
+            ["আকাশ", "বাতাস", "গোলাপ", "কলম", "থালা", "সকাল", "নদী", "টাকা"],
+            ["সূর্য", "বৃষ্টি", "টগর", "খাতা", "বাটি", "দুপুর", "পাহাড়", "পয়সা"],
+            ["মেঘ", "তুফান", "জবা", "বই", "গ্লাস", "রাত", "সাগর", "দোকান"],
+            ["চাঁদ", "বিদ্যুৎ", "পলাশ", "কাগজ", "চামচ", "সন্ধ্যা", "ঝরনা", "বাজার"],
+            ["তারা", "আম", "কমল", "দোয়াত", "কড়াই", "ভোর", "মাঠ", "শহর"],
+            ["আলো", "জাম", "শিউলি", "রবার", "হাতা", "ছায়া", "বন", "গ্রাম"],
+            ["হাওয়া", "লিচু", "বেলি", "পেন্সিল", "বালতি", "রোদ", "পথ", "মেলা"],
+            ["ঝড়", "তাল", "মল্লিকা", "স্কেল", "উনুন", "শিশির", "ঘাট", "ঘর"],
+            ["কুঁড়ি", "বেল", "চম্পা", "রং", "চৌকি", "কুয়াশা", "ঢেউ", "পথিক"],
+            ["মাটি", "কলা", "গাঁদা", "চক", "খাট", "গ্রীষ্ম", "পুকুর", "হাট"],
+            ["জল", "ভাত", "জামা", "ঘড়ি", "হরিণ", "গান", "দোয়েল", "সাহস"],
+            ["দুধ", "ডাল", "ধুতি", "আয়না", "বাঘ", "সুর", "ময়ূর", "আনন্দ"],
+            ["চা", "মাছ", "শাড়ি", "তালা", "সিংহ", "তাল", "টিয়া", "উৎসব"],
+            ["ঘি", "মাংস", "চাদর", "চাবি", "হাতি", "নাচ", "কোকিল", "খুশি"],
+            ["রুটি", "ডিম", "শাল", "ছাতা", "ঘোড়া", "নাটক", "চড়ুই", "হাসি"],
+            ["চিঁড়ে", "শাক", "লুঙ্গি", "জুতো", "ভাল্লুক", "বাঁশি", "শালিক", "বীর"],
+            ["মুড়ি", "ঝোল", "পাঞ্জাবি", "লাঠি", "শেয়াল", "ঢোল", "বুলবুল", "জয়"],
+            ["দই", "চাটনি", "গেঞ্জি", "দড়ি", "বানর", "তবলা", "ঘুঘু", "গর্ব"],
+            ["মাখন", "পোলাও", "পর্দা", "মই", "খরগোশ", "সেতার", "বক", "শক্তি"],
+            ["ছানা", "পায়েস", "বালিশ", "ঝুড়ি", "চিতা", "সানাই", "চিল", "আশা"],
+            ["মিষ্টি", "চোখ", "গাড়ি", "সোনা", "ফুটবল", "রাজা", "দরজা", "প্রেম"],
+            ["লাড্ডু", "কান", "নৌকা", "রুপো", "ক্রিকেট", "রানি", "জানালা", "মমতা"],
+            ["জিভেগজা", "নাক", "ট্রেন", "তামা", "দাবা", "মন্ত্রী", "দেওয়াল", "স্নেহ"],
+            ["সন্দেশ", "মুখ", "জাহাজ", "লোহা", "লুডো", "সেনা", "ছাদ", "দয়া"],
+            ["জিলিপি", "হাত", "রিকশা", "কাঁসা", "ক্যারম", "পাইক", "সিঁড়ি", "ভক্তি"],
+            ["পেঁড়া", "পা", "ট্রাম", "পিতল", "লাটিম", "দূত", "উঠোন", "শ্রদ্ধা"],
+            ["নিমকি", "চুল", "ভ্যান", "হিরে", "ঘুড়ি", "রক্ষী", "বারান্দা", "শান্তি"],
+            ["রসগোল্লা", "গাল", "বাস", "মুক্তো", "মার্বেল", "মালী", "কার্নিশ", "মৈত্রী"],
+            ["লবঙ্গ", "মাথা", "সাইকেল", "মণি", "হাডুডু", "নাপিত", "ফটক", "ঐক্য"],
+            ["এলাচ", "বুক", "মোটর", "রত্ন", "দৌড়", "ধোপা", "খিলান", "মুক্তি"],
+            ["আলু", "ডাকঘর", "তীর", "চশমা", "ডাক্তার", "সাঁতার", "সূর্যোদয়", "কবিতা"],
+            ["পটল", "চিঠি", "ধনুক", "টুপি", "নার্স", "ব্যায়াম", "সূর্যাস্ত", "গল্প"],
+            ["ঝিঙে", "খাম", "তলোয়ার", "মোজা", "ওষুধ", "লাফ", "জোয়ার", "ছড়া"],
+            ["বেগুন", "টিকিট", "ঢাল", "ব্যাগ", "রোগী", "কুস্তি", "ভাটা", "উপন্যাস"],
+            ["ঢ্যাঁড়শ", "সিল", "বর্শা", "রুমাল", "পথ্য", "হাঁটা", "গ্রহণ", "নাটিকা"],
+            ["টমেটো", "বার্তা", "কামান", "ফিতে", "মলম", "কসরত", "পূর্ণিমা", "প্রবন্ধ"],
+            ["গাজর", "তার", "বন্দুক", "চিরুনি", "তুলা", "প্রাণায়াম", "অমাবস্যা", "ছন্দ"],
+            ["বাঁধাকপি", "খবর", "বারুদ", "সাবান", "ব্যান্ডেজ", "যোগ", "উল্কা", "অনুবাদ"],
+            ["ফুলকপি", "কাগজপত্র", "গদা", "তেল", "সিরিঞ্জ", "ডন", "ধূমকেতু", "সাহিত্য"],
+            ["শসা", "চিঠিপত্র", "ত্রিশূল", "তোয়ালে", "থার্মোমিটার", "বৈঠক", "ছায়াপথ", "আবৃত্তি"],
+            ["অশোক", "খতিয়ান", "চুড়ি", "সরোদ", "খেজুর", "নীলকণ্ঠ", "বেজি", "চকমকি"],
+            ["মটর", "নূপুর", "এসরাজ", "পাহাড়িয়া", "বনবিড়াল", "চাতক", "খড়ম", "মহাজন"],
+            ["কলমি", "তানপুরা", "বরফ", "ফিঙে", "হায়না", "পায়জোর", "মুড়িঘণ্ট", "বাউল"],
+            ["বকুল", "ভেঁপু", "প্রবাল", "সারস", "গণ্ডার", "বালা", "কাঁচকলা", "ভাটিয়ালি"],
+            ["কামিনী", "ঢাক", "মহাকাশ", "কাঠঠোকরা", "জলহস্তী", "বাজুবন্ধ", "পনির", "পুঁথি"],
+            ["রঙ্গন", "কাড়া", "ঝরনাধারা", "হাড়গিলে", "বনরুই", "নাকছাবি", "হিংচে", "পুতুল"],
+            ["করবী", "নাকাড়া", "দ্বীপ", "মাছরাঙা", "হনুমান", "কানপাশা", "ছানাপোড়া", "কবিগান"],
+            ["মাধবী", "করতাল", "তুহিন", "পানকৌড়ি", "তিমি", "টিকলি", "গজা", "ঝুমুর"],
+            ["অপরাজিতা", "খোল", "হৈমন্ত", "বাজপাখি", "ডলফিন", "ঝুমকো", "মিহিদানা", "ছৌ"],
+            ["দোলন", "মৃদঙ্গ", "মেঘমালা", "চিলপাখি", "হাঙর", "চন্দ্রহার", "আমড়া", "বটগাছ"]
+        ];
+
+        let g2CurrentSetIndex = 0;
+        let g2CurrentTimer = null;
+        let g2CurrentPhase = 'idle';
+        let g2IsPaused = false;
+        let g2CurrentScore = 0;
+        let g2AnsweredWords = new Set();
+        let g2RecallStartTime = 0;
+        let g2RecallElapsedMs = 0;
+        let g2LastWordTimeTakenMs = 0;
+        let g2LastTickSecond = -1;
+        let g2IsSpinning = false;
+        let g2PendingViewAfterSummary = 'rank';
+        let g2ActiveTiePlayer = null;
+
+        let g2MainLeaderboard = JSON.parse(localStorage.getItem('khela_main_lb_v9') || '[]');
+        let g2TieLeaderboard = JSON.parse(localStorage.getItem('khela_tie_lb_v9') || '[]');
+        let g2FinalWinners = JSON.parse(localStorage.getItem('khela_final_win_v9') || '[]');
+        let g2SelectedInMain = new Set();
+        let g2SelectedInTie = new Set();
+
+        function g2Init() {
+            const sel = document.getElementById('g2-setSelector');
+            if (sel.options.length === 0) {
+                G2_ALL_SETS.forEach((_, i) => {
+                    const opt = document.createElement('option');
+                    opt.value = i;
+                    opt.textContent = `সেট ${i + 1}`;
+                    sel.appendChild(opt);
+                });
+            }
+            g2RenderWordsGrid();
+            g2UpdateMainLeaderboard();
+            g2UpdateTieBoard();
+            g2UpdateFinalWinners();
+        }
+
+        function g2OnSetChange() {
+            g2CurrentSetIndex = parseInt(document.getElementById('g2-setSelector').value);
+            g2ResetCurrentRound();
+            if (conn && conn.open) {
+                conn.send({ gameId: 'game2', action: 'set_change', setIndex: g2CurrentSetIndex });
+            }
+        }
+
+        function g2SyncInputs() {
+            const name = document.getElementById('g2-pName').value;
+            const age = document.getElementById('g2-pAge').value;
+            if (conn && conn.open) {
+                conn.send({ gameId: 'game2', action: 'sync_inputs', name, age });
+            }
+        }
+
+        function g2SwitchTab(tabName) {
+            document.getElementById('g2-content-game').classList.add('hidden');
+            document.getElementById('g2-content-rank').classList.add('hidden');
+            document.getElementById('g2-content-tie').classList.add('hidden');
+            document.getElementById('g2-content-final').classList.add('hidden');
+
+            document.getElementById('g2-tab-game').className = "py-2.5 rounded-xl text-xs sm:text-sm font-bold text-gray-300 hover:text-white transition";
+            document.getElementById('g2-tab-rank').className = "py-2.5 rounded-xl text-xs sm:text-sm font-bold text-gray-300 hover:text-white transition";
+            document.getElementById('g2-tab-tie').className = "py-2.5 rounded-xl text-xs sm:text-sm font-bold text-gray-300 hover:text-white transition";
+            document.getElementById('g2-tab-final').className = "py-2.5 rounded-xl text-xs sm:text-sm font-bold text-gray-300 hover:text-white transition";
+
+            if (tabName === 'game') {
+                document.getElementById('g2-content-game').classList.remove('hidden');
+                document.getElementById('g2-tab-game').className = "py-2.5 rounded-xl text-xs sm:text-sm font-bold bg-amber-500 text-gray-950 transition shadow";
+            } else if (tabName === 'rank') {
+                document.getElementById('g2-content-rank').classList.remove('hidden');
+                document.getElementById('g2-tab-rank').className = "py-2.5 rounded-xl text-xs sm:text-sm font-bold bg-amber-500 text-gray-950 transition shadow";
+                g2UpdateMainLeaderboard();
+            } else if (tabName === 'tie') {
+                document.getElementById('g2-content-tie').classList.remove('hidden');
+                document.getElementById('g2-tab-tie').className = "py-2.5 rounded-xl text-xs sm:text-sm font-bold bg-amber-500 text-gray-950 transition shadow";
+                g2UpdateTieBoard();
+            } else if (tabName === 'final') {
+                document.getElementById('g2-content-final').classList.remove('hidden');
+                document.getElementById('g2-tab-final').className = "py-2.5 rounded-xl text-xs sm:text-sm font-bold bg-amber-500 text-gray-950 transition shadow";
+                g2UpdateFinalWinners();
+            }
+        }
+
+        function g2RequestSwitchTab(tabName) {
+            g2SwitchTab(tabName);
+            if (conn && conn.open) {
+                conn.send({ gameId: 'game2', action: 'switch_tab', tab: tabName });
+            }
+        }
+
+        function g2RenderWordsGrid() {
+            const container = document.getElementById('g2-wordsContainer');
+            container.innerHTML = '';
+            const words = G2_ALL_SETS[g2CurrentSetIndex];
+            words.forEach(word => {
+                const tile = document.createElement('div');
+                tile.className = 'g2-word-tile';
+                tile.textContent = word;
+                if (g2AnsweredWords.has(word)) tile.classList.add('found');
+                tile.onclick = () => g2OnWordClicked(word);
+                container.appendChild(tile);
+            });
+        }
+
+        function g2OnWordClicked(word) {
+            if (g2CurrentPhase !== 'recall' || g2IsPaused) return;
+
+            if (!g2AnsweredWords.has(word)) {
+                g2AnsweredWords.add(word);
+                g2CurrentScore++;
+                g2LastWordTimeTakenMs = performance.now() - g2RecallStartTime;
+                playTone(950, 0.12);
+            } else {
+                g2AnsweredWords.delete(word);
+                g2CurrentScore--;
+                playTone(400, 0.08);
+            }
+
+            document.getElementById('g2-liveScore').textContent = g2CurrentScore;
+            g2RenderWordsGrid();
+
+            if (conn && conn.open) {
+                conn.send({ gameId: 'game2', action: 'word_click', word: word });
+            }
+
+            if (g2CurrentScore === 8) {
+                playTone(1300, 0.3);
+                g2FinishRecallEarly();
+            }
+        }
+
+        function g2StartMemorizePhase() {
+            const nameInput = document.getElementById('g2-pName');
+            if (!nameInput.value.trim()) {
+                alert("অনুগ্রহ করে আগে নাম লিখুন!");
+                nameInput.focus();
+                return;
+            }
+
+            g2CurrentPhase = 'memorize';
+            g2IsPaused = false;
+            g2AnsweredWords.clear();
+            g2CurrentScore = 0;
+            g2RecallElapsedMs = 0;
+
+            document.getElementById('g2-liveScore').textContent = "0";
+            document.getElementById('g2-timeTakenText').textContent = "সময়: --";
+            document.getElementById('g2-phaseText').textContent = "পড়ার সময় (২০ সে.)";
+            document.getElementById('g2-subPhaseText').textContent = "স্ক্রিন দেখে শব্দ মনে রাখুন";
+            document.getElementById('g2-btnMemorize').classList.add('hidden');
+            document.getElementById('g2-btnPause').classList.remove('hidden');
+            document.getElementById('g2-wordsContainer').classList.add('hidden');
+
+            const memoGrid = document.getElementById('g2-memoFullscreenGrid');
+            memoGrid.innerHTML = '';
+            G2_ALL_SETS[g2CurrentSetIndex].forEach(w => {
+                const card = document.createElement('div');
+                card.className = 'g2-memo-card';
+                card.textContent = w;
+                memoGrid.appendChild(card);
+            });
+
+            document.getElementById('g2-memoFullscreenOverlay').classList.remove('hidden');
+            document.getElementById('g2-memoFullscreenOverlay').classList.add('flex');
+
+            let sec = 20;
+            document.getElementById('g2-timerNum').textContent = sec + "s";
+            document.getElementById('g2-memoCornerTimer').textContent = sec + "s";
+
+            clearInterval(g2CurrentTimer);
+            g2CurrentTimer = setInterval(() => {
+                if (g2IsPaused) return;
+                playClockTick();
+                sec--;
+                document.getElementById('g2-timerNum').textContent = sec + "s";
+                document.getElementById('g2-memoCornerTimer').textContent = sec + "s";
+
+                if (sec <= 0) {
+                    clearInterval(g2CurrentTimer);
+                    playTone(1000, 0.4);
+                    g2OnMemorizeComplete();
+                }
+            }, 1000);
+        }
+
+        function g2RequestStartMemorize() {
+            g2StartMemorizePhase();
+            if (conn && conn.open) {
+                conn.send({
+                    gameId: 'game2',
+                    action: 'start_memo',
+                    name: document.getElementById('g2-pName').value,
+                    age: document.getElementById('g2-pAge').value
+                });
+            }
+        }
+
+        function g2OnMemorizeComplete() {
+            g2CurrentPhase = 'ready_for_recall';
+            document.getElementById('g2-memoFullscreenOverlay').classList.add('hidden');
+            document.getElementById('g2-memoFullscreenOverlay').classList.remove('flex');
+            document.getElementById('g2-btnPause').classList.add('hidden');
+            document.getElementById('g2-phaseText').textContent = "পড়া শেষ!";
+            document.getElementById('g2-subPhaseText').textContent = "প্রতিযোগী তৈরি হলে বোতাম চাপুন";
+            document.getElementById('g2-timerNum').textContent = "OK";
+            document.getElementById('g2-btnRecall').classList.remove('hidden');
+        }
+
+        function g2StartRecallPhase() {
+            g2CurrentPhase = 'recall';
+            g2IsPaused = false;
+            document.getElementById('g2-btnRecall').classList.add('hidden');
+            document.getElementById('g2-btnPause').classList.remove('hidden');
+            document.getElementById('g2-btnPause').textContent = "থামুন";
+            document.getElementById('g2-btnSaveScore').classList.remove('hidden');
+            document.getElementById('g2-phaseText').textContent = "উত্তর পর্ব চলছে...";
+            document.getElementById('g2-subPhaseText').textContent = "প্রতিযোগী যা বলবে টাচ করুন";
+
+            g2RenderWordsGrid();
+            document.getElementById('g2-wordsContainer').classList.remove('hidden');
+
+            const totalLimit = 30000;
+            g2RecallStartTime = performance.now();
+            g2RecallElapsedMs = 0;
+            g2LastTickSecond = -1;
+            document.getElementById('g2-timerNum').classList.remove('heartbeat-active');
+            playTone(1100, 0.25);
+
+            clearInterval(g2CurrentTimer);
+            g2CurrentTimer = setInterval(() => {
+                if (g2IsPaused) return;
+                g2RecallElapsedMs = performance.now() - g2RecallStartTime;
+                const remaining = Math.max(0, totalLimit - g2RecallElapsedMs);
+                const s = (g2RecallElapsedMs / 1000).toFixed(2);
+
+                document.getElementById('g2-timerNum').textContent = `${s}s`;
+                document.getElementById('g2-timeTakenText').textContent = `সময়: ${s}s`;
+
+                const remSec = Math.floor(remaining / 1000);
+                if (remSec !== g2LastTickSecond) {
+                    g2LastTickSecond = remSec;
+                    if (remSec <= 4 && remSec > 0) {
+                        document.getElementById('g2-timerNum').classList.add('heartbeat-active');
+                        playHeartbeat();
+                    } else if (remSec > 4) {
+                        playClockTick();
+                    }
+                }
+
+                if (remaining <= 0) {
+                    clearInterval(g2CurrentTimer);
+                    g2RecallElapsedMs = 30000;
+                    document.getElementById('g2-timerNum').classList.remove('heartbeat-active');
+                    playLoudBuzzer();
+                    g2FinishRecallTimeUp();
+                }
+            }, 20);
+        }
+
+        function g2RequestStartRecall() {
+            g2StartRecallPhase();
+            if (conn && conn.open) {
+                conn.send({ gameId: 'game2', action: 'start_recall' });
+            }
+        }
+
+        function g2TogglePause() {
+            if (g2CurrentPhase !== 'memorize' && g2CurrentPhase !== 'recall') return;
+            const btn = document.getElementById('g2-btnPause');
+            if (!g2IsPaused) {
+                g2IsPaused = true;
+                btn.textContent = "চালান";
+                document.getElementById('g2-phaseText').textContent = "স্থগিত (Paused)";
+            } else {
+                g2IsPaused = false;
+                btn.textContent = "থামুন";
+                document.getElementById('g2-phaseText').textContent = (g2CurrentPhase === 'memorize') ? "পড়ার সময় চলছে" : "উত্তর পর্ব চলছে...";
+                if (g2CurrentPhase === 'recall') g2RecallStartTime = performance.now() - g2RecallElapsedMs;
+            }
+        }
+
+        function g2RequestTogglePause() {
+            g2TogglePause();
+            if (conn && conn.open) {
+                conn.send({ gameId: 'game2', action: 'toggle_pause' });
+            }
+        }
+
+        function g2FinishRecallTimeUp() {
+            g2CurrentPhase = 'completed';
+            document.getElementById('g2-btnPause').classList.add('hidden');
+            document.getElementById('g2-phaseText').textContent = "সময় সমাপ্ত (Time Up!)";
+            document.getElementById('g2-subPhaseText').textContent = "স্কোর সংরক্ষণ করুন";
+            document.getElementById('g2-timerNum').textContent = "0.00s";
+            document.getElementById('g2-timeTakenText').textContent = `সময়: 30.00s (সম্পূর্ণ)`;
+        }
+
+        function g2FinishRecallEarly() {
+            clearInterval(g2CurrentTimer);
+            g2CurrentPhase = 'completed';
+            document.getElementById('g2-timerNum').classList.remove('heartbeat-active');
+            document.getElementById('g2-btnPause').classList.add('hidden');
+            const taken = (g2RecallElapsedMs / 1000).toFixed(2);
+            document.getElementById('g2-phaseText').textContent = "৮টি শব্দ সম্পূর্ণ!";
+            document.getElementById('g2-subPhaseText').textContent = `মাত্র ${taken} সেকেন্ডে বলেছে`;
+            document.getElementById('g2-timeTakenText').textContent = `সময়: ${taken}s (লক)`;
+        }
+
+        function g2ResetCurrentRound() {
+            clearInterval(g2CurrentTimer);
+            document.getElementById('g2-timerNum').classList.remove('heartbeat-active');
+            g2CurrentPhase = 'idle';
+            g2IsPaused = false;
+            g2CurrentScore = 0;
+            g2RecallElapsedMs = 0;
+            g2LastWordTimeTakenMs = 0;
+            g2AnsweredWords.clear();
+
+            document.getElementById('g2-timerNum').textContent = "--";
+            document.getElementById('g2-phaseText').textContent = "রাউন্ড রেডি";
+            document.getElementById('g2-subPhaseText').textContent = "নাম লিখে পড়া শুরু করুন";
+            document.getElementById('g2-liveScore').textContent = "0";
+            document.getElementById('g2-timeTakenText').textContent = "সময়: --";
+            document.getElementById('g2-btnMemorize').classList.remove('hidden');
+            document.getElementById('g2-btnRecall').classList.add('hidden');
+            document.getElementById('g2-btnPause').classList.add('hidden');
+            document.getElementById('g2-btnSaveScore').classList.add('hidden');
+            document.getElementById('g2-wordsContainer').classList.add('hidden');
+            document.getElementById('g2-memoFullscreenOverlay').classList.add('hidden');
+            document.getElementById('g2-memoFullscreenOverlay').classList.remove('flex');
+            g2RenderWordsGrid();
+        }
+
+        function g2RequestResetRound() {
+            g2ResetCurrentRound();
+            if (conn && conn.open) {
+                conn.send({ gameId: 'game2', action: 'reset_round' });
+            }
+        }
+
+        function g2SavePlayerScore() {
+            clearInterval(g2CurrentTimer);
+            document.getElementById('g2-timerNum').classList.remove('heartbeat-active');
+
+            const name = document.getElementById('g2-pName').value.trim();
+            const age = document.getElementById('g2-pAge').value.trim() || "--";
+            const setNum = g2CurrentSetIndex + 1;
+            const effectiveMs = (g2CurrentScore > 0) ? g2LastWordTimeTakenMs : g2RecallElapsedMs;
+            const timeTaken = parseFloat((effectiveMs / 1000).toFixed(2));
+            const allWords = [...G2_ALL_SETS[g2CurrentSetIndex]];
+            const answered = Array.from(g2AnsweredWords);
+            const nextView = g2ActiveTiePlayer ? 'tie' : 'rank';
+
+            g2PendingViewAfterSummary = nextView;
+
+            const summaryData = {
+                name, age, set: setNum, score: g2CurrentScore, timeTaken,
+                allWords, answeredWords: answered
+            };
+
+            g2ShowRoundSummaryModal(summaryData);
+
+            if (g2ActiveTiePlayer && g2ActiveTiePlayer.name === name) {
+                const tieIdx = g2TieLeaderboard.findIndex(p => p.name === name);
+                if (tieIdx !== -1) {
+                    g2TieLeaderboard[tieIdx].tieScore = g2CurrentScore;
+                    g2TieLeaderboard[tieIdx].tieTime = timeTaken;
+                    g2TieLeaderboard[tieIdx].tieSet = setNum;
+                }
+                localStorage.setItem('khela_tie_lb_v9', JSON.stringify(g2TieLeaderboard));
+                g2ActiveTiePlayer = null;
+            } else {
+                const existing = g2MainLeaderboard.findIndex(p => p.name === name);
+                const entry = { name, age, set: setNum, score: g2CurrentScore, timeTaken, timestamp: Date.now() };
+                if (existing !== -1) g2MainLeaderboard[existing] = entry;
+                else g2MainLeaderboard.push(entry);
+                localStorage.setItem('khela_main_lb_v9', JSON.stringify(g2MainLeaderboard));
+            }
+
+            if (g2CurrentSetIndex < G2_ALL_SETS.length - 1) {
+                g2CurrentSetIndex++;
+                document.getElementById('g2-setSelector').value = g2CurrentSetIndex;
+            }
+            document.getElementById('g2-pName').value = "";
+            document.getElementById('g2-pAge').value = "";
+            g2ResetCurrentRound();
+
+            return summaryData;
+        }
+
+        function g2RequestSaveScore() {
+            const summary = g2SavePlayerScore();
+            if (conn && conn.open) {
+                conn.send({
+                    gameId: 'game2',
+                    action: 'show_summary',
+                    data: summary,
+                    nextView: g2PendingViewAfterSummary,
+                    mainLb: g2MainLeaderboard,
+                    tieLb: g2TieLeaderboard
+                });
+            }
+        }
+
+        function g2ShowRoundSummaryModal(data) {
+            document.getElementById('g2-sumPlayerName').textContent = data.name;
+            document.getElementById('g2-sumPlayerAge').textContent = data.age ? `${data.age} বছর` : '--';
+            document.getElementById('g2-sumPlayerSet').textContent = `সেট ${data.set}`;
+            document.getElementById('g2-sumPlayerScore').textContent = `${data.score} / 8`;
+            document.getElementById('g2-sumPlayerTime').textContent = `${data.timeTaken.toFixed(2)}s`;
+
+            const container = document.getElementById('g2-sumWordsBreakdown');
+            container.innerHTML = '';
+            data.allWords.forEach(w => {
+                const ans = data.answeredWords.includes(w);
+                const badge = document.createElement('div');
+                badge.className = `p-1.5 rounded-lg border ${ans ? 'bg-emerald-950/60 border-emerald-500 text-emerald-300' : 'bg-red-950/60 border-red-700 text-red-300'}`;
+                badge.textContent = `${ans ? '✓' : '✗'} ${w}`;
+                container.appendChild(badge);
+            });
+
+            document.getElementById('g2-roundSummaryModal').classList.remove('hidden');
+            document.getElementById('g2-roundSummaryModal').classList.add('flex');
+            playTone(1250, 0.25);
+        }
+
+        function g2CloseRoundSummaryModal() {
+            document.getElementById('g2-roundSummaryModal').classList.add('hidden');
+            document.getElementById('g2-roundSummaryModal').classList.remove('flex');
+            g2RequestSwitchTab(g2PendingViewAfterSummary);
+            if (conn && conn.open) {
+                conn.send({ gameId: 'game2', action: 'close_summary', view: g2PendingViewAfterSummary });
+            }
+        }
+
+        function g2SpinLuckySet(forcedTargetSet = null) {
+            if (g2IsSpinning) return;
+            const playedSets = new Set(g2MainLeaderboard.map(p => p.set));
+            const avail = [];
+            for (let i = 1; i <= G2_ALL_SETS.length; i++) {
+                if (!playedSets.has(i)) avail.push(i);
+            }
+            if (avail.length === 0) {
+                alert("সব ৫০টি সেট খেলা হয়ে গেছে!");
+                return;
+            }
+
+            let chosen = (forcedTargetSet !== null) ? forcedTargetSet : avail[Math.floor(Math.random() * avail.length)];
+            if (forcedTargetSet === null && conn && conn.open) {
+                conn.send({ gameId: 'game2', action: 'spin_lucky', targetSet: chosen });
+            }
+
+            g2IsSpinning = true;
+            const overlay = document.getElementById('g2-luckyFullscreenOverlay');
+            const bigSlot = document.getElementById('g2-luckyBigSlotNum');
+            const bigSub = document.getElementById('g2-luckyBigSubtext');
+            const slotDisplay = document.getElementById('g2-luckySlotNum');
+            const spinBtn = document.getElementById('g2-btn-lucky');
+
+            if (spinBtn) spinBtn.disabled = true;
+            bigSub.textContent = "ভাগ্যের চাকা ঘুরছে...";
+            overlay.classList.remove('hidden');
+            overlay.classList.add('flex');
+
+            const dur = 3000;
+            const start = performance.now();
+            const timer = setInterval(() => {
+                const el = performance.now() - start;
+                const rnd = avail[Math.floor(Math.random() * avail.length)];
+                bigSlot.textContent = rnd;
+                if (slotDisplay) slotDisplay.textContent = rnd;
+                playTone(900 + Math.random() * 300, 0.03);
+
+                if (el >= dur) {
+                    clearInterval(timer);
+                    bigSlot.textContent = chosen;
+                    if (slotDisplay) slotDisplay.textContent = chosen;
+                    bigSub.textContent = `🎉 সেট নম্বর ${chosen} নির্ধারিত হলো!`;
+                    g2CurrentSetIndex = chosen - 1;
+                    document.getElementById('g2-setSelector').value = g2CurrentSetIndex;
+                    g2ResetCurrentRound();
+                    playTone(1400, 0.4);
+
+                    setTimeout(() => {
+                        overlay.classList.add('hidden');
+                        overlay.classList.remove('flex');
+                        if (spinBtn) spinBtn.disabled = false;
+                        g2IsSpinning = false;
+                    }, 2000);
+                }
+            }, 60);
+        }
+
+        function g2RequestLuckySpin() {
+            g2SpinLuckySet();
+        }
+
+        function g2UpdateMainLeaderboard() {
+            const tbody = document.getElementById('g2-rankTableBody');
+            tbody.innerHTML = '';
+            if (g2MainLeaderboard.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="7" class="p-6 text-center text-gray-500">এখনও কোনো স্কোর নেই</td></tr>`;
+                return;
+            }
+
+            g2MainLeaderboard.sort((a, b) => (b.score !== a.score) ? b.score - a.score : a.timeTaken - b.timeTaken);
+
+            g2MainLeaderboard.forEach((p, index) => {
+                const sel = g2SelectedInMain.has(p.name);
+                const tr = document.createElement('tr');
+                tr.className = `hover:bg-white/5 transition ${sel ? 'bg-amber-500/20' : ''}`;
+                tr.onclick = () => g2ToggleSelectPlayerMain(p.name);
+                tr.innerHTML = `
+                    <td class="p-2.5 text-center"><input type="checkbox" ${sel ? 'checked' : ''} onclick="event.stopPropagation(); g2ToggleSelectPlayerMain('${p.name}')"></td>
+                    <td class="p-2.5 text-center font-bold text-amber-400">${index + 1}</td>
+                    <td class="p-2.5 font-semibold text-white">${p.name} <span class="text-xs text-gray-400">(${p.age})</span></td>
+                    <td class="p-2.5 text-center text-gray-400">সেট ${p.set}</td>
+                    <td class="p-2.5 text-center font-bold text-amber-300">${p.score}</td>
+                    <td class="p-2.5 text-center font-mono text-gray-300">${p.timeTaken.toFixed(2)}s</td>
+                    <td class="p-2.5 text-center">
+                        <div class="flex gap-1 justify-center" onclick="event.stopPropagation();">
+                            <select id="g2_main_pos_${p.name}" class="bg-gray-800 border border-gray-700 rounded px-1 text-xs text-white">
+                                <option value="1">১ম</option>
+                                <option value="2">২য়</option>
+                                <option value="3">৩য়</option>
+                                <option value="out">বাদ</option>
+                            </select>
+                            <button class="bg-cyan-600 hover:bg-cyan-500 text-white px-2 py-0.5 rounded text-xs" onclick="g2AssignRankDirectFromMain('${p.name}')">OK</button>
+                        </div>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function g2ToggleSelectPlayerMain(pName) {
+            if (g2SelectedInMain.has(pName)) g2SelectedInMain.delete(pName);
+            else g2SelectedInMain.add(pName);
+            g2UpdateMainLeaderboard();
+        }
+
+        function g2SendSelectedToTieBoard() {
+            if (g2SelectedInMain.size === 0) {
+                alert("কাউকে সিলেক্ট করেননি!");
+                return;
+            }
+            const names = Array.from(g2SelectedInMain);
+            const toMove = g2MainLeaderboard.filter(p => names.includes(p.name));
+            g2MainLeaderboard = g2MainLeaderboard.filter(p => !names.includes(p.name));
+            localStorage.setItem('khela_main_lb_v9', JSON.stringify(g2MainLeaderboard));
+
+            toMove.forEach(p => {
+                if (!g2TieLeaderboard.some(t => t.name === p.name)) {
+                    g2TieLeaderboard.push({ ...p, tieScore: null, tieTime: null, tieSet: null });
+                }
+            });
+            localStorage.setItem('khela_tie_lb_v9', JSON.stringify(g2TieLeaderboard));
+            g2SelectedInMain.clear();
+            g2RequestSwitchTab('tie');
+            if (conn && conn.open) {
+                conn.send({ gameId: 'game2', action: 'sync_lists', mainLb: g2MainLeaderboard, tieLb: g2TieLeaderboard, finalWin: g2FinalWinners });
+            }
+        }
+
+        function g2AssignRankDirectFromMain(pName) {
+            const pos = document.getElementById(`g2_main_pos_${pName}`).value;
+            const player = g2MainLeaderboard.find(p => p.name === pName);
+
+            if (pos !== "out") {
+                const rank = parseInt(pos);
+                g2FinalWinners = g2FinalWinners.filter(w => w.name !== pName);
+                g2FinalWinners.push({ ...player, assignedRank: rank, tieScore: null, tieTime: null });
+                localStorage.setItem('khela_final_win_v9', JSON.stringify(g2FinalWinners));
+            }
+            g2MainLeaderboard = g2MainLeaderboard.filter(p => p.name !== pName);
+            localStorage.setItem('khela_main_lb_v9', JSON.stringify(g2MainLeaderboard));
+            g2RequestSwitchTab('final');
+            if (conn && conn.open) {
+                conn.send({ gameId: 'game2', action: 'sync_lists', mainLb: g2MainLeaderboard, tieLb: g2TieLeaderboard, finalWin: g2FinalWinners });
+            }
+        }
+
+        function g2UpdateTieBoard() {
+            const tbody = document.getElementById('g2-tieTableBody');
+            tbody.innerHTML = '';
+            if (g2TieLeaderboard.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="6" class="p-6 text-center text-gray-500">টাই বোর্ডে কেউ নেই</td></tr>`;
+                return;
+            }
+
+            g2TieLeaderboard.sort((a, b) => {
+                const sA = (a.tieScore !== null) ? a.tieScore : -1;
+                const sB = (b.tieScore !== null) ? b.tieScore : -1;
+                if (sB !== sA) return sB - sA;
+                const tA = (a.tieTime !== null) ? a.tieTime : 999;
+                const tB = (b.tieTime !== null) ? b.tieTime : 999;
+                return tA - tB;
+            });
+
+            g2TieLeaderboard.forEach(p => {
+                const sel = g2SelectedInTie.has(p.name);
+                const tr = document.createElement('tr');
+                tr.className = `hover:bg-white/5 transition ${sel ? 'bg-amber-500/20' : ''}`;
+                tr.onclick = () => g2ToggleSelectPlayerTie(p.name);
+                tr.innerHTML = `
+                    <td class="p-2.5 text-center"><input type="checkbox" ${sel ? 'checked' : ''} onclick="event.stopPropagation(); g2ToggleSelectPlayerTie('${p.name}')"></td>
+                    <td class="p-2.5 font-semibold text-white">${p.name} <span class="text-xs text-gray-400">(${p.age})</span></td>
+                    <td class="p-2.5 text-center font-bold text-amber-300">${p.tieScore !== null ? p.tieScore : '--'}</td>
+                    <td class="p-2.5 text-center font-mono text-gray-300">${p.tieTime !== null ? p.tieTime.toFixed(2) + 's' : '--'}</td>
+                    <td class="p-2.5 text-center">
+                        <button class="bg-amber-600 hover:bg-amber-500 text-gray-950 px-2 py-0.5 rounded text-xs font-bold" onclick="event.stopPropagation(); g2PlayTieRound('${p.name}')">Play</button>
+                    </td>
+                    <td class="p-2.5 text-center">
+                        <div class="flex gap-1 justify-center" onclick="event.stopPropagation();">
+                            <select id="g2_pos_${p.name}" class="bg-gray-800 border border-gray-700 rounded px-1 text-xs text-white">
+                                <option value="1">১ম</option>
+                                <option value="2">২য়</option>
+                                <option value="3">৩য়</option>
+                                <option value="out">বাদ</option>
+                            </select>
+                            <button class="bg-cyan-600 hover:bg-cyan-500 text-white px-2 py-0.5 rounded text-xs" onclick="g2AssignFinalPosition('${p.name}')">OK</button>
+                        </div>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function g2ToggleSelectPlayerTie(pName) {
+            if (g2SelectedInTie.has(pName)) g2SelectedInTie.delete(pName);
+            else g2SelectedInTie.add(pName);
+            g2UpdateTieBoard();
+        }
+
+        function g2ReTieSelectedPlayers() {
+            if (g2SelectedInTie.size === 0) {
+                alert("যাদের আবার টাই খেলবেন সিলেক্ট করুন!");
+                return;
+            }
+            const names = Array.from(g2SelectedInTie);
+            g2TieLeaderboard = g2TieLeaderboard.filter(p => names.includes(p.name));
+            g2TieLeaderboard.forEach(p => { p.tieScore = null; p.tieTime = null; p.tieSet = null; });
+            localStorage.setItem('khela_tie_lb_v9', JSON.stringify(g2TieLeaderboard));
+            g2SelectedInTie.clear();
+            g2UpdateTieBoard();
+            if (conn && conn.open) {
+                conn.send({ gameId: 'game2', action: 'sync_lists', mainLb: g2MainLeaderboard, tieLb: g2TieLeaderboard, finalWin: g2FinalWinners });
+            }
+        }
+
+        function g2PlayTieRound(pName) {
+            const player = g2TieLeaderboard.find(p => p.name === pName);
+            if (!player) return;
+            g2ActiveTiePlayer = player;
+            g2RequestSwitchTab('game');
+            document.getElementById('g2-pName').value = player.name;
+            document.getElementById('g2-pAge').value = player.age !== "--" ? player.age : "";
+            if (g2CurrentSetIndex < G2_ALL_SETS.length - 1) {
+                g2CurrentSetIndex++;
+                document.getElementById('g2-setSelector').value = g2CurrentSetIndex;
+            }
+            g2ResetCurrentRound();
+            g2SyncInputs();
+        }
+
+        function g2AssignFinalPosition(pName) {
+            const pos = document.getElementById(`g2_pos_${pName}`).value;
+            const player = g2TieLeaderboard.find(p => p.name === pName);
+            if (pos !== "out") {
+                const rank = parseInt(pos);
+                g2FinalWinners = g2FinalWinners.filter(w => w.name !== pName);
+                g2FinalWinners.push({ ...player, assignedRank: rank });
+                localStorage.setItem('khela_final_win_v9', JSON.stringify(g2FinalWinners));
+            }
+            g2TieLeaderboard = g2TieLeaderboard.filter(p => p.name !== pName);
+            localStorage.setItem('khela_tie_lb_v9', JSON.stringify(g2TieLeaderboard));
+            g2RequestSwitchTab('final');
+            if (conn && conn.open) {
+                conn.send({ gameId: 'game2', action: 'sync_lists', mainLb: g2MainLeaderboard, tieLb: g2TieLeaderboard, finalWin: g2FinalWinners });
+            }
+        }
+
+        function g2UpdateFinalWinners() {
+            const container = document.getElementById('g2-finalWinnersContainer');
+            container.innerHTML = '';
+            if (g2FinalWinners.length === 0) {
+                container.innerHTML = `<div class="p-6 text-center text-gray-500">এখনও কোনো চূড়ান্ত বিজয়ী নির্বাচিত হয়নি।</div>`;
+                return;
+            }
+
+            g2FinalWinners.sort((a, b) => a.assignedRank - b.assignedRank);
+            g2FinalWinners.forEach(w => {
+                let badge = '🥉 ৩য় স্থান';
+                let col = 'border-amber-700 bg-amber-950/20';
+                if (w.assignedRank === 1) { badge = '🥇 ১ম স্থান (চ্যাম্পিয়ন)'; col = 'border-amber-400 bg-amber-950/40'; }
+                if (w.assignedRank === 2) { badge = '🥈 ২য় স্থান (রানার্স-আপ)'; col = 'border-gray-400 bg-gray-900/40'; }
+
+                const card = document.createElement('div');
+                card.className = `p-4 rounded-2xl border-2 ${col} space-y-1.5 shadow-xl`;
+                card.innerHTML = `
+                    <div class="font-black text-amber-300 text-sm">${badge}</div>
+                    <div class="text-lg font-bold text-white">${w.name} <span class="text-xs text-gray-400">(${w.age} বছর)</span></div>
+                    <div class="text-xs text-gray-300">
+                        মূল স্কোর: <strong>${w.score}/৮</strong> (${w.timeTaken.toFixed(2)}s)
+                        ${w.tieScore !== null && w.tieScore !== undefined ? ` | টাই স্কোর: <strong class="text-emerald-400">${w.tieScore}/৮</strong> (${w.tieTime.toFixed(2)}s)` : ''}
+                    </div>
+                    <button class="bg-red-900/60 hover:bg-red-800 text-red-200 px-2 py-1 rounded text-xs mt-1" onclick="g2RemoveFromWinners('${w.name}')">মুছুন</button>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function g2RemoveFromWinners(pName) {
+            g2FinalWinners = g2FinalWinners.filter(w => w.name !== pName);
+            localStorage.setItem('khela_final_win_v9', JSON.stringify(g2FinalWinners));
+            g2UpdateFinalWinners();
+            if (conn && conn.open) {
+                conn.send({ gameId: 'game2', action: 'sync_lists', mainLb: g2MainLeaderboard, tieLb: g2TieLeaderboard, finalWin: g2FinalWinners });
+            }
+        }
+
+        function g2PromptClearAllData() {
+            if (confirm("সমস্ত ডাটা মুছে সম্পূর্ণ নতুন খেলা শুরু করতে চান?")) {
+                localStorage.removeItem('khela_main_lb_v9');
+                localStorage.removeItem('khela_tie_lb_v9');
+                localStorage.removeItem('khela_final_win_v9');
+                g2MainLeaderboard = [];
+                g2TieLeaderboard = [];
+                g2FinalWinners = [];
+                g2SelectedInMain.clear();
+                g2SelectedInTie.clear();
+                g2ActiveTiePlayer = null;
+                g2UpdateMainLeaderboard();
+                g2UpdateTieBoard();
+                g2UpdateFinalWinners();
+                if (conn && conn.open) {
+                    conn.send({ gameId: 'game2', action: 'sync_lists', mainLb: [], tieLb: [], finalWin: [] });
+                }
+            }
+        }
+
+        function handleGame2P2PData(data) {
+            if (data.action === 'switch_tab') {
+                g2SwitchTab(data.tab);
+            } else if (data.action === 'sync_inputs') {
+                document.getElementById('g2-pName').value = data.name;
+                document.getElementById('g2-pAge').value = data.age;
+            } else if (data.action === 'set_change') {
+                g2CurrentSetIndex = data.setIndex;
+                document.getElementById('g2-setSelector').value = g2CurrentSetIndex;
+                g2ResetCurrentRound();
+            } else if (data.action === 'start_memo') {
+                document.getElementById('g2-pName').value = data.name;
+                document.getElementById('g2-pAge').value = data.age;
+                g2StartMemorizePhase();
+            } else if (data.action === 'start_recall') {
+                g2StartRecallPhase();
+            } else if (data.action === 'toggle_pause') {
+                g2TogglePause();
+            } else if (data.action === 'reset_round') {
+                g2ResetCurrentRound();
+            } else if (data.action === 'word_click') {
+                g2OnWordClicked(data.word);
+            } else if (data.action === 'spin_lucky') {
+                g2SpinLuckySet(data.targetSet);
+            } else if (data.action === 'show_summary') {
+                g2PendingViewAfterSummary = data.nextView;
+                g2ShowRoundSummaryModal(data.data);
+                if (data.mainLb) g2MainLeaderboard = data.mainLb;
+                if (data.tieLb) g2TieLeaderboard = data.tieLb;
+                g2UpdateMainLeaderboard();
+                g2UpdateTieBoard();
+            } else if (data.action === 'close_summary') {
+                document.getElementById('g2-roundSummaryModal').classList.add('hidden');
+                document.getElementById('g2-roundSummaryModal').classList.remove('flex');
+                g2SwitchTab(data.view);
+            } else if (data.action === 'sync_lists') {
+                g2MainLeaderboard = data.mainLb;
+                g2TieLeaderboard = data.tieLb;
+                g2FinalWinners = data.finalWin;
+                g2UpdateMainLeaderboard();
+                g2UpdateTieBoard();
+                g2UpdateFinalWinners();
+            }
+        }
+
         // ================= GAME 3: শব্দ ছবির ধাঁধা LOGIC =================
-        // Default Hardcoded Array of 15 Puzzles
         const g3PuzzlesData = [
             { id: 1, title: "ধাঁধা ১", img: "https://i.ibb.co/vx88CVK1/1793348492713.jpg", answer: "টিউলিপ ফুল" },
             { id: 2, title: "ধাঁধা ২", img: "https://i.ibb.co/qMpDJvG8/1793348492726.png", answer: "রসগোল্লা" },
@@ -738,7 +1897,6 @@
                 const btn = document.createElement('button');
                 btn.onclick = () => g3RequestSelectPuzzle(index);
                 btn.className = "bg-gradient-to-br from-indigo-950 to-purple-950 hover:from-amber-600 hover:to-orange-600 border border-purple-500/30 hover:border-amber-400 p-4 sm:p-6 rounded-2xl flex flex-col items-center justify-center space-y-2 shadow-lg transition transform hover:-translate-y-1 group";
-                
                 btn.innerHTML = `
                     <div class="text-amber-400 group-hover:text-white text-xl sm:text-2xl transition"><i class="fa-solid fa-puzzle-piece"></i></div>
                     <span class="font-bold text-amber-200 group-hover:text-white text-xs sm:text-sm">${puz.title}</span>
@@ -762,8 +1920,6 @@
             }
 
             document.getElementById('g3-answer-text').innerText = puz.answer;
-            
-            // Hide answer initially
             g3AnswerVisible = false;
             document.getElementById('g3-answer-box').classList.add('hidden');
             document.getElementById('g3-answer-btn').innerHTML = `<i class="fa-solid fa-eye mr-2"></i> উত্তর দেখুন`;
