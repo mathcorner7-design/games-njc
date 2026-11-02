@@ -438,12 +438,18 @@
             </div>
 
             <div id="g3-detail-view" class="hidden space-y-6">
-                <div class="flex justify-between items-center">
-                    <button onclick="g3RequestBackToGrid()" class="bg-gray-800 hover:bg-gray-700 text-amber-300 px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition border border-gray-700">
-                        <i class="fa-solid fa-arrow-left mr-1"></i> সব ধাঁধায় ফিরে যান
-                    </button>
-                    <span id="g3-current-title" class="font-extrabold text-amber-400 text-base sm:text-xl">ধাঁধা</span>
-                </div>
+               <div class="flex justify-between items-center">
+    <button onclick="g3RequestBackToGrid()" class="bg-gray-800 hover:bg-gray-700 text-amber-300 px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition border border-gray-700">
+        <i class="fa-solid fa-arrow-left mr-1"></i> সব ধাঁধায় ফিরে যান
+    </button>
+    <div class="flex items-center gap-3">
+        <span id="g3-current-title" class="font-extrabold text-amber-400 text-base sm:text-xl">ধাঁধা</span>
+        <button onclick="g3RequestToggleFullscreen()" title="ফুলস্ক্রিন করুন" class="bg-amber-500 hover:bg-amber-600 text-gray-950 font-bold px-3 py-2 rounded-xl text-sm transition shadow flex items-center gap-1.5">
+            <i class="fa-solid fa-expand"></i>
+            <span class="hidden sm:inline">ফুলস্ক্রিন</span>
+        </button>
+    </div>
+</div>
 
                 <!-- 🔄 Flip Card Puzzle Box (Click to Flip) -->
                 <div class="flex justify-center items-center">
@@ -544,6 +550,56 @@
         </div>
     </div>
 
+    <!-- G3 Fullscreen Puzzle Overlay -->
+    <div id="g3-fullscreen-overlay" class="fixed inset-0 bg-black/95 z-[90] hidden flex-col items-center justify-center p-4 backdrop-blur-md select-none">
+        <!-- Exit Fullscreen Button (Top-Right) -->
+        <button onclick="g3RequestToggleFullscreen()" title="ফুলস্ক্রিন বন্ধ করুন" class="absolute top-5 right-5 z-20 bg-gray-800/80 hover:bg-gray-700 text-amber-300 hover:text-white border border-amber-400/50 w-12 h-12 rounded-full flex items-center justify-center text-xl shadow-2xl transition">
+            <i class="fa-solid fa-compress"></i>
+        </button>
+
+        <!-- Title Display (Top-Center) -->
+        <div class="absolute top-6 left-1/2 -translate-x-1/2 z-10">
+            <span id="g3-fs-title" class="text-amber-400 font-extrabold text-lg sm:text-2xl tracking-wider px-5 py-1.5 bg-black/60 rounded-full border border-amber-500/30 shadow-lg">ধাঁধা</span>
+        </div>
+
+        <!-- Left Navigation Arrow -->
+        <button onclick="g3RequestPrevPuzzle()" title="পূর্ববর্তী ধাঁধা" class="absolute left-3 sm:left-6 top-1/2 -translate-y-1/2 z-20 bg-black/60 hover:bg-amber-500 hover:text-gray-950 text-amber-300 border border-amber-400/40 w-12 h-12 sm:w-16 sm:h-16 rounded-full flex items-center justify-center text-xl sm:text-2xl shadow-2xl transition transform hover:scale-110 active:scale-95">
+            <i class="fa-solid fa-chevron-left"></i>
+        </button>
+
+        <!-- Central Giant Flip Card -->
+        <div class="w-full max-w-4xl h-[70vh] sm:h-[75vh] flex items-center justify-center relative z-10 px-12 sm:px-16">
+            <div id="g3-fs-flip-card" onclick="g3RequestToggleAnswer()" class="w-full h-full cursor-pointer relative transition-transform duration-500 rounded-3xl shadow-2xl" style="perspective: 1000px;">
+                <div id="g3-fs-card-inner" class="w-full h-full relative rounded-3xl transition-transform duration-500" style="transform-style: preserve-3d;">
+                    
+                    <!-- Front Side (Image) -->
+                    <div class="absolute inset-0 w-full h-full bg-black/80 border-2 border-amber-500/40 rounded-3xl flex items-center justify-center p-4 shadow-2xl" style="backface-visibility: hidden;">
+                        <img id="g3-fs-puzzle-img" src="" alt="Fullscreen Puzzle Image" class="max-h-full max-w-full rounded-2xl object-contain">
+                        <div class="absolute bottom-4 right-4 bg-black/80 text-amber-300 text-xs sm:text-sm px-4 py-1.5 rounded-full border border-amber-400/50 shadow">
+                            <i class="fa-solid fa-rotate mr-1.5"></i> উত্তর দেখতে টাচ করুন
+                        </div>
+                    </div>
+
+                    <!-- Back Side (Answer) -->
+                    <div class="absolute inset-0 w-full h-full bg-gradient-to-br from-emerald-950 via-gray-950 to-emerald-900 border-2 border-emerald-400 rounded-3xl flex flex-col items-center justify-center p-6 text-center shadow-2xl" style="backface-visibility: hidden; transform: rotateY(180deg);">
+                        <p class="text-sm sm:text-base text-emerald-300 font-bold uppercase tracking-widest mb-3">
+                            <i class="fa-solid fa-circle-check mr-2"></i> সঠিক উত্তর
+                        </p>
+                        <h4 id="g3-fs-answer-text" class="text-4xl sm:text-6xl font-black text-white leading-tight">উত্তর</h4>
+                        <div class="absolute bottom-4 left-4 bg-black/80 text-gray-300 text-xs sm:text-sm px-4 py-1.5 rounded-full border border-gray-700">
+                            <i class="fa-solid fa-rotate mr-1.5"></i> ছবি দেখতে আবার টাচ করুন
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Navigation Arrow -->
+        <button onclick="g3RequestNextPuzzle()" title="পরবর্তী ধাঁধা" class="absolute right-3 sm:right-6 top-1/2 -translate-y-1/2 z-20 bg-black/60 hover:bg-amber-500 hover:text-gray-950 text-amber-300 border border-amber-400/40 w-12 h-12 sm:w-16 sm:h-16 rounded-full flex items-center justify-center text-xl sm:text-2xl shadow-2xl transition transform hover:scale-110 active:scale-95">
+            <i class="fa-solid fa-chevron-right"></i>
+        </button>
+    </div>
     <!-- ================= 5. FOOTER ================= -->
     <footer class="w-full py-4 px-6 bg-black/40 border-t border-white/10 flex justify-between items-center">
         <p class="text-xs text-gray-400">© ২০২৬ নিউ ঝালাপালা কমিটি</p>
@@ -2006,6 +2062,7 @@
 
         let g3CurrentIndex = -1;
         let g3AnswerVisible = false;
+        let g3IsFullscreen = false;
 
         function g3RenderPuzzlesGrid() {
             const gridContainer = document.getElementById('g3-puzzles-grid');
@@ -2031,6 +2088,16 @@
             const puz = g3PuzzlesData[index];
 
             document.getElementById('g3-current-title').innerText = puz.title;
+            document.getElementById('g3-fs-title').innerText = puz.title;
+document.getElementById('g3-fs-answer-text').innerText = puz.answer;
+const fsImg = document.getElementById('g3-fs-puzzle-img');
+if (puz.img) {
+    fsImg.src = puz.img;
+} else {
+    fsImg.src = "https://placehold.co/800x600/1e1b4b/amber?text=" + encodeURIComponent(puz.title);
+}
+const fsCardInner = document.getElementById('g3-fs-card-inner');
+if (fsCardInner) fsCardInner.style.transform = 'rotateY(0deg)';
             const puzImg = document.getElementById('g3-puzzle-img');
             
             if (puz.img) {
@@ -2101,23 +2168,51 @@
             }
         }
 
-        function g3ToggleAnswer() {
-            g3AnswerVisible = !g3AnswerVisible;
-            const cardInner = document.getElementById('g3-card-inner');
+      function g3ToggleAnswer() {
+    g3AnswerVisible = !g3AnswerVisible;
+    const cardInner = document.getElementById('g3-card-inner');
+    const fsCardInner = document.getElementById('g3-fs-card-inner'); // নতুন ফুলস্ক্রিন কার্ড ধরা হলো
 
-            if (g3AnswerVisible) {
-                if (cardInner) cardInner.style.transform = 'rotateY(180deg)';
-                playBeepSound('start');
-            } else {
-                if (cardInner) cardInner.style.transform = 'rotateY(0deg)';
-                playBeepSound('stop');
-            }
-        }
+    if (g3AnswerVisible) {
+        if (cardInner) cardInner.style.transform = 'rotateY(180deg)';
+        if (fsCardInner) fsCardInner.style.transform = 'rotateY(180deg)'; // ফুলস্ক্রিন কার্ডও ফ্লিপ হবে
+        playBeepSound('start');
+    } else {
+        if (cardInner) cardInner.style.transform = 'rotateY(0deg)';
+        if (fsCardInner) fsCardInner.style.transform = 'rotateY(0deg)'; // ফুলস্ক্রিন কার্ড সোজা হবে
+        playBeepSound('stop');
+    }
+}
 
         function g3RequestToggleAnswer() {
             g3ToggleAnswer();
             if (conn && conn.open) {
                 conn.send({ gameId: 'game3', action: 'toggle_answer' });
+            }
+        }
+        function g3ToggleFullscreenUI(forceState = null) {
+            g3IsFullscreen = (forceState !== null) ? forceState : !g3IsFullscreen;
+            const overlay = document.getElementById('g3-fullscreen-overlay');
+
+            if (g3IsFullscreen) {
+                overlay.classList.remove('hidden');
+                overlay.classList.add('flex');
+                if (!document.fullscreenElement && document.documentElement.requestFullscreen) {
+                    document.documentElement.requestFullscreen().catch(() => {});
+                }
+            } else {
+                overlay.classList.add('hidden');
+                overlay.classList.remove('flex');
+                if (document.fullscreenElement && document.exitFullscreen) {
+                    document.exitFullscreen().catch(() => {});
+                }
+            }
+        }
+
+        function g3RequestToggleFullscreen() {
+            g3ToggleFullscreenUI();
+            if (conn && conn.open) {
+                conn.send({ gameId: 'game3', action: 'toggle_fullscreen', isFs: g3IsFullscreen });
             }
         }
 
@@ -2132,6 +2227,8 @@
                 g3BackToGrid();
             } else if (data.action === 'toggle_answer') {
                 g3ToggleAnswer();
+            } else if (data.action === 'toggle_fullscreen') {
+                g3ToggleFullscreenUI(data.isFs);
             }
         }
     </script>
