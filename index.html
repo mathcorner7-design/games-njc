@@ -1695,7 +1695,7 @@
             const overlay = document.getElementById('g2-luckyFullscreenOverlay');
             const bigSlot = document.getElementById('g2-luckyBigSlotNum');
             const bigSub = document.getElementById('g2-luckyBigSubtext');
-            const slotDisplay = document.getElementById('g2-lucky-slot');
+            const slotDisplay = document.getElementById('g2-luckySlotNum');
             const spinBtn = document.getElementById('g2-btn-lucky');
 
             if (spinBtn) spinBtn.disabled = true;
@@ -2109,11 +2109,10 @@ if (fsCardInner) fsCardInner.style.transform = 'rotateY(0deg)';
 
             document.getElementById('g3-answer-text').innerText = puz.answer;
             
-           // Reset flip card state to front (image side) when changing puzzle
+            // Reset flip card state to front (image side) when changing puzzle
             g3AnswerVisible = false;
             const cardInner = document.getElementById('g3-card-inner');
             if (cardInner) cardInner.style.transform = 'rotateY(0deg)';
-            if (fsCardInner) fsCardInner.style.transform = 'rotateY(0deg)';
 
             document.getElementById('g3-grid-view').classList.add('hidden');
             document.getElementById('g3-detail-view').classList.remove('hidden');
