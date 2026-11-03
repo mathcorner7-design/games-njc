@@ -1695,7 +1695,7 @@
             const overlay = document.getElementById('g2-luckyFullscreenOverlay');
             const bigSlot = document.getElementById('g2-luckyBigSlotNum');
             const bigSub = document.getElementById('g2-luckyBigSubtext');
-            const slotDisplay = document.getElementById('g2-luckySlotNum');
+            const slotDisplay = document.getElementById('g2-lucky-slot');
             const spinBtn = document.getElementById('g2-btn-lucky');
 
             if (spinBtn) spinBtn.disabled = true;
@@ -2113,6 +2113,8 @@ if (fsCardInner) fsCardInner.style.transform = 'rotateY(0deg)';
             g3AnswerVisible = false;
             const cardInner = document.getElementById('g3-card-inner');
             if (cardInner) cardInner.style.transform = 'rotateY(0deg)';
+            const fsCardInner = document.getElementById('g3-fs-card-inner');
+            if (fsCardInner) fsCardInner.style.transform = 'rotateY(0deg)';
 
             document.getElementById('g3-grid-view').classList.add('hidden');
             document.getElementById('g3-detail-view').classList.remove('hidden');
