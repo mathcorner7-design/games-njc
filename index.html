@@ -2109,11 +2109,10 @@ if (fsCardInner) fsCardInner.style.transform = 'rotateY(0deg)';
 
             document.getElementById('g3-answer-text').innerText = puz.answer;
             
-            // Reset flip card state to front (image side) when changing puzzle
+           // Reset flip card state to front (image side) when changing puzzle
             g3AnswerVisible = false;
             const cardInner = document.getElementById('g3-card-inner');
             if (cardInner) cardInner.style.transform = 'rotateY(0deg)';
-            const fsCardInner = document.getElementById('g3-fs-card-inner');
             if (fsCardInner) fsCardInner.style.transform = 'rotateY(0deg)';
 
             document.getElementById('g3-grid-view').classList.add('hidden');
